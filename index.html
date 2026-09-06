@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Spam Pro - By Nduc</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', monospace; }
+        body { background: #0d0d0d; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 680px; box-shadow: 0 0 50px #00ff8833; }
+        h1 { text-align: center; color: #00ff88; font-size: 26px; letter-spacing: 3px; border-bottom: 2px solid #00ff88; padding-bottom: 15px; margin-bottom: 5px; text-shadow: 0 0 20px #00ff8866; }
+        .sub { text-align: center; color: #00dd77; font-size: 14px; margin-bottom: 25px; opacity: 0.7; }
+        
+        /* Tabs */
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #00ff8844; padding-bottom: 5px; }
+        .tab-btn { padding: 10px 25px; background: transparent; border: none; color: #00aa66; font-weight: bold; cursor: pointer; border-radius: 8px 8px 0 0; transition: 0.3s; font-size: 15px; }
+        .tab-btn:hover { background: #00ff8822; color: #00ff88; }
+        .tab-btn.active { background: #00ff88; color: #0a0a0a; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Login & Register */
+        .auth-form { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; margin-bottom: 15px; }
+        .auth-form label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
+        .auth-form input { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
+        .auth-form input:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; }
+        .auth-row { display: flex; gap: 10px; margin-top: 12px; }
+        .auth-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-login { background: #00ff88; color: #0a0a0a; }
+        .btn-login:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
+        .btn-register { background: #ff8800; color: #0a0a0a; }
+        .btn-register:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
+        .btn-logout { background: #ff3344; color: #fff; }
+        .btn-logout:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        .auth-status { color: #00dd77; font-size: 13px; margin-top: 8px; padding: 8px; background: #0d0d0d; border-radius: 6px; border: 1px solid #00ff8844; }
+
+        /* Key Management */
+        .key-section { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; }
+        .key-section label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
+        .key-section input, .key-section select { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
+        .key-section select option { background: #1a1a1a; }
+        .key-row { display: flex; gap: 10px; margin-top: 10px; }
+        .key-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-gen-key { background: #00ff88; color: #0a0a0a; }
+        .btn-gen-key:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
+        .btn-delete-key { background: #ff3344; color: #fff; }
+        .btn-delete-key:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        .key-list { margin-top: 12px; max-height: 150px; overflow-y: auto; }
+        .key-item { display: flex; justify-content: space-between; padding: 6px 10px; background: #111; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #00ff88; font-size: 13px; color: #00dd77; }
+        .key-item .key-code { color: #00ff88; font-weight: bold; }
+        .key-item .key-expiry { color: #ff8800; font-size: 12px; }
+        .key-item .key-status { font-size: 12px; }
+        .key-item .key-status.active { color: #00ff88; }
+        .key-item .key-status.expired { color: #ff3344; }
+
+        /* Spam Tool */
+        label { display: block; margin: 12px 0 6px; font-size: 14px; color: #00dd77; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 12px; background: #0d0d0d; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 8px; font-size: 14px; outline: none; transition: 0.3s; }
+        input:focus, textarea:focus, select:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; background: #111; }
+        textarea { resize: vertical; min-height: 60px; }
+        select option { background: #1a1a1a; color: #00ff88; }
+        .row-2col { display: flex; gap: 12px; }
+        .row-2col > div { flex: 1; }
+        .btn-row { display: flex; gap: 10px; margin-top: 22px; }
+        .btn-row button { flex: 1; padding: 16px; font-weight: 900; font-size: 16px; border: none; border-radius: 10px; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 2px; }
+        #sendBtn { background: #00ff88; color: #0a0a0a; }
+        #sendBtn:hover:not(:disabled) { background: #00dd77; box-shadow: 0 0 40px #00ff88; transform: scale(1.01); }
+        #sendBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        #stopBtn { background: #ff3344; color: #fff; display: none; }
+        #stopBtn:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        #clearBtn { background: #ff8800; color: #0a0a0a; }
+        #clearBtn:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
+        .token-list { margin-top: 12px; padding: 12px; background: #0d0d0d; border: 1px solid #00ff8844; border-radius: 8px; }
+        .token-list .token-item { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+        .token-list .token-item:last-child { margin-bottom: 0; }
+        .token-list .token-item label { margin: 0; font-size: 12px; color: #00aa66; min-width: 70px; }
+        .token-list .token-item input { flex: 1; padding: 6px 10px; font-size: 12px; }
+        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding: 10px 14px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8855; }
+        .status-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 10px; vertical-align: middle; }
+        .idle { background: #555; }
+        .sending { background: #ffcc00; animation: pulse 0.3s infinite; }
+        .success { background: #00ff88; }
+        .error { background: #ff3344; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.2; transform: scale(1.4); } }
+        #log { margin-top: 14px; padding: 14px; background: #0a0a0a; border: 1px solid #00ff8844; border-radius: 8px; max-height: 180px; overflow-y: auto; font-size: 12px; white-space: pre-wrap; word-break: break-all; color: #00dd77; line-height: 1.6; }
+        #log::-webkit-scrollbar { width: 5px; }
+        #log::-webkit-scrollbar-thumb { background: #00ff88; border-radius: 4px; }
+        .counter { font-size: 15px; color: #00ff88; font-weight: bold; }
+        .error-text { color: #ff5566; }
+        .success-text { color: #00ff88; }
+        .footer { text-align: center; margin-top: 18px; color: #00aa66; font-size: 13px; border-top: 1px solid #00ff8844; padding-top: 14px; letter-spacing: 2px; }
+        .speed-control { display: flex; gap: 20px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+        .speed-control label { margin: 0; font-size: 13px; }
+        .speed-control input { width: 80px; padding: 6px; background: #0d0d0d; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; text-align: center; }
+        .speed-control span { color: #00dd77; font-size: 13px; }
+        .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #00dd77; cursor: pointer; margin-top: 8px; }
+        .checkbox-label input { width: 18px; height: 18px; accent-color: #00ff88; cursor: pointer; }
+        .image-upload { margin-top: 10px; padding: 12px; background: #0d0d0d; border: 1.5px dashed #00ff8866; border-radius: 8px; }
+        .image-upload input[type="file"] { padding: 8px; background: transparent; border: none; color: #00dd77; font-size: 13px; }
+        .image-upload .preview { margin-top: 8px; max-width: 100%; max-height: 150px; border-radius: 6px; display: none; border: 1px solid #00ff8844; }
+        .image-upload .url-input { margin-top: 8px; display: flex; gap: 8px; }
+        .image-upload .url-input input { flex: 1; padding: 8px; font-size: 13px; }
+        .image-upload .url-input button { padding: 8px 16px; background: #00ff88; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .image-upload .url-input button:hover { background: #00dd77; }
+        .type-selector { display: flex; gap: 12px; margin: 8px 0; }
+        .type-selector label { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; margin: 0; }
+        .type-selector input[type="radio"] { width: 16px; height: 16px; accent-color: #00ff88; cursor: pointer; }
+        .speed-control .spam-count { display: flex; align-items: center; gap: 10px; }
+        .speed-control .spam-count input { width: 100px; }
+        .spam-count .unlimited-label { color: #00dd77; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+        .spam-count .unlimited-label input { width: 16px; height: 16px; accent-color: #00ff88; cursor: pointer; }
+
+        /* Key Input for normal user */
+        .key-input-section { background: #0d0d0d; padding: 15px; border-radius: 10px; border: 1px solid #ff880066; margin-top: 10px; }
+        .key-input-section .key-input-row { display: flex; gap: 10px; }
+        .key-input-section .key-input-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; }
+        .key-input-section .key-input-row button { padding: 10px 20px; background: #ff8800; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .key-input-section .key-input-row button:hover { background: #dd7700; }
+        .key-info { font-size: 12px; color: #00aa66; margin-top: 6px; }
+
+        .user-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8844; margin-bottom: 15px; }
+        .user-info .username { color: #00ff88; font-weight: bold; font-size: 16px; }
+        .user-info .role { color: #ff8800; font-size: 13px; padding: 3px 12px; border-radius: 12px; background: #00ff8822; border: 1px solid #ff880066; }
+        .user-info .role.admin { color: #00ff88; border-color: #00ff88; background: #00ff8822; }
+        .user-info .role.user { color: #ff8800; border-color: #ff8800; background: #ff880022; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <h1>⚡ SPAM TELEGRAM PRO</h1>
+    <div class="sub">Dev Nduc</div>
+
+    <!-- User Info -->
+    <div id="userInfo" class="user-info hidden">
+        <span class="username" id="displayUsername">Nduc</span>
+        <span class="role" id="displayRole">Admin</span>
+        <button class="btn-logout" id="logoutBtn" style="padding:6px 15px;font-size:12px;">Đăng xuất</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="auth-form">
+        <h3 style="color:#00ff88;margin-bottom:10px;">🔐 ĐĂNG NHẬP</h3>
+        <label>Tài khoản</label>
+        <input type="text" id="loginUsername" placeholder="Nhập tài khoản" value="Nduc">
+        <label>Mật khẩu</label>
+        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" value="Ducanh05092008">
+        <div class="auth-row">
+            <button class="btn-login" id="loginBtn">Đăng nhập</button>
+            <button class="btn-register" id="registerBtn">Đăng ký</button>
+        </div>
+        <div id="authStatus" class="auth-status">Nhập thông tin để đăng nhập hoặc đăng ký</div>
+    </div>
+
+    <!-- Tabs -->
+    <div id="tabContainer" class="tabs hidden">
+        <button class="tab-btn active" data-tab="tabSpam">📨 Spam Tool</button>
+        <button class="tab-btn" data-tab="tabKey" id="adminTabBtn">🔑 Quản lý Key</button>
+    </div>
+
+    <!-- Tab 1: Spam Tool -->
+    <div id="tabSpam" class="tab-content active">
+        <!-- Key Input for normal user -->
+        <div id="keyInputSection" class="key-input-section hidden">
+            <h4 style="color:#ff8800;margin-bottom:8px;">🔑 Nhập Key để sử dụng</h4>
+            <div class="key-input-row">
+                <input type="text" id="userKeyInput" placeholder="Nhập key của bạn">
+                <button id="activateKeyBtn">Kích hoạt</button>
+            </div>
+            <div id="keyStatusInfo" class="key-info">Vui lòng nhập key để sử dụng tool</div>
+        </div>
+
+        <div id="spamContent">
+            <div class="row-2col">
+                <div>
+                    <label>📨 LOẠI ID</label>
+                    <select id="idType">
+                        <option value="chat">Group ID</option>
+                        <option value="user">User ID</option>
+                    </select>
+                </div>
+                <div>
+                    <label>📌 Group ID / USER ID</label>
+                    <input type="text" id="targetId" placeholder="Nhập ID">
+                </div>
+            </div>
+
+            <div class="type-selector">
+                <label><input type="radio" name="msgType" value="text" checked> 📝 Văn bản</label>
+                <label><input type="radio" name="msgType" value="image"> 🖼️ Ảnh</label>
+            </div>
+
+            <div id="textContent">
+                <label>📝 NỘI DUNG</label>
+                <textarea id="message" placeholder="Nhập nội dung muốn spam"></textarea>
+            </div>
+
+            <div id="imageContent" style="display:none;">
+                <label>🖼️ ẢNH</label>
+                <div class="image-upload">
+                    <input type="file" id="imageFile" accept="image/*">
+                    <div class="url-input">
+                        <input type="text" id="imageUrl" placeholder="Hoặc nhập URL ảnh">
+                        <button id="previewBtn">🔍 Xem trước</button>
+                    </div>
+                    <img id="imagePreview" class="preview" alt="Preview">
+                    <div style="margin-top:6px; font-size:12px; color:#00aa66;">Hỗ trợ: JPG, PNG, GIF (dưới 10MB)</div>
+                </div>
+                <label style="margin-top:10px;">📝 CHÚ THÍCH (tùy chọn)</label>
+                <textarea id="imageCaption" placeholder="Nhập chú thích cho ảnh (tùy chọn)"></textarea>
+            </div>
+
+            <div class="speed-control">
+                <div>
+                    <label>⚡ Tốc độ (ms/gửi):</label>
+                    <input type="number" id="speed" value="150" min="50" max="5000">
+                    <span>(50 = nhanh nhất)</span>
+                </div>
+                <div class="spam-count">
+                    <label>🔢 Số lần spam:</label>
+                    <input type="number" id="spamCount" value="10" min="1" max="999999">
+                    <span>lần</span>
+                    <label class="unlimited-label">
+                        <input type="checkbox" id="unlimitedSpam"> Vô hạn
+                    </label>
+                </div>
+            </div>
+
+            <label style="margin-top:8px;">🤖 DANH SÁCH BOT TOKEN (tối thiểu 1 token có giá trị)</label>
+            <div class="token-list" id="tokenList">
+                <div class="token-item"><label>Bot 1</label><input type="text" class="bot-token" placeholder="Token bot 1"></div>
+                <div class="token-item"><label>Bot 2</label><input type="text" class="bot-token" placeholder="Token bot 2"></div>
+                <div class="token-item"><label>Bot 3</label><input type="text" class="bot-token" placeholder="Token bot 3"></div>
+                <div class="token-item"><label>Bot 4</label><input type="text" class="bot-token" placeholder="Token bot 4"></div>
+                <div class="token-item"><label>Bot 5</label><input type="text" class="bot-token" placeholder="Token bot 5"></div>
+            </div>
+
+            <div class="checkbox-label">
+                <input type="checkbox" id="useAllBots" checked>
+                <span>Sử dụng tất cả bot có token (nếu bỏ chọn chỉ dùng Bot 1)</span>
+            </div>
+
+            <div class="btn-row">
+                <button id="sendBtn">🚀 SPAM Start</button>
+                <button id="stopBtn">⏹ DỪNG</button>
+                <button id="clearBtn">🗑️ Delete Log</button>
+            </div>
+
+            <div class="status-bar">
+                <span>
+                    <span class="status-dot idle" id="statusDot"></span>
+                    <span id="statusText" style="color:#00dd77;font-weight:bold;">Sẵn sàng</span>
+                </span>
+                <span class="counter" id="counter">📤 0 / 10</span>
+            </div>
+            <div id="log">[+] Tool đã sẵn sàng. Nhập token, ID và nội dung để bắt đầu.</div>
+        </div>
+    </div>
+
+    <!-- Tab 2: Key Management (Admin only) -->
+    <div id="tabKey" class="tab-content">
+        <div class="key-section">
+            <h3 style="color:#00ff88;margin-bottom:12px;">🔑 QUẢN LÝ KEY</h3>
+            <label>Nhập username cần tạo key</label>
+            <input type="text" id="keyUsername" placeholder="Username">
+            <label>Thời hạn key</label>
+            <select id="keyExpiry">
+                <option value="1h">1 giờ</option>
+                <option value="3h">3 giờ</option>
+                <option value="1d">1 ngày</option>
+                <option value="7d">7 ngày</option>
+                <option value="30d">1 tháng</option>
+                <option value="forever">Vĩnh viễn</option>
+            </select>
+            <div class="key-row">
+                <button class="btn-gen-key" id="genKeyBtn">🔑 Tạo Key</button>
+                <button class="btn-delete-key" id="deleteAllKeysBtn">🗑️ Xóa tất cả Key</button>
+            </div>
+            <div style="margin-top:12px;">
+                <h4 style="color:#00dd77;font-size:14px;">Danh sách Key</h4>
+                <div id="keyList" class="key-list">
+                    <div style="color:#00aa66;font-size:13px;">Chưa có key nào</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">⚡ Dev Nduc ⚡</div>
+</div>
+
+<script>
+(function() {
+    // ========== DATA STORAGE ==========
+    const STORAGE_KEY = 'telegram_spam_data';
+    let appData = {
+        users: {
+            'Nduc': { password: 'Ducanh05092008', role: 'admin' }
+        },
+        keys: {} // { key: { username, expiry, createdAt, status } }
+    };
+
+    let currentUser = null; // { username, role }
+    let isKeyValid = false;
+    let userKey = null;
+
+    // Load data from localStorage
+    function loadData() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                appData.users = parsed.users || appData.users;
+                appData.keys = parsed.keys || {};
+            }
+        } catch (e) {}
+    }
+
+    function saveData() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ users: appData.users, keys: appData.keys }));
+        } catch (e) {}
+    }
+
+    loadData();
+
+    // ========== DOM REFS ==========
+    const loginForm = document.getElementById('loginForm');
+    const userInfo = document.getElementById('userInfo');
+    const displayUsername = document.getElementById('displayUsername');
+    const displayRole = document.getElementById('displayRole');
+    const loginUsername = document.getElementById('loginUsername');
+    const loginPassword = document.getElementById('loginPassword');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const authStatus = document.getElementById('authStatus');
+    const tabContainer = document.getElementById('tabContainer');
+    const adminTabBtn = document.getElementById('adminTabBtn');
+    const tabSpam = document.getElementById('tabSpam');
+    const tabKey = document.getElementById('tabKey');
+    const keyInputSection = document.getElementById('keyInputSection');
+    const userKeyInput = document.getElementById('userKeyInput');
+    const activateKeyBtn = document.getElementById('activateKeyBtn');
+    const keyStatusInfo = document.getElementById('keyStatusInfo');
+    const keyUsername = document.getElementById('keyUsername');
+    const keyExpiry = document.getElementById('keyExpiry');
+    const genKeyBtn = document.getElementById('genKeyBtn');
+    const deleteAllKeysBtn = document.getElementById('deleteAllKeysBtn');
+    const keyList = document.getElementById('keyList');
+    const spamContent = document.getElementById('spamContent');
+
+    // Spam tool refs
+    const idType = document.getElementById('idType');
+    const targetId = document.getElementById('targetId');
+    const message = document.getElementById('message');
+    const speed = document.getElementById('speed');
+    const spamCount = document.getElementById('spamCount');
+    const unlimitedSpam = document.getElementById('unlimitedSpam');
+    const sendBtn = document.getElementById('sendBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const log = document.getElementById('log');
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const counter = document.getElementById('counter');
+    const useAllBots = document.getElementById('useAllBots');
+    const tokenInputs = document.querySelectorAll('.bot-token');
+    const msgTypeRadios = document.querySelectorAll('input[name="msgType"]');
+    const textContent = document.getElementById('textContent');
+    const imageContent = document.getElementById('imageContent');
+    const imageFile = document.getElementById('imageFile');
+    const imageUrl = document.getElementById('imageUrl');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewBtn = document.getElementById('previewBtn');
+    const imageCaption = document.getElementById('imageCaption');
+
+    // Spam state
+    let totalSent = 0;
+    let running = false;
+    let stopRequested = false;
+    let sendTimeout = null;
+    let currentBotIndex = 0;
+    let currentImageData = null;
+    let isUnlimited = false;
+
+    // ========== UTILITY ==========
+    function generateKey() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let key = '';
+        for (let i = 0; i < 10; i++) {
+            key += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return key;
+    }
+
+    function getExpiryTime(expiryStr) {
+        const now = Date.now();
+        const map = {
+            '1h': 60 * 60 * 1000,
+            '3h': 3 * 60 * 60 * 1000,
+            '1d': 24 * 60 * 60 * 1000,
+            '7d': 7 * 24 * 60 * 60 * 1000,
+            '30d': 30 * 24 * 60 * 60 * 1000,
+            'forever': Infinity
+        };
+        const ms = map[expiryStr] || 0;
+        return ms === Infinity ? Infinity : now + ms;
+    }
+
+    function isKeyExpired(keyData) {
+        if (keyData.expiry === Infinity) return false;
+        return Date.now() > keyData.expiry;
+    }
+
+    function formatExpiry(expiry) {
+        if (expiry === Infinity) return 'Vĩnh viễn';
+        const diff = expiry - Date.now();
+        if (diff <= 0) return 'Hết hạn';
+        const hours = Math.floor(diff / (60 * 60 * 1000));
+        const days = Math.floor(diff / (24 * 60 * 60 * 1000));
+        if (days > 0) return `${days} ngày ${hours % 24} giờ`;
+        return `${hours} giờ ${Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000))} phút`;
+    }
+
+    // ========== AUTH ==========
+    function login(username, password) {
+        const user = appData.users[username];
+        if (!user) {
+            authStatus.innerHTML = '❌ Tài khoản không tồn tại!';
+            return false;
+        }
+        if (user.password !== password) {
+            authStatus.innerHTML = '❌ Sai mật khẩu!';
+            return false;
+        }
+        currentUser = { username, role: user.role };
+        authStatus.innerHTML = `✅ Đăng nhập thành công! Chào ${username}`;
+        updateUI();
+        return true;
+    }
+
+    function register(username, password) {
+        if (appData.users[username]) {
+            authStatus.innerHTML = '❌ Tài khoản đã tồn tại!';
+            return false;
+        }
+        if (username.length < 3 || password.length < 3) {
+            authStatus.innerHTML = '❌ Tên và mật khẩu phải có ít nhất 3 ký tự!';
+            return false;
+        }
+        appData.users[username] = { password, role: 'user' };
+        saveData();
+        authStatus.innerHTML = `✅ Đăng ký thành công! Bạn có thể đăng nhập ngay.`;
+        return true;
+    }
+
+    function logout() {
+        currentUser = null;
+        isKeyValid = false;
+        userKey = null;
+        updateUI();
+        authStatus.innerHTML = 'Đã đăng xuất.';
+    }
+
+    function updateUI() {
+        if (currentUser) {
+            loginForm.classList.add('hidden');
+            userInfo.classList.remove('hidden');
+            displayUsername.textContent = currentUser.username;
+            displayRole.textContent = currentUser.role === 'admin' ? '👑 Admin' : '👤 User';
+            displayRole.className = 'role ' + (currentUser.role === 'admin' ? 'admin' : 'user');
+            tabContainer.classList.remove('hidden');
+
+            // Show/hide admin tab
+            if (currentUser.role === 'admin') {
+                adminTabBtn.classList.remove('hidden');
+                // Admin doesn't need key
+                isKeyValid = true;
+                keyInputSection.classList.add('hidden');
+                spamContent.classList.remove('hidden');
+            } else {
+                adminTabBtn.classList.add('hidden');
+                // User needs key
+                keyInputSection.classList.remove('hidden');
+                spamContent.classList.add('hidden');
+                // Check if user has valid key
+                checkUserKey();
+            }
+
+            // Switch to spam tab
+            switchTab('tabSpam');
+        } else {
+            loginForm.classList.remove('hidden');
+            userInfo.classList.add('hidden');
+            tabContainer.classList.add('hidden');
+            tabSpam.classList.remove('active');
+            tabSpam.style.display = 'none';
+            tabKey.classList.remove('active');
+            tabKey.style.display = 'none';
+            // Stop spam if running
+            if (running) stopSpam();
+        }
+        renderKeys();
+    }
+
+    function checkUserKey() {
+        if (!currentUser || currentUser.role === 'admin') {
+            isKeyValid = true;
+            return;
+        }
+        isKeyValid = false;
+        userKey = null;
+        for (const [key, data] of Object.entries(appData.keys)) {
+            if (data.username === currentUser.username && !isKeyExpired(data)) {
+                isKeyValid = true;
+                userKey = key;
+                break;
+            }
+        }
+        if (isKeyValid) {
+            keyStatusInfo.innerHTML = '✅ Key hợp lệ! Bạn có thể sử dụng tool.';
+            keyStatusInfo.style.color = '#00ff88';
+            spamContent.classList.remove('hidden');
+        } else {
+            keyStatusInfo.innerHTML = '❌ Key không hợp lệ hoặc đã hết hạn. Vui lòng nhập key mới.';
+            keyStatusInfo.style.color = '#ff5566';
+            spamContent.classList.add('hidden');
+        }
+    }
+
+    function activateKey(key) {
+        if (!currentUser) return false;
+        const keyData = appData.keys[key];
+        if (!keyData) {
+            keyStatusInfo.innerHTML = '❌ Key không tồn tại!';
+            keyStatusInfo.style.color = '#ff5566';
+            return false;
+        }
+        if (keyData.username !== currentUser.username) {
+            keyStatusInfo.innerHTML = '❌ Key không thuộc về bạn!';
+            keyStatusInfo.style.color = '#ff5566';
+            return false;
+        }
+        if (isKeyExpired(keyData)) {
+            keyStatusInfo.innerHTML = '❌ Key đã hết hạn!';
+            keyStatusInfo.style.color = '#ff5566';
+            return false;
+        }
+        isKeyValid = true;
+        userKey = key;
+        keyStatusInfo.innerHTML = '✅ Kích hoạt key thành công!';
+        keyStatusInfo.style.color = '#00ff88';
+        spamContent.classList.remove('hidden');
+        return true;
+    }
+
+    // ========== TABS ==========
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.remove('active');
+            el.style.display = 'none';
+        });
+        document.querySelectorAll('.tab-btn').forEach(el => {
+            el.classList.remove('active');
+        });
+        const target = document.getElementById(tabId);
+        if (target) {
+            target.classList.add('active');
+            target.style.display = 'block';
+        }
+        document.querySelector(`.tab-btn[data-tab="${tabId}"]`)?.classList.add('active');
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!currentUser) return;
+            const tabId = this.dataset.tab;
+            if (tabId === 'tabKey' && currentUser.role !== 'admin') return;
+            switchTab(tabId);
+        });
+    });
+
+    // ========== KEY MANAGEMENT ==========
+    function renderKeys() {
+        const keys = Object.entries(appData.keys);
+        if (keys.length === 0) {
+            keyList.innerHTML = '<div style="color:#00aa66;font-size:13px;">Chưa có key nào</div>';
+            return;
+        }
+        let html = '';
+        for (const [key, data] of keys) {
+            const expired = isKeyExpired(data);
+            const status = expired ? '❌ Hết hạn' : '✅ Còn hạn';
+            const statusClass = expired ? 'expired' : 'active';
+            const expiryDisplay = data.expiry === Infinity ? 'Vĩnh viễn' : new Date(data.expiry).toLocaleString();
+            html += `
+                <div class="key-item">
+                    <span><span class="key-code">${key}</span> - <span style="color:#00aa66;">${data.username}</span></span>
+                    <span>
+                        <span class="key-expiry">${expiryDisplay}</span>
+                        <span class="key-status ${statusClass}">${status}</span>
+                    </span>
+                </div>
+            `;
+        }
+        keyList.innerHTML = html;
+    }
+
+    genKeyBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể tạo key!');
+            return;
+        }
+        const username = keyUsername.value.trim();
+        if (!username) {
+            alert('Vui lòng nhập username!');
+            return;
+        }
+        if (!appData.users[username]) {
+            alert('Username không tồn tại!');
+            return;
+        }
+        const expiryStr = keyExpiry.value;
+        const newKey = generateKey();
+        appData.keys[newKey] = {
+            username: username,
+            expiry: getExpiryTime(expiryStr),
+            createdAt: Date.now()
+        };
+        saveData();
+        renderKeys();
+        keyUsername.value = '';
+        alert(`✅ Key đã được tạo: ${newKey}`);
+    });
+
+    deleteAllKeysBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        if (confirm('Bạn có chắc muốn xóa tất cả key?')) {
+            appData.keys = {};
+            saveData();
+            renderKeys();
+            alert('Đã xóa tất cả key!');
+        }
+    });
+
+    // ========== EVENTS ==========
+    loginBtn.addEventListener('click', function() {
+        const username = loginUsername.value.trim();
+        const password = loginPassword.value.trim();
+        if (!username || !password) {
+            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+            return;
+        }
+        login(username, password);
+    });
+
+    registerBtn.addEventListener('click', function() {
+        const username = loginUsername.value.trim();
+        const password = loginPassword.value.trim();
+        if (!username || !password) {
+            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+            return;
+        }
+        register(username, password);
+    });
+
+    logoutBtn.addEventListener('click', logout);
+
+    activateKeyBtn.addEventListener('click', function() {
+        const key = userKeyInput.value.trim().toUpperCase();
+        if (!key) {
+            keyStatusInfo.innerHTML = '❌ Vui lòng nhập key!';
+            keyStatusInfo.style.color = '#ff5566';
+            return;
+        }
+        activateKey(key);
+    });
+
+    // Enter key to login
+    loginPassword.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') loginBtn.click();
+    });
+    loginUsername.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') loginBtn.click();
+    });
+
+    userKeyInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') activateKeyBtn.click();
+    });
+
+    // ========== SPAM TOOL (unchanged from original) ==========
+    // Unlimited spam checkbox
+    unlimitedSpam.addEventListener('change', function() {
+        if (this.checked) {
+            spamCount.disabled = true;
+            spamCount.value = 0;
+            isUnlimited = true;
+        } else {
+            spamCount.disabled = false;
+            spamCount.value = 10;
+            isUnlimited = false;
+        }
+        updateCounterDisplay();
+    });
+
+    spamCount.addEventListener('change', function() {
+        if (!unlimitedSpam.checked) updateCounterDisplay();
+    });
+
+    function updateCounterDisplay() {
+        if (isUnlimited) {
+            counter.textContent = `📤 ${totalSent} / ∞`;
+        } else {
+            const max = parseInt(spamCount.value) || 0;
+            counter.textContent = `📤 ${totalSent} / ${max}`;
+        }
+    }
+
+    msgTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'text') {
+                textContent.style.display = 'block';
+                imageContent.style.display = 'none';
+            } else {
+                textContent.style.display = 'none';
+                imageContent.style.display = 'block';
+            }
+        });
+    });
+
+    previewBtn.addEventListener('click', function() {
+        const url = imageUrl.value.trim();
+        if (url) {
+            imagePreview.src = url;
+            imagePreview.style.display = 'block';
+            currentImageData = url;
+        } else {
+            alert('Vui lòng nhập URL ảnh!');
+        }
+    });
+
+    imageFile.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 10 * 1024 * 1024) {
+                alert('⚠️ Ảnh lớn hơn 10MB! Sẽ gửi dưới dạng document.');
+            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imagePreview.src = event.target.result;
+                imagePreview.style.display = 'block';
+                currentImageData = event.target.result;
+                imageUrl.value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function getActiveTokens() {
+        const tokens = [];
+        tokenInputs.forEach(inp => {
+            const val = inp.value.trim();
+            if (val) tokens.push(val);
+        });
+        if (tokens.length === 0) return [];
+        if (!useAllBots.checked) return [tokens[0]];
+        return tokens;
+    }
+
+    function setStatus(state, text) {
+        statusDot.className = 'status-dot ' + state;
+        statusText.textContent = text;
+    }
+
+    function appendLog(msg, isError = false) {
+        const prefix = isError ? '❌ ' : '✅ ';
+        const cls = isError ? 'error-text' : 'success-text';
+        log.innerHTML += `<span class="${cls}">${prefix}${msg}</span>\n`;
+        log.scrollTop = log.scrollHeight;
+    }
+
+    function clearLog() {
+        log.innerHTML = '[+] Lịch sử đã được xoá.';
+        totalSent = 0;
+        updateCounterDisplay();
+        setStatus('idle', 'Sẵn sàng');
+    }
+
+    function getMessageType() {
+        for (let radio of msgTypeRadios) {
+            if (radio.checked) return radio.value;
+        }
+        return 'text';
+    }
+
+    async function sendOneMessage(token, chat, msgType, textMsg, imageData, caption) {
+        try {
+            let url, payload;
+
+            if (msgType === 'text') {
+                url = `https://api.telegram.org/bot${token}/sendMessage`;
+                payload = { chat_id: chat, text: textMsg, parse_mode: '' };
+            } else {
+                let isLargeFile = false;
+                if (imageData && imageData.startsWith('data:image')) {
+                    const base64 = imageData.split(',')[1];
+                    const fileSize = base64.length * 3 / 4;
+                    if (fileSize > 10 * 1024 * 1024) isLargeFile = true;
+                }
+
+                if (isLargeFile) {
+                    url = `https://api.telegram.org/bot${token}/sendDocument`;
+                    const formData = new FormData();
+                    formData.append('chat_id', chat);
+                    const response = await fetch(imageData);
+                    const blob = await response.blob();
+                    formData.append('document', blob, 'image.jpg');
+                    if (caption) formData.append('caption', caption);
+                    const resp = await fetch(url, { method: 'POST', body: formData });
+                    const data = await resp.json();
+                    if (data.ok) return { success: true, error: null };
+                    return { success: false, error: data.description || 'Lỗi không xác định' };
+                } else {
+                    url = `https://api.telegram.org/bot${token}/sendPhoto`;
+                    payload = { chat_id: chat, caption: caption || '' };
+                    if (imageData && (imageData.startsWith('http://') || imageData.startsWith('https://'))) {
+                        payload.photo = imageData;
+                    } else if (imageData && imageData.startsWith('data:image')) {
+                        const response = await fetch(imageData);
+                        const blob = await response.blob();
+                        const formData = new FormData();
+                        formData.append('chat_id', chat);
+                        formData.append('photo', blob, 'image.jpg');
+                        if (caption) formData.append('caption', caption);
+                        const resp = await fetch(url, { method: 'POST', body: formData });
+                        const data = await resp.json();
+                        if (data.ok) return { success: true, error: null };
+                        return { success: false, error: data.description || 'Lỗi không xác định' };
+                    } else {
+                        return { success: false, error: 'Không có ảnh để gửi!' };
+                    }
+                }
+            }
+
+            if (msgType === 'text' || (msgType === 'image' && imageData && imageData.startsWith('http'))) {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 10000);
+                const resp = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timeout);
+                const data = await resp.json();
+                if (data.ok) return { success: true, error: null };
+                let errMsg = data.description || 'Lỗi không xác định';
+                if (errMsg.includes('chat not found')) errMsg = 'ID không tồn tại hoặc bot chưa vào nhóm!';
+                else if (errMsg.includes('bot was blocked')) errMsg = 'Bot đã bị chặn!';
+                else if (errMsg.includes('Forbidden')) errMsg = 'Bot không có quyền!';
+                else if (errMsg.includes('user not found')) errMsg = 'User ID không tồn tại!';
+                else if (errMsg.includes('wrong file')) errMsg = 'File ảnh không hợp lệ!';
+                return { success: false, error: errMsg };
+            }
+        } catch (error) {
+            let errMsg = error.message;
+            if (error.name === 'AbortError') errMsg = 'Timeout - kiểm tra mạng!';
+            else if (errMsg.includes('Failed to fetch')) errMsg = 'Mất kết nối API!';
+            return { success: false, error: errMsg };
+        }
+    }
+
+    async function spamLoop() {
+        if (stopRequested || !running) return;
+
+        if (!isUnlimited) {
+            const max = parseInt(spamCount.value) || 0;
+            if (max > 0 && totalSent >= max) {
+                appendLog(`✅ Đã gửi đủ ${max} lần, dừng spam!`);
+                stopSpam();
+                return;
+            }
+        }
+
+        const tokens = getActiveTokens();
+        if (tokens.length === 0) {
+            appendLog('Không có token hợp lệ!', true);
+            stopSpam();
+            return;
+        }
+
+        const chat = targetId.value.trim();
+        if (!chat) {
+            appendLog('Thiếu ID!', true);
+            stopSpam();
+            return;
+        }
+
+        const msgType = getMessageType();
+        let textMsg = message.value.trim();
+        let imageData = currentImageData;
+        let caption = imageCaption.value.trim();
+
+        if (msgType === 'text' && !textMsg) {
+            appendLog('Thiếu nội dung!', true);
+            stopSpam();
+            return;
+        }
+        if (msgType === 'image' && !imageData) {
+            appendLog('Thiếu ảnh!', true);
+            stopSpam();
+            return;
+        }
+
+        const token = tokens[currentBotIndex % tokens.length];
+        currentBotIndex++;
+
+        const result = await sendOneMessage(token, chat, msgType, textMsg, imageData, caption);
+
+        if (result.success) {
+            totalSent++;
+            updateCounterDisplay();
+            const botLabel = tokens.length > 1 ? ` (Bot ${(currentBotIndex % tokens.length) || tokens.length})` : '';
+            const typeLabel = msgType === 'text' ? 'Text' : 'Ảnh';
+            appendLog(`Gửi ${typeLabel} thành công #${totalSent}${botLabel}`);
+        } else {
+            appendLog(`Thất bại: ${result.error}`, true);
+        }
+
+        if (running && !stopRequested) {
+            const delay = parseInt(speed.value) || 150;
+            sendTimeout = setTimeout(() => spamLoop(), Math.max(delay, 30));
+        }
+    }
+
+    function startSpam() {
+        if (!currentUser) {
+            appendLog('Vui lòng đăng nhập!', true);
+            return;
+        }
+        if (currentUser.role !== 'admin' && !isKeyValid) {
+            appendLog('Vui lòng nhập key hợp lệ!', true);
+            return;
+        }
+
+        const tokens = getActiveTokens();
+        if (tokens.length === 0) {
+            appendLog('Chưa nhập token nào!', true);
+            return;
+        }
+
+        const chat = targetId.value.trim();
+        if (!chat) {
+            appendLog('Thiếu ID!', true);
+            return;
+        }
+
+        const msgType = getMessageType();
+        if (msgType === 'text') {
+            const msg = message.value.trim();
+            if (!msg) {
+                appendLog('Thiếu nội dung!', true);
+                return;
+            }
+        } else {
+            if (!currentImageData) {
+                appendLog('Thiếu ảnh!', true);
+                return;
+            }
+        }
+
+        if (!isUnlimited) {
+            const max = parseInt(spamCount.value) || 0;
+            if (max <= 0) {
+                appendLog('Vui lòng nhập số lần spam hợp lệ (>0)!', true);
+                return;
+            }
+        }
+
+        if (running) return;
+
+        running = true;
+        stopRequested = false;
+        totalSent = 0;
+        currentBotIndex = 0;
+        updateCounterDisplay();
+        sendBtn.style.display = 'none';
+        stopBtn.style.display = 'block';
+        setStatus('sending', 'Đang spam...');
+        const botCount = tokens.length;
+        const typeLabel = msgType === 'text' ? 'văn bản' : 'ảnh';
+        const countLabel = isUnlimited ? 'vô hạn' : spamCount.value;
+        appendLog(`🔥 Bắt đầu spam ${typeLabel} với ${botCount} bot, số lần: ${countLabel}`);
+        spamLoop();
+    }
+
+    function stopSpam() {
+        if (running) {
+            stopRequested = true;
+            running = false;
+            if (sendTimeout) {
+                clearTimeout(sendTimeout);
+                sendTimeout = null;
+            }
+            sendBtn.style.display = 'block';
+            stopBtn.style.display = 'none';
+            setStatus('idle', 'Đã dừng');
+            appendLog('⏹ Đã dừng spam.');
+        }
+    }
+
+    sendBtn.addEventListener('click', startSpam);
+    stopBtn.addEventListener('click', stopSpam);
+    clearBtn.addEventListener('click', clearLog);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            if (running) stopSpam();
+            else startSpam();
+        }
+    });
+
+    // ========== INIT ==========
+    targetId.value = '';
+    message.value = '';
+    imageCaption.value = '';
+    imageUrl.value = '';
+    imageFile.value = '';
+    imagePreview.style.display = 'none';
+    currentImageData = null;
+    spamCount.value = 10;
+    unlimitedSpam.checked = false;
+    isUnlimited = false;
+    updateCounterDisplay();
+    log.innerHTML = '[+] Tool đã sẵn sàng. Vui lòng đăng nhập để sử dụng.';
+    
+    // Check if admin account exists, create if not
+    if (!appData.users['Nduc']) {
+        appData.users['Nduc'] = { password: 'Ducanh05092008', role: 'admin' };
+        saveData();
+    }
+
+    // Auto-login admin for demo
+    // Uncomment below to auto-login admin (for testing)
+    // login('Nduc', 'Ducanh05092008');
+
+    renderKeys();
+    updateUI();
+})();
+</script>
+</body>
+</html>
