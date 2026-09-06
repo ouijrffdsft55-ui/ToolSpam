@@ -7,62 +7,67 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', monospace; }
         body { background: #0d0d0d; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 680px; box-shadow: 0 0 50px #00ff8833; }
+        .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 750px; box-shadow: 0 0 50px #00ff8833; }
         h1 { text-align: center; color: #00ff88; font-size: 26px; letter-spacing: 3px; border-bottom: 2px solid #00ff88; padding-bottom: 15px; margin-bottom: 5px; text-shadow: 0 0 20px #00ff8866; }
         .sub { text-align: center; color: #00dd77; font-size: 14px; margin-bottom: 25px; opacity: 0.7; }
         
-        /* Tabs */
-        .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #00ff8844; padding-bottom: 5px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #00ff8844; padding-bottom: 5px; flex-wrap: wrap; }
         .tab-btn { padding: 10px 25px; background: transparent; border: none; color: #00aa66; font-weight: bold; cursor: pointer; border-radius: 8px 8px 0 0; transition: 0.3s; font-size: 15px; }
         .tab-btn:hover { background: #00ff8822; color: #00ff88; }
         .tab-btn.active { background: #00ff88; color: #0a0a0a; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Login & Register */
         .auth-form { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; margin-bottom: 15px; }
         .auth-form label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
         .auth-form input { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
         .auth-form input:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; }
-        .auth-row { display: flex; gap: 10px; margin-top: 12px; }
-        .auth-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .auth-form input::placeholder { color: #00aa6666; }
+        .auth-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+        .auth-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; min-width: 100px; }
         .btn-login { background: #00ff88; color: #0a0a0a; }
         .btn-login:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
         .btn-register { background: #ff8800; color: #0a0a0a; }
         .btn-register:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
+        .btn-admin-login { background: #ff3366; color: #fff; }
+        .btn-admin-login:hover { background: #cc2244; box-shadow: 0 0 30px #ff336666; }
         .btn-logout { background: #ff3344; color: #fff; }
         .btn-logout:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
         .auth-status { color: #00dd77; font-size: 13px; margin-top: 8px; padding: 8px; background: #0d0d0d; border-radius: 6px; border: 1px solid #00ff8844; }
 
-        /* Key Management */
         .key-section { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; }
         .key-section label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
         .key-section input, .key-section select { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
         .key-section select option { background: #1a1a1a; }
-        .key-row { display: flex; gap: 10px; margin-top: 10px; }
-        .key-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .key-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .key-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; min-width: 120px; }
         .btn-gen-key { background: #00ff88; color: #0a0a0a; }
         .btn-gen-key:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
-        .btn-delete-key { background: #ff3344; color: #fff; }
-        .btn-delete-key:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
-        .key-list { margin-top: 12px; max-height: 150px; overflow-y: auto; }
-        .key-item { display: flex; justify-content: space-between; padding: 6px 10px; background: #111; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #00ff88; font-size: 13px; color: #00dd77; }
-        .key-item .key-code { color: #00ff88; font-weight: bold; }
-        .key-item .key-expiry { color: #ff8800; font-size: 12px; }
-        .key-item .key-status { font-size: 12px; }
-        .key-item .key-status.active { color: #00ff88; }
-        .key-item .key-status.expired { color: #ff3344; }
+        .btn-copy-key { background: #ff8800; color: #0a0a0a; }
+        .btn-copy-key:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
+        .btn-delete-history { background: #ff3344; color: #fff; }
+        .btn-delete-history:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        .key-list { margin-top: 12px; max-height: 250px; overflow-y: auto; }
+        .key-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #111; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #00ff88; font-size: 13px; color: #00dd77; flex-wrap: wrap; gap: 5px; }
+        .key-item .key-code { color: #00ff88; font-weight: bold; font-family: monospace; font-size: 14px; }
+        .key-item .key-user { color: #ff8800; font-size: 12px; }
+        .key-item .key-expiry { color: #888; font-size: 12px; }
+        .key-item .key-status { font-size: 12px; padding: 2px 10px; border-radius: 10px; }
+        .key-item .key-status.active { color: #00ff88; background: #00ff8822; border: 1px solid #00ff88; }
+        .key-item .key-status.used { color: #ff8800; background: #ff880022; border: 1px solid #ff8800; }
+        .key-item .key-status.expired { color: #ff3344; background: #ff334422; border: 1px solid #ff3344; }
+        .key-item .copy-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 2px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .key-item .copy-btn:hover { background: #00ff8844; }
 
-        /* Spam Tool */
         label { display: block; margin: 12px 0 6px; font-size: 14px; color: #00dd77; font-weight: bold; }
         input, textarea, select { width: 100%; padding: 12px; background: #0d0d0d; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 8px; font-size: 14px; outline: none; transition: 0.3s; }
         input:focus, textarea:focus, select:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; background: #111; }
         textarea { resize: vertical; min-height: 60px; }
         select option { background: #1a1a1a; color: #00ff88; }
-        .row-2col { display: flex; gap: 12px; }
-        .row-2col > div { flex: 1; }
-        .btn-row { display: flex; gap: 10px; margin-top: 22px; }
-        .btn-row button { flex: 1; padding: 16px; font-weight: 900; font-size: 16px; border: none; border-radius: 10px; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 2px; }
+        .row-2col { display: flex; gap: 12px; flex-wrap: wrap; }
+        .row-2col > div { flex: 1; min-width: 200px; }
+        .btn-row { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+        .btn-row button { flex: 1; padding: 16px; font-weight: 900; font-size: 16px; border: none; border-radius: 10px; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 2px; min-width: 100px; }
         #sendBtn { background: #00ff88; color: #0a0a0a; }
         #sendBtn:hover:not(:disabled) { background: #00dd77; box-shadow: 0 0 40px #00ff88; transform: scale(1.01); }
         #sendBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
@@ -71,11 +76,11 @@
         #clearBtn { background: #ff8800; color: #0a0a0a; }
         #clearBtn:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
         .token-list { margin-top: 12px; padding: 12px; background: #0d0d0d; border: 1px solid #00ff8844; border-radius: 8px; }
-        .token-list .token-item { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+        .token-list .token-item { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
         .token-list .token-item:last-child { margin-bottom: 0; }
         .token-list .token-item label { margin: 0; font-size: 12px; color: #00aa66; min-width: 70px; }
-        .token-list .token-item input { flex: 1; padding: 6px 10px; font-size: 12px; }
-        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding: 10px 14px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8855; }
+        .token-list .token-item input { flex: 1; padding: 6px 10px; font-size: 12px; min-width: 150px; }
+        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding: 10px 14px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8855; flex-wrap: wrap; gap: 8px; }
         .status-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 10px; vertical-align: middle; }
         .idle { background: #555; }
         .sending { background: #ffcc00; animation: pulse 0.3s infinite; }
@@ -98,33 +103,62 @@
         .image-upload { margin-top: 10px; padding: 12px; background: #0d0d0d; border: 1.5px dashed #00ff8866; border-radius: 8px; }
         .image-upload input[type="file"] { padding: 8px; background: transparent; border: none; color: #00dd77; font-size: 13px; }
         .image-upload .preview { margin-top: 8px; max-width: 100%; max-height: 150px; border-radius: 6px; display: none; border: 1px solid #00ff8844; }
-        .image-upload .url-input { margin-top: 8px; display: flex; gap: 8px; }
-        .image-upload .url-input input { flex: 1; padding: 8px; font-size: 13px; }
+        .image-upload .url-input { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .image-upload .url-input input { flex: 1; padding: 8px; font-size: 13px; min-width: 150px; }
         .image-upload .url-input button { padding: 8px 16px; background: #00ff88; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .image-upload .url-input button:hover { background: #00dd77; }
-        .type-selector { display: flex; gap: 12px; margin: 8px 0; }
+        .type-selector { display: flex; gap: 12px; margin: 8px 0; flex-wrap: wrap; }
         .type-selector label { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; margin: 0; }
         .type-selector input[type="radio"] { width: 16px; height: 16px; accent-color: #00ff88; cursor: pointer; }
-        .speed-control .spam-count { display: flex; align-items: center; gap: 10px; }
+        .speed-control .spam-count { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .speed-control .spam-count input { width: 100px; }
         .spam-count .unlimited-label { color: #00dd77; font-size: 12px; display: flex; align-items: center; gap: 5px; }
         .spam-count .unlimited-label input { width: 16px; height: 16px; accent-color: #00ff88; cursor: pointer; }
 
-        /* Key Input for normal user */
         .key-input-section { background: #0d0d0d; padding: 15px; border-radius: 10px; border: 1px solid #ff880066; margin-top: 10px; }
-        .key-input-section .key-input-row { display: flex; gap: 10px; }
-        .key-input-section .key-input-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; }
+        .key-input-section .key-input-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .key-input-section .key-input-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; min-width: 150px; }
         .key-input-section .key-input-row button { padding: 10px 20px; background: #ff8800; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .key-input-section .key-input-row button:hover { background: #dd7700; }
+        .key-input-section .key-input-row .btn-get-key { background: #00ff88; color: #0a0a0a; }
+        .key-input-section .key-input-row .btn-get-key:hover { background: #00dd77; }
         .key-info { font-size: 12px; color: #00aa66; margin-top: 6px; }
 
-        .user-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8844; margin-bottom: 15px; }
+        .user-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8844; margin-bottom: 15px; flex-wrap: wrap; gap: 8px; }
         .user-info .username { color: #00ff88; font-weight: bold; font-size: 16px; }
+        .user-info .key-timer { color: #ff8800; font-size: 13px; background: #ff880022; padding: 2px 12px; border-radius: 12px; border: 1px solid #ff880066; }
         .user-info .role { color: #ff8800; font-size: 13px; padding: 3px 12px; border-radius: 12px; background: #00ff8822; border: 1px solid #ff880066; }
         .user-info .role.admin { color: #00ff88; border-color: #00ff88; background: #00ff8822; }
         .user-info .role.user { color: #ff8800; border-color: #ff8800; background: #ff880022; }
 
         .hidden { display: none !important; }
+        
+        .auth-form input.default-placeholder::placeholder { color: #00ff8844; }
+        .auth-form input.default-placeholder { color: #00ff88; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 30px; max-width: 450px; width: 90%; box-shadow: 0 0 50px #00ff8833; text-align: center; }
+        .modal-box h3 { color: #00ff88; margin-bottom: 15px; }
+        .modal-box p { color: #00dd77; margin-bottom: 15px; font-size: 14px; }
+        .modal-box .modal-link { color: #ff8800; font-size: 18px; word-break: break-all; margin: 10px 0; padding: 10px; background: #0d0d0d; border-radius: 8px; border: 1px solid #ff880066; }
+        .modal-box .modal-btn { padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; margin: 5px; }
+        .modal-box .modal-btn-primary { background: #00ff88; color: #0a0a0a; }
+        .modal-box .modal-btn-primary:hover { background: #00dd77; }
+        .modal-box .modal-btn-close { background: #ff3344; color: #fff; }
+        .modal-box .modal-btn-close:hover { background: #cc2233; }
+        .modal-box .free-key { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #ff880066; margin: 10px 0; }
+        .modal-box .free-key .key-display { color: #00ff88; font-size: 24px; font-weight: bold; font-family: monospace; letter-spacing: 3px; }
+        .modal-box .free-key .key-label { color: #888; font-size: 13px; }
+        .modal-box .free-key .key-expiry-text { color: #ff8800; font-size: 13px; margin-top: 5px; }
+        .modal-box .loading-text { color: #ffcc00; }
+        .modal-box .copy-key-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 5px 15px; border-radius: 4px; cursor: pointer; font-size: 13px; margin-top: 8px; }
+        .modal-box .copy-key-btn:hover { background: #00ff8844; }
+        .modal-box .key-ready { color: #00ff88; font-size: 14px; margin-top: 8px; }
+
+        .auth-mode { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-left: 8px; }
+        .auth-mode.login-mode { background: #00ff8822; color: #00ff88; border: 1px solid #00ff88; }
+        .auth-mode.register-mode { background: #ff880022; color: #ff8800; border: 1px solid #ff8800; }
     </style>
 </head>
 <body>
@@ -132,46 +166,51 @@
     <h1>⚡ SPAM TELEGRAM PRO</h1>
     <div class="sub">Dev Nduc</div>
 
-    <!-- User Info -->
     <div id="userInfo" class="user-info hidden">
-        <span class="username" id="displayUsername">Nduc</span>
-        <span class="role" id="displayRole">Admin</span>
-        <button class="btn-logout" id="logoutBtn" style="padding:6px 15px;font-size:12px;">Đăng xuất</button>
+        <span>
+            <span class="username" id="displayUsername">Nduc</span>
+            <span class="key-timer hidden" id="keyTimer">⏳ 0h 0m</span>
+        </span>
+        <span>
+            <span class="role" id="displayRole">Admin</span>
+            <button class="btn-logout" id="logoutBtn" style="padding:6px 15px;font-size:12px;margin-left:8px;">Đăng xuất</button>
+        </span>
     </div>
 
-    <!-- Login Form -->
     <div id="loginForm" class="auth-form">
-        <h3 style="color:#00ff88;margin-bottom:10px;">🔐 ĐĂNG NHẬP</h3>
+        <h3 style="color:#00ff88;margin-bottom:10px;">
+            🔐 ĐĂNG NHẬP 
+            <span class="auth-mode login-mode" id="authModeDisplay">🔑 Đăng nhập</span>
+        </h3>
         <label>Tài khoản</label>
-        <input type="text" id="loginUsername" placeholder="Nhập tài khoản" value="Nduc">
+        <input type="text" id="loginUsername" class="default-placeholder" placeholder="Nhập tài khoản của bạn" value="">
         <label>Mật khẩu</label>
-        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" value="Ducanh05092008">
+        <input type="password" id="loginPassword" class="default-placeholder" placeholder="Nhập mật khẩu của bạn" value="">
         <div class="auth-row">
-            <button class="btn-login" id="loginBtn">Đăng nhập</button>
-            <button class="btn-register" id="registerBtn">Đăng ký</button>
+            <button class="btn-login" id="loginBtn">🔑 Đăng nhập</button>
+            <button class="btn-register" id="registerBtn">📝 Đăng ký</button>
+            <button class="btn-admin-login" id="adminLoginBtn">👑 Admin</button>
         </div>
         <div id="authStatus" class="auth-status">Nhập thông tin để đăng nhập hoặc đăng ký</div>
     </div>
 
-    <!-- Tabs -->
     <div id="tabContainer" class="tabs hidden">
         <button class="tab-btn active" data-tab="tabSpam">📨 Spam Tool</button>
         <button class="tab-btn" data-tab="tabKey" id="adminTabBtn">🔑 Quản lý Key</button>
     </div>
 
-    <!-- Tab 1: Spam Tool -->
     <div id="tabSpam" class="tab-content active">
-        <!-- Key Input for normal user -->
         <div id="keyInputSection" class="key-input-section hidden">
             <h4 style="color:#ff8800;margin-bottom:8px;">🔑 Nhập Key để sử dụng</h4>
             <div class="key-input-row">
                 <input type="text" id="userKeyInput" placeholder="Nhập key của bạn">
                 <button id="activateKeyBtn">Kích hoạt</button>
+                <button class="btn-get-key" id="getKeyBtn">🎁 Get Key Free</button>
             </div>
             <div id="keyStatusInfo" class="key-info">Vui lòng nhập key để sử dụng tool</div>
         </div>
 
-        <div id="spamContent">
+        <div id="spamContent" class="hidden">
             <div class="row-2col">
                 <div>
                     <label>📨 LOẠI ID</label>
@@ -258,12 +297,11 @@
         </div>
     </div>
 
-    <!-- Tab 2: Key Management (Admin only) -->
     <div id="tabKey" class="tab-content">
         <div class="key-section">
             <h3 style="color:#00ff88;margin-bottom:12px;">🔑 QUẢN LÝ KEY</h3>
-            <label>Nhập username cần tạo key</label>
-            <input type="text" id="keyUsername" placeholder="Username">
+            <label>Số lượng key cần tạo</label>
+            <input type="number" id="keyCount" value="1" min="1" max="100">
             <label>Thời hạn key</label>
             <select id="keyExpiry">
                 <option value="1h">1 giờ</option>
@@ -275,10 +313,11 @@
             </select>
             <div class="key-row">
                 <button class="btn-gen-key" id="genKeyBtn">🔑 Tạo Key</button>
-                <button class="btn-delete-key" id="deleteAllKeysBtn">🗑️ Xóa tất cả Key</button>
+                <button class="btn-copy-key" id="copyKeysBtn">📋 Sao chép Key</button>
+                <button class="btn-delete-history" id="deleteHistoryBtn">🗑️ Xóa lịch sử</button>
             </div>
             <div style="margin-top:12px;">
-                <h4 style="color:#00dd77;font-size:14px;">Danh sách Key</h4>
+                <h4 style="color:#00dd77;font-size:14px;">Danh sách Key đã tạo <span style="color:#888;font-size:12px;">(lịch sử tạo key)</span></h4>
                 <div id="keyList" class="key-list">
                     <div style="color:#00aa66;font-size:13px;">Chưa có key nào</div>
                 </div>
@@ -289,6 +328,23 @@
     <div class="footer">⚡ Dev Nduc ⚡</div>
 </div>
 
+<!-- Modal Get Key -->
+<div class="modal-overlay" id="getKeyModal">
+    <div class="modal-box">
+        <h3>🎁 LẤY KEY FREE</h3>
+        <p>Bấm vào link bên dưới để lấy key:</p>
+        <div class="modal-link">🔗 https://link4m.org/0CSnon</div>
+        <div style="margin:15px 0;">
+            <button class="modal-btn modal-btn-primary" id="openLinkBtn">🌐 Mở link</button>
+        </div>
+        <p style="font-size:13px;color:#00aa66;">Sau khi vượt link xong, key sẽ hiển thị bên dưới:</p>
+        <div class="free-key" id="freeKeyDisplay">
+            <div style="color:#ff8800;font-size:13px;">⏳ Nhấn "Mở link" để lấy key...</div>
+        </div>
+        <button class="modal-btn modal-btn-close" id="closeModalBtn">Đóng</button>
+    </div>
+</div>
+
 <script>
 (function() {
     // ========== DATA STORAGE ==========
@@ -297,14 +353,15 @@
         users: {
             'Nduc': { password: 'Ducanh05092008', role: 'admin' }
         },
-        keys: {} // { key: { username, expiry, createdAt, status } }
+        keys: {}, // { key: { username, expiry, createdAt, status: 'active'|'used'|'expired', activatedAt: null } }
+        keyHistory: [] // [{ key, username, expiry, createdAt, status, type: 'admin'|'free', activatedAt: null }]
     };
 
-    let currentUser = null; // { username, role }
+    let currentUser = null;
     let isKeyValid = false;
     let userKey = null;
+    let timerInterval = null;
 
-    // Load data from localStorage
     function loadData() {
         try {
             const saved = localStorage.getItem(STORAGE_KEY);
@@ -312,13 +369,18 @@
                 const parsed = JSON.parse(saved);
                 appData.users = parsed.users || appData.users;
                 appData.keys = parsed.keys || {};
+                appData.keyHistory = parsed.keyHistory || [];
             }
         } catch (e) {}
     }
 
     function saveData() {
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({ users: appData.users, keys: appData.keys }));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ 
+                users: appData.users, 
+                keys: appData.keys,
+                keyHistory: appData.keyHistory 
+            }));
         } catch (e) {}
     }
 
@@ -329,12 +391,15 @@
     const userInfo = document.getElementById('userInfo');
     const displayUsername = document.getElementById('displayUsername');
     const displayRole = document.getElementById('displayRole');
+    const keyTimer = document.getElementById('keyTimer');
     const loginUsername = document.getElementById('loginUsername');
     const loginPassword = document.getElementById('loginPassword');
     const loginBtn = document.getElementById('loginBtn');
     const registerBtn = document.getElementById('registerBtn');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
     const authStatus = document.getElementById('authStatus');
+    const authModeDisplay = document.getElementById('authModeDisplay');
     const tabContainer = document.getElementById('tabContainer');
     const adminTabBtn = document.getElementById('adminTabBtn');
     const tabSpam = document.getElementById('tabSpam');
@@ -342,13 +407,19 @@
     const keyInputSection = document.getElementById('keyInputSection');
     const userKeyInput = document.getElementById('userKeyInput');
     const activateKeyBtn = document.getElementById('activateKeyBtn');
+    const getKeyBtn = document.getElementById('getKeyBtn');
     const keyStatusInfo = document.getElementById('keyStatusInfo');
-    const keyUsername = document.getElementById('keyUsername');
+    const keyCount = document.getElementById('keyCount');
     const keyExpiry = document.getElementById('keyExpiry');
     const genKeyBtn = document.getElementById('genKeyBtn');
-    const deleteAllKeysBtn = document.getElementById('deleteAllKeysBtn');
+    const copyKeysBtn = document.getElementById('copyKeysBtn');
+    const deleteHistoryBtn = document.getElementById('deleteHistoryBtn');
     const keyList = document.getElementById('keyList');
     const spamContent = document.getElementById('spamContent');
+    const getKeyModal = document.getElementById('getKeyModal');
+    const openLinkBtn = document.getElementById('openLinkBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const freeKeyDisplay = document.getElementById('freeKeyDisplay');
 
     // Spam tool refs
     const idType = document.getElementById('idType');
@@ -394,6 +465,16 @@
         return key;
     }
 
+    function generateUniqueKey() {
+        let key;
+        let attempts = 0;
+        do {
+            key = generateKey();
+            attempts++;
+        } while (appData.keys[key] && attempts < 100);
+        return key;
+    }
+
     function getExpiryTime(expiryStr) {
         const now = Date.now();
         const map = {
@@ -423,7 +504,73 @@
         return `${hours} giờ ${Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000))} phút`;
     }
 
+    function getStatusText(status) {
+        const map = {
+            'active': '✅ Còn hạn',
+            'used': '🔑 Đã dùng',
+            'expired': '❌ Hết hạn'
+        };
+        return map[status] || status;
+    }
+
+    function getStatusClass(status) {
+        const map = {
+            'active': 'active',
+            'used': 'used',
+            'expired': 'expired'
+        };
+        return map[status] || 'active';
+    }
+
+    function getTimeRemaining(expiry) {
+        if (expiry === Infinity) return 'Vĩnh viễn';
+        const diff = expiry - Date.now();
+        if (diff <= 0) return 'Hết hạn';
+        const hours = Math.floor(diff / (60 * 60 * 1000));
+        const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+        if (hours > 24) {
+            const days = Math.floor(hours / 24);
+            return `${days} ngày ${hours % 24} giờ`;
+        }
+        if (hours > 0) return `${hours} giờ ${minutes} phút`;
+        return `${minutes} phút`;
+    }
+
     // ========== AUTH ==========
+    function setAuthMode(mode) {
+        if (mode === 'login') {
+            authModeDisplay.textContent = '🔑 Đăng nhập';
+            authModeDisplay.className = 'auth-mode login-mode';
+            authStatus.innerHTML = '🔑 Nhập thông tin để đăng nhập';
+        } else {
+            authModeDisplay.textContent = '📝 Đăng ký';
+            authModeDisplay.className = 'auth-mode register-mode';
+            authStatus.innerHTML = '📝 Nhập thông tin để đăng ký tài khoản mới';
+        }
+    }
+
+    loginBtn.addEventListener('click', function() {
+        setAuthMode('login');
+        const username = loginUsername.value.trim();
+        const password = loginPassword.value.trim();
+        if (!username || !password) {
+            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+            return;
+        }
+        login(username, password);
+    });
+
+    registerBtn.addEventListener('click', function() {
+        setAuthMode('register');
+        const username = loginUsername.value.trim();
+        const password = loginPassword.value.trim();
+        if (!username || !password) {
+            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+            return;
+        }
+        register(username, password);
+    });
+
     function login(username, password) {
         const user = appData.users[username];
         if (!user) {
@@ -440,6 +587,22 @@
         return true;
     }
 
+    function adminLogin(password) {
+        const adminUser = appData.users['Nduc'];
+        if (!adminUser) {
+            authStatus.innerHTML = '❌ Tài khoản Admin không tồn tại!';
+            return false;
+        }
+        if (adminUser.password !== password) {
+            authStatus.innerHTML = '❌ Sai mật khẩu Admin!';
+            return false;
+        }
+        currentUser = { username: 'Nduc', role: 'admin' };
+        authStatus.innerHTML = `✅ Đăng nhập Admin thành công!`;
+        updateUI();
+        return true;
+    }
+
     function register(username, password) {
         if (appData.users[username]) {
             authStatus.innerHTML = '❌ Tài khoản đã tồn tại!';
@@ -452,15 +615,21 @@
         appData.users[username] = { password, role: 'user' };
         saveData();
         authStatus.innerHTML = `✅ Đăng ký thành công! Bạn có thể đăng nhập ngay.`;
+        setAuthMode('login');
         return true;
     }
 
     function logout() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
         currentUser = null;
         isKeyValid = false;
         userKey = null;
         updateUI();
         authStatus.innerHTML = 'Đã đăng xuất.';
+        setAuthMode('login');
     }
 
     function updateUI() {
@@ -472,23 +641,23 @@
             displayRole.className = 'role ' + (currentUser.role === 'admin' ? 'admin' : 'user');
             tabContainer.classList.remove('hidden');
 
-            // Show/hide admin tab
             if (currentUser.role === 'admin') {
                 adminTabBtn.classList.remove('hidden');
-                // Admin doesn't need key
                 isKeyValid = true;
                 keyInputSection.classList.add('hidden');
                 spamContent.classList.remove('hidden');
+                keyTimer.classList.add('hidden');
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
             } else {
                 adminTabBtn.classList.add('hidden');
-                // User needs key
                 keyInputSection.classList.remove('hidden');
                 spamContent.classList.add('hidden');
-                // Check if user has valid key
                 checkUserKey();
             }
 
-            // Switch to spam tab
             switchTab('tabSpam');
         } else {
             loginForm.classList.remove('hidden');
@@ -498,10 +667,13 @@
             tabSpam.style.display = 'none';
             tabKey.classList.remove('active');
             tabKey.style.display = 'none';
-            // Stop spam if running
             if (running) stopSpam();
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
         }
-        renderKeys();
+        renderKeyHistory();
     }
 
     function checkUserKey() {
@@ -512,7 +684,7 @@
         isKeyValid = false;
         userKey = null;
         for (const [key, data] of Object.entries(appData.keys)) {
-            if (data.username === currentUser.username && !isKeyExpired(data)) {
+            if (data.username === currentUser.username && data.status === 'active' && !isKeyExpired(data)) {
                 isKeyValid = true;
                 userKey = key;
                 break;
@@ -522,10 +694,42 @@
             keyStatusInfo.innerHTML = '✅ Key hợp lệ! Bạn có thể sử dụng tool.';
             keyStatusInfo.style.color = '#00ff88';
             spamContent.classList.remove('hidden');
+            keyTimer.classList.remove('hidden');
+            updateKeyTimer();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateKeyTimer, 1000);
         } else {
-            keyStatusInfo.innerHTML = '❌ Key không hợp lệ hoặc đã hết hạn. Vui lòng nhập key mới.';
+            keyStatusInfo.innerHTML = '❌ Key không hợp lệ hoặc đã hết hạn. Vui lòng nhập key mới hoặc lấy key free.';
             keyStatusInfo.style.color = '#ff5566';
             spamContent.classList.add('hidden');
+            keyTimer.classList.add('hidden');
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+    }
+
+    function updateKeyTimer() {
+        if (!currentUser || currentUser.role === 'admin') {
+            keyTimer.classList.add('hidden');
+            return;
+        }
+        if (userKey && appData.keys[userKey]) {
+            const keyData = appData.keys[userKey];
+            if (keyData.status === 'active' && !isKeyExpired(keyData)) {
+                keyTimer.classList.remove('hidden');
+                keyTimer.textContent = '⏳ ' + getTimeRemaining(keyData.expiry);
+            } else {
+                keyTimer.classList.add('hidden');
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                checkUserKey();
+            }
+        } else {
+            keyTimer.classList.add('hidden');
         }
     }
 
@@ -542,18 +746,145 @@
             keyStatusInfo.style.color = '#ff5566';
             return false;
         }
+        if (keyData.status === 'used') {
+            keyStatusInfo.innerHTML = '❌ Key đã được sử dụng!';
+            keyStatusInfo.style.color = '#ff5566';
+            return false;
+        }
         if (isKeyExpired(keyData)) {
+            keyData.status = 'expired';
+            // Update history
+            const historyItem = appData.keyHistory.find(item => item.key === key);
+            if (historyItem) historyItem.status = 'expired';
+            saveData();
+            renderKeyHistory();
             keyStatusInfo.innerHTML = '❌ Key đã hết hạn!';
             keyStatusInfo.style.color = '#ff5566';
             return false;
         }
+        // Mark key as used and set activated time
+        keyData.status = 'used';
+        keyData.activatedAt = Date.now();
+        const historyItem = appData.keyHistory.find(item => item.key === key);
+        if (historyItem) {
+            historyItem.status = 'used';
+            historyItem.activatedAt = Date.now();
+        }
+        saveData();
+        renderKeyHistory();
         isKeyValid = true;
         userKey = key;
-        keyStatusInfo.innerHTML = '✅ Kích hoạt key thành công!';
+        keyStatusInfo.innerHTML = '✅ Kích hoạt key thành công! Thời gian còn lại: ' + getTimeRemaining(keyData.expiry);
         keyStatusInfo.style.color = '#00ff88';
         spamContent.classList.remove('hidden');
+        keyTimer.classList.remove('hidden');
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(updateKeyTimer, 1000);
+        updateKeyTimer();
         return true;
     }
+
+    // ========== KEY MANAGEMENT ==========
+    function generateFreeKey(username) {
+        const newKey = generateUniqueKey();
+        const expiryTime = getExpiryTime('1h');
+        appData.keys[newKey] = {
+            username: username,
+            expiry: expiryTime,
+            createdAt: Date.now(),
+            status: 'active',
+            activatedAt: null
+        };
+        appData.keyHistory.unshift({
+            key: newKey,
+            username: username,
+            expiry: expiryTime,
+            createdAt: Date.now(),
+            status: 'active',
+            type: 'free',
+            activatedAt: null
+        });
+        saveData();
+        renderKeyHistory();
+        return newKey;
+    }
+
+    function generateAdminKeys(count, expiryStr) {
+        const keys = [];
+        for (let i = 0; i < count; i++) {
+            const newKey = generateUniqueKey();
+            const expiryTime = getExpiryTime(expiryStr);
+            appData.keys[newKey] = {
+                username: 'Nduc',
+                expiry: expiryTime,
+                createdAt: Date.now(),
+                status: 'active',
+                activatedAt: null
+            };
+            appData.keyHistory.unshift({
+                key: newKey,
+                username: 'Nduc',
+                expiry: expiryTime,
+                createdAt: Date.now(),
+                status: 'active',
+                type: 'admin',
+                activatedAt: null
+            });
+            keys.push(newKey);
+        }
+        saveData();
+        renderKeyHistory();
+        return keys;
+    }
+
+    function renderKeyHistory() {
+        if (appData.keyHistory.length === 0) {
+            keyList.innerHTML = '<div style="color:#00aa66;font-size:13px;">Chưa có key nào</div>';
+            return;
+        }
+        let html = '';
+        for (const item of appData.keyHistory) {
+            let status = item.status;
+            if (status === 'active' && isKeyExpired(item)) {
+                status = 'expired';
+            }
+            const statusText = getStatusText(status);
+            const statusClass = getStatusClass(status);
+            const timeRemaining = item.expiry === Infinity ? 'Vĩnh viễn' : getTimeRemaining(item.expiry);
+            const typeLabel = item.type === 'free' ? '🎁 Free' : '👑 Admin';
+            const activatedInfo = item.activatedAt ? '🔑 Đã kích hoạt' : '⏳ Chưa kích hoạt';
+            html += `
+                <div class="key-item">
+                    <span>
+                        <span class="key-code">${item.key}</span>
+                        <span class="key-user">- ${item.username}</span>
+                        <span style="color:#888;font-size:11px;">${typeLabel}</span>
+                    </span>
+                    <span>
+                        <span class="key-expiry">⏳ ${timeRemaining}</span>
+                        <span style="color:#888;font-size:11px;">${activatedInfo}</span>
+                        <span class="key-status ${statusClass}">${statusText}</span>
+                        <button class="copy-btn" onclick="copyKey('${item.key}')">📋 Copy</button>
+                    </span>
+                </div>
+            `;
+        }
+        keyList.innerHTML = html;
+    }
+
+    window.copyKey = function(key) {
+        navigator.clipboard.writeText(key).then(() => {
+            appendLog(`📋 Đã sao chép key: ${key}`);
+        }).catch(() => {
+            const textarea = document.createElement('textarea');
+            textarea.value = key;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            appendLog(`📋 Đã sao chép key: ${key}`);
+        });
+    };
 
     // ========== TABS ==========
     function switchTab(tabId) {
@@ -581,88 +912,15 @@
         });
     });
 
-    // ========== KEY MANAGEMENT ==========
-    function renderKeys() {
-        const keys = Object.entries(appData.keys);
-        if (keys.length === 0) {
-            keyList.innerHTML = '<div style="color:#00aa66;font-size:13px;">Chưa có key nào</div>';
-            return;
-        }
-        let html = '';
-        for (const [key, data] of keys) {
-            const expired = isKeyExpired(data);
-            const status = expired ? '❌ Hết hạn' : '✅ Còn hạn';
-            const statusClass = expired ? 'expired' : 'active';
-            const expiryDisplay = data.expiry === Infinity ? 'Vĩnh viễn' : new Date(data.expiry).toLocaleString();
-            html += `
-                <div class="key-item">
-                    <span><span class="key-code">${key}</span> - <span style="color:#00aa66;">${data.username}</span></span>
-                    <span>
-                        <span class="key-expiry">${expiryDisplay}</span>
-                        <span class="key-status ${statusClass}">${status}</span>
-                    </span>
-                </div>
-            `;
-        }
-        keyList.innerHTML = html;
-    }
-
-    genKeyBtn.addEventListener('click', function() {
-        if (!currentUser || currentUser.role !== 'admin') {
-            alert('Chỉ Admin mới có thể tạo key!');
-            return;
-        }
-        const username = keyUsername.value.trim();
-        if (!username) {
-            alert('Vui lòng nhập username!');
-            return;
-        }
-        if (!appData.users[username]) {
-            alert('Username không tồn tại!');
-            return;
-        }
-        const expiryStr = keyExpiry.value;
-        const newKey = generateKey();
-        appData.keys[newKey] = {
-            username: username,
-            expiry: getExpiryTime(expiryStr),
-            createdAt: Date.now()
-        };
-        saveData();
-        renderKeys();
-        keyUsername.value = '';
-        alert(`✅ Key đã được tạo: ${newKey}`);
-    });
-
-    deleteAllKeysBtn.addEventListener('click', function() {
-        if (!currentUser || currentUser.role !== 'admin') return;
-        if (confirm('Bạn có chắc muốn xóa tất cả key?')) {
-            appData.keys = {};
-            saveData();
-            renderKeys();
-            alert('Đã xóa tất cả key!');
-        }
-    });
-
     // ========== EVENTS ==========
-    loginBtn.addEventListener('click', function() {
-        const username = loginUsername.value.trim();
-        const password = loginPassword.value.trim();
-        if (!username || !password) {
-            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+    adminLoginBtn.addEventListener('click', function() {
+        const password = prompt('👑 Nhập mật khẩu Admin:');
+        if (password === null) return;
+        if (!password.trim()) {
+            authStatus.innerHTML = '❌ Vui lòng nhập mật khẩu!';
             return;
         }
-        login(username, password);
-    });
-
-    registerBtn.addEventListener('click', function() {
-        const username = loginUsername.value.trim();
-        const password = loginPassword.value.trim();
-        if (!username || !password) {
-            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
-            return;
-        }
-        register(username, password);
+        adminLogin(password.trim());
     });
 
     logoutBtn.addEventListener('click', logout);
@@ -675,22 +933,159 @@
             return;
         }
         activateKey(key);
+        userKeyInput.value = '';
     });
 
-    // Enter key to login
-    loginPassword.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') loginBtn.click();
-    });
-    loginUsername.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') loginBtn.click();
+    // ========== GET KEY FREE ==========
+    getKeyBtn.addEventListener('click', function() {
+        if (!currentUser) {
+            alert('Vui lòng đăng nhập trước!');
+            return;
+        }
+        if (currentUser.role === 'admin') {
+            alert('Admin không cần lấy key free!');
+            return;
+        }
+        // Check if user already has an active key
+        let hasActiveKey = false;
+        for (const [key, data] of Object.entries(appData.keys)) {
+            if (data.username === currentUser.username && data.status === 'active' && !isKeyExpired(data)) {
+                hasActiveKey = true;
+                break;
+            }
+        }
+        if (hasActiveKey) {
+            alert('Bạn đã có key hợp lệ! Không cần lấy thêm.');
+            return;
+        }
+        getKeyModal.classList.add('active');
+        freeKeyDisplay.innerHTML = '<div style="color:#ff8800;font-size:13px;">⏳ Nhấn "Mở link" để lấy key...</div>';
     });
 
-    userKeyInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') activateKeyBtn.click();
+    let keyGenerated = false;
+    let keyGenerationTimeout = null;
+
+    openLinkBtn.addEventListener('click', function() {
+        // Open link in new tab
+        window.open('https://link4m.org/0CSnon', '_blank');
+        freeKeyDisplay.innerHTML = `
+            <div style="color:#ffcc00;font-size:13px;">⏳ Đang tạo key cho bạn...</div>
+            <div style="color:#888;font-size:12px;margin-top:5px;">Vui lòng quay lại sau khi vượt link</div>
+        `;
+        
+        // Check when user returns to tab
+        const checkReturn = setInterval(() => {
+            if (document.hasFocus() && !keyGenerated) {
+                clearInterval(checkReturn);
+                // User returned to tab, generate key
+                if (currentUser) {
+                    const newKey = generateFreeKey(currentUser.username);
+                    keyGenerated = true;
+                    const keyData = appData.keys[newKey];
+                    freeKeyDisplay.innerHTML = `
+                        <div style="margin-bottom:8px;">
+                            <span class="key-label">🔑 Key free của bạn:</span>
+                        </div>
+                        <div class="key-display">${newKey}</div>
+                        <div style="margin-top:8px;">
+                            <span style="color:#888;font-size:13px;">⏳ Hạn: ${getTimeRemaining(keyData.expiry)}</span>
+                        </div>
+                        <button class="copy-key-btn" onclick="copyKey('${newKey}')">📋 Sao chép key</button>
+                        <div style="margin-top:8px;font-size:13px;color:#00ff88;">
+                            ✅ Key đã được tạo! Vui lòng sao chép và kích hoạt.
+                        </div>
+                    `;
+                    appendLog(`🎁 Key free đã được tạo cho ${currentUser.username}`);
+                }
+            }
+        }, 1000);
+
+        // Auto close after 30 seconds if no return
+        keyGenerationTimeout = setTimeout(() => {
+            clearInterval(checkReturn);
+            if (!keyGenerated) {
+                freeKeyDisplay.innerHTML = `
+                    <div style="color:#ff3344;font-size:13px;">⏰ Quá thời gian chờ. Vui lòng thử lại!</div>
+                `;
+            }
+        }, 30000);
     });
 
-    // ========== SPAM TOOL (unchanged from original) ==========
-    // Unlimited spam checkbox
+    closeModalBtn.addEventListener('click', function() {
+        getKeyModal.classList.remove('active');
+        if (keyGenerationTimeout) {
+            clearTimeout(keyGenerationTimeout);
+            keyGenerationTimeout = null;
+        }
+        keyGenerated = false;
+    });
+
+    getKeyModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            getKeyModal.classList.remove('active');
+            if (keyGenerationTimeout) {
+                clearTimeout(keyGenerationTimeout);
+                keyGenerationTimeout = null;
+            }
+            keyGenerated = false;
+        }
+    });
+
+    // ========== ADMIN KEY MANAGEMENT ==========
+    genKeyBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể tạo key!');
+            return;
+        }
+        const count = parseInt(keyCount.value) || 1;
+        if (count < 1 || count > 100) {
+            alert('Số lượng phải từ 1 đến 100!');
+            return;
+        }
+        const expiryStr = keyExpiry.value;
+        const keys = generateAdminKeys(count, expiryStr);
+        alert(`✅ Đã tạo ${keys.length} key thành công!\n\n${keys.join('\n')}`);
+        appendLog(`🔑 Admin đã tạo ${keys.length} key mới`);
+    });
+
+    copyKeysBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể sao chép key!');
+            return;
+        }
+        const activeKeys = appData.keyHistory
+            .filter(item => item.status === 'active' && !isKeyExpired(item))
+            .map(item => item.key);
+        if (activeKeys.length === 0) {
+            alert('Không có key nào đang hoạt động để sao chép!');
+            return;
+        }
+        const text = activeKeys.join('\n');
+        navigator.clipboard.writeText(text).then(() => {
+            alert(`✅ Đã sao chép ${activeKeys.length} key!\n\n${text}`);
+        }).catch(() => {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert(`✅ Đã sao chép ${activeKeys.length} key!`);
+        });
+    });
+
+    deleteHistoryBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử key?\n(Lưu ý: Chỉ xóa lịch sử hiển thị, không ảnh hưởng đến key đã tạo)')) {
+            appData.keyHistory = [];
+            saveData();
+            renderKeyHistory();
+            alert('✅ Đã xóa lịch sử key!');
+            appendLog('🗑️ Admin đã xóa lịch sử key');
+        }
+    });
+
+    // ========== SPAM TOOL ==========
     unlimitedSpam.addEventListener('change', function() {
         if (this.checked) {
             spamCount.disabled = true;
@@ -1035,18 +1430,14 @@
     updateCounterDisplay();
     log.innerHTML = '[+] Tool đã sẵn sàng. Vui lòng đăng nhập để sử dụng.';
     
-    // Check if admin account exists, create if not
     if (!appData.users['Nduc']) {
         appData.users['Nduc'] = { password: 'Ducanh05092008', role: 'admin' };
         saveData();
     }
 
-    // Auto-login admin for demo
-    // Uncomment below to auto-login admin (for testing)
-    // login('Nduc', 'Ducanh05092008');
-
-    renderKeys();
+    renderKeyHistory();
     updateUI();
+    setAuthMode('login');
 })();
 </script>
 </body>
