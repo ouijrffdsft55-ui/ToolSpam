@@ -59,6 +59,7 @@
         .key-item .key-status.reseted { color: #ff8800; background: #ff880022; border: 1px solid #ff8800; }
         .key-item .copy-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 2px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
         .key-item .copy-btn:hover { background: #00ff8844; }
+        .key-item .device-info { color: #888; font-size: 11px; background: #00ff8822; padding: 2px 8px; border-radius: 4px; }
 
         .misc-section { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; margin-bottom: 15px; }
         .misc-section h4 { color: #00ff88; margin-bottom: 12px; border-bottom: 1px solid #00ff8844; padding-bottom: 8px; }
@@ -76,11 +77,19 @@
         .btn-unban:hover { background: #00dd77; box-shadow: 0 0 30px #ff8866; }
         .btn-view-banned { background: #ff8800; color: #0a0a0a; }
         .btn-view-banned:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
-        .banned-list { margin-top: 12px; padding: 10px; background: #0a0a0a; border-radius: 6px; border: 1px solid #ff334444; max-height: 150px; overflow-y: auto; }
-        .banned-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-bottom: 1px solid #ff334422; color: #ff5566; font-size: 13px; }
-        .banned-item:last-child { border-bottom: none; }
-        .banned-item .unban-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 2px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-        .banned-item .unban-btn:hover { background: #00ff8844; }
+        .btn-delete-ban-history { background: #ff3344; color: #fff; }
+        .btn-delete-ban-history:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        
+        .banned-table-container { margin-top: 12px; max-height: 200px; overflow-y: auto; background: #0a0a0a; border-radius: 8px; border: 1px solid #ff334466; display: none; }
+        .banned-table-container.active { display: block; }
+        .banned-table { width: 100%; border-collapse: collapse; }
+        .banned-table th { background: #1a1a1a; color: #ff5566; padding: 10px; text-align: left; font-size: 13px; border-bottom: 2px solid #ff334466; position: sticky; top: 0; z-index: 1; }
+        .banned-table td { padding: 8px 10px; color: #ff5566; font-size: 13px; border-bottom: 1px solid #ff334422; }
+        .banned-table tr:hover { background: #ff334411; }
+        .banned-table .unban-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 4px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .banned-table .unban-btn:hover { background: #00ff8844; }
+        .banned-table .empty-row td { color: #00aa66; text-align: center; padding: 20px; font-size: 14px; }
+        
         .misc-status { color: #00dd77; font-size: 13px; margin-top: 8px; padding: 8px; background: #0d0d0d; border-radius: 6px; border: 1px solid #00ff8844; }
         .current-link-display { background: #111; padding: 10px; border-radius: 6px; border: 1px solid #ff880066; margin: 8px 0; color: #00dd77; font-size: 13px; word-break: break-all; }
         .current-link-display .link-value { color: #ff8800; font-weight: bold; }
@@ -191,6 +200,19 @@
         .reset-key-box .reset-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; min-width: 150px; }
         .reset-key-box .reset-row button { padding: 10px 20px; background: #ff8800; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .reset-key-box .reset-row button:hover { background: #dd7700; }
+        
+        .device-count-input { display: flex; align-items: center; gap: 10px; }
+        .device-count-input input { width: 80px; text-align: center; }
+        .device-count-input span { color: #00dd77; font-size: 13px; }
+        
+        .gen-key-box { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #00ff8844; margin-top: 10px; }
+        .gen-key-box .gen-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .gen-key-box .gen-row label { margin: 0; font-size: 13px; min-width: 100px; }
+        .gen-key-box .gen-row input { flex: 1; min-width: 80px; padding: 8px; }
+        .gen-key-box .gen-row select { flex: 1; min-width: 120px; padding: 8px; }
+        .gen-key-box .gen-row button { padding: 10px 30px; background: #00ff88; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .gen-key-box .gen-row button:hover { background: #00dd77; }
+        .gen-key-box .key-result { margin-top: 10px; padding: 10px; background: #111; border-radius: 6px; color: #00ff88; font-size: 13px; word-break: break-all; }
     </style>
 </head>
 <body>
@@ -333,7 +355,30 @@
     <div id="tabKey" class="tab-content">
         <div class="key-section">
             <h3 style="color:#00ff88;margin-bottom:12px;">🔑 QUẢN LÝ KEY</h3>
-            <label>Số lượng key cần tạo</label>
+            
+            <!-- Tạo key cho nhiều thiết bị -->
+            <div class="gen-key-box">
+                <h4 style="color:#00dd77;font-size:14px;margin-bottom:10px;">📱 TẠO KEY CHO NHIỀU THIẾT BỊ</h4>
+                <div class="gen-row">
+                    <label>Số thiết bị:</label>
+                    <input type="number" id="deviceCount" value="1" min="1" max="50" style="width:80px;">
+                    <label>Thời hạn:</label>
+                    <select id="genKeyExpiry">
+                        <option value="1h">1 giờ</option>
+                        <option value="3h">3 giờ</option>
+                        <option value="1d">1 ngày</option>
+                        <option value="7d">7 ngày</option>
+                        <option value="30d" selected>1 tháng</option>
+                        <option value="forever">Vĩnh viễn</option>
+                    </select>
+                    <button id="genMultiKeyBtn">🔑 Tạo Key</button>
+                </div>
+                <div id="genKeyResult" class="key-result" style="display:none;"></div>
+            </div>
+
+            <hr style="border-color:#00ff8844;margin:15px 0;">
+
+            <label>Số lượng key cần tạo (1 key 1 thiết bị)</label>
             <input type="number" id="keyCount" value="1" min="1" max="100">
             <label>Thời hạn key</label>
             <select id="keyExpiry">
@@ -384,13 +429,27 @@
                 <button class="btn-ban" id="banUserBtn">🔨 Ban</button>
                 <button class="btn-unban" id="unbanUserBtn">✅ Unban</button>
                 <button class="btn-view-banned" id="viewBannedBtn">📋 Danh sách ban</button>
+                <button class="btn-delete-ban-history" id="deleteBanHistoryBtn">🗑️ Xóa lịch sử</button>
             </div>
             <div id="banStatus" class="misc-status">Nhập tên tài khoản và chọn hành động</div>
-            <div style="margin-top:12px;">
-                <h4 style="color:#ff5566;font-size:14px;">Danh sách tài khoản bị Ban</h4>
-                <div id="bannedList" class="banned-list">
-                    <div style="color:#00aa66;font-size:13px;">Chưa có tài khoản nào bị ban</div>
-                </div>
+            
+            <!-- Bảng danh sách ban -->
+            <div class="banned-table-container" id="bannedTableContainer">
+                <h4 style="color:#ff5566;font-size:14px;margin:10px 0 8px 0;">📋 DANH SÁCH TÀI KHOẢN BỊ BAN</h4>
+                <table class="banned-table" id="bannedTable">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên tài khoản</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bannedTableBody">
+                        <tr class="empty-row">
+                            <td colspan="3">Chưa có tài khoản nào bị ban</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -506,9 +565,14 @@
     const keyStatusInfo = document.getElementById('keyStatusInfo');
     const keyCount = document.getElementById('keyCount');
     const keyExpiry = document.getElementById('keyExpiry');
+    const deviceCount = document.getElementById('deviceCount');
+    const genKeyExpiry = document.getElementById('genKeyExpiry');
+    const genMultiKeyBtn = document.getElementById('genMultiKeyBtn');
+    const genKeyResult = document.getElementById('genKeyResult');
     const genKeyBtn = document.getElementById('genKeyBtn');
     const copyKeysBtn = document.getElementById('copyKeysBtn');
     const deleteHistoryBtn = document.getElementById('deleteHistoryBtn');
+    const deleteBanHistoryBtn = document.getElementById('deleteBanHistoryBtn');
     const keyList = document.getElementById('keyList');
     const spamContent = document.getElementById('spamContent');
     const getKeyModal = document.getElementById('getKeyModal');
@@ -528,7 +592,8 @@
     const unbanUserBtn = document.getElementById('unbanUserBtn');
     const viewBannedBtn = document.getElementById('viewBannedBtn');
     const banStatus = document.getElementById('banStatus');
-    const bannedList = document.getElementById('bannedList');
+    const bannedTableContainer = document.getElementById('bannedTableContainer');
+    const bannedTableBody = document.getElementById('bannedTableBody');
     const resetKeyInput = document.getElementById('resetKeyInput');
     const resetKeyBtn = document.getElementById('resetKeyBtn');
     const resetStatus = document.getElementById('resetStatus');
@@ -745,7 +810,7 @@
                     clearInterval(timerInterval);
                     timerInterval = null;
                 }
-                renderBannedList();
+                renderBannedTable();
                 updateBypassLinkDisplay();
             } else {
                 adminTabBtn.classList.add('hidden');
@@ -1021,6 +1086,36 @@
         return keys;
     }
 
+    // Tạo key cho nhiều thiết bị (1 key dùng chung)
+    function generateMultiDeviceKey(deviceCount, expiryStr) {
+        const duration = getDurationMs(expiryStr);
+        const newKey = generateUniqueKey();
+        appData.keys[newKey] = {
+            username: 'Nduc (Admin) - Multi Device',
+            expiry: duration === Infinity ? Infinity : Date.now() + duration,
+            duration: duration,
+            createdAt: Date.now(),
+            status: 'active',
+            maxDevices: deviceCount,
+            usedDevices: 0
+        };
+        appData.keyHistory.unshift({
+            key: newKey,
+            username: 'Nduc (Admin) - Multi Device',
+            expiry: duration === Infinity ? Infinity : Date.now() + duration,
+            duration: duration,
+            createdAt: Date.now(),
+            status: 'active',
+            type: 'multi',
+            maxDevices: deviceCount,
+            usedDevices: 0
+        });
+        delete appData.keyActivations[newKey];
+        saveData();
+        renderKeyHistory();
+        return newKey;
+    }
+
     function renderKeyHistory() {
         if (appData.keyHistory.length === 0) {
             keyList.innerHTML = '<div style="color:#00aa66;font-size:13px;">Chưa có key nào</div>';
@@ -1059,7 +1154,13 @@
                 timeRemaining = duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(expiryTime);
             }
             
-            const typeLabel = item.type === 'free' ? '🎁 Free' : '👑 Admin';
+            let typeLabel = item.type === 'free' ? '🎁 Free' : 
+                           item.type === 'multi' ? '📱 Multi Device' : '👑 Admin';
+            let deviceInfo = '';
+            if (item.type === 'multi' && item.maxDevices) {
+                const used = item.usedDevices || 0;
+                deviceInfo = `<span class="device-info">📱 ${used}/${item.maxDevices} thiết bị</span>`;
+            }
             const activatedInfo = `🔑 Kích hoạt bởi: ${activatedBy}`;
             html += `
                 <div class="key-item">
@@ -1067,6 +1168,7 @@
                         <span class="key-code">${item.key}</span>
                         <span class="key-user">- ${item.username}</span>
                         <span style="color:#888;font-size:11px;">${typeLabel}</span>
+                        ${deviceInfo}
                     </span>
                     <span>
                         <span class="key-expiry">⏳ ${timeRemaining}</span>
@@ -1111,11 +1213,18 @@
         
         delete appData.keyActivations[key];
         keyData.status = 'reseted';
+        // Reset số lượng thiết bị đã dùng nếu là multi device
+        if (keyData.maxDevices) {
+            keyData.usedDevices = 0;
+        }
         const historyItem = appData.keyHistory.find(item => item.key === key);
         if (historyItem) {
             historyItem.status = 'reseted';
             historyItem.activatedBy = null;
             historyItem.activatedAt = null;
+            if (historyItem.maxDevices) {
+                historyItem.usedDevices = 0;
+            }
         }
         
         saveData();
@@ -1281,26 +1390,29 @@
                     </div>
                     <div style="color:#888;font-size:12px;margin-top:4px;">Chủ sở hữu: ${currentUser.username}</div>
                     <button class="copy-key-btn" onclick="copyKey('${newKey}')">📋 Sao chép key</button>
-                    <div class="key-ready-text">✅ Key đã được tạo! Nhấn "Đóng" để quay lại và kích hoạt key.</div>
+                    <div class="key-ready-text">✅ Key đã được tạo! Đang tự động kích hoạt...</div>
                 `;
                 appendLog(`🎁 Key free đã được tạo cho ${currentUser.username}`);
                 
-                // Tự động đóng modal sau 3 giây và kích hoạt key
+                // Tự động đóng modal và kích hoạt key sau 2 giây
                 setTimeout(() => {
                     getKeyModal.classList.remove('active');
                     if (checkInterval) {
                         clearInterval(checkInterval);
                         checkInterval = null;
                     }
-                    // Tự động điền key vào ô input và kích hoạt
+                    // Chuyển sang tab Spam và kích hoạt key
+                    switchTab('tabSpam');
                     if (pendingKeyForActivation && currentUser) {
                         userKeyInput.value = pendingKeyForActivation;
+                        keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
+                        keyStatusInfo.style.color = '#00ff88';
                         activateKey(pendingKeyForActivation);
                         userKeyInput.focus();
                         userKeyInput.select();
                         pendingKeyForActivation = null;
                     }
-                }, 3000);
+                }, 2000);
             }
             
             if (checkCount > 60) {
@@ -1326,9 +1438,11 @@
             clearTimeout(keyGenerationTimeout);
             keyGenerationTimeout = null;
         }
-        // Nếu có key đang chờ kích hoạt, tự động kích hoạt
         if (pendingKeyForActivation && currentUser) {
+            switchTab('tabSpam');
             userKeyInput.value = pendingKeyForActivation;
+            keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
+            keyStatusInfo.style.color = '#00ff88';
             activateKey(pendingKeyForActivation);
             userKeyInput.focus();
             userKeyInput.select();
@@ -1348,7 +1462,10 @@
                 keyGenerationTimeout = null;
             }
             if (pendingKeyForActivation && currentUser) {
+                switchTab('tabSpam');
                 userKeyInput.value = pendingKeyForActivation;
+                keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
+                keyStatusInfo.style.color = '#00ff88';
                 activateKey(pendingKeyForActivation);
                 userKeyInput.focus();
                 userKeyInput.select();
@@ -1358,6 +1475,35 @@
     });
 
     // ========== ADMIN KEY MANAGEMENT ==========
+    // Tạo key cho nhiều thiết bị
+    genMultiKeyBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể tạo key!');
+            return;
+        }
+        const count = parseInt(deviceCount.value) || 1;
+        if (count < 1 || count > 50) {
+            alert('Số thiết bị phải từ 1 đến 50!');
+            return;
+        }
+        const expiryStr = genKeyExpiry.value;
+        const expiryLabel = genKeyExpiry.options[genKeyExpiry.selectedIndex].text;
+        const newKey = generateMultiDeviceKey(count, expiryStr);
+        const keyData = appData.keys[newKey];
+        const timeDisplay = keyData.duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(Date.now() + keyData.duration);
+        
+        genKeyResult.style.display = 'block';
+        genKeyResult.innerHTML = `
+            ✅ Đã tạo key cho <strong>${count}</strong> thiết bị thành công!<br>
+            🔑 Key: <strong style="color:#ff8800;">${newKey}</strong><br>
+            ⏳ Thời hạn: ${timeDisplay}<br>
+            📱 Số thiết bị: ${count}<br>
+            <button class="copy-btn" onclick="copyKey('${newKey}')" style="margin-top:8px;">📋 Sao chép key</button>
+        `;
+        appendLog(`🔑 Admin đã tạo key multi-device (${count} thiết bị) - ${newKey}`);
+    });
+
+    // Tạo key thông thường (1 key 1 thiết bị)
     genKeyBtn.addEventListener('click', function() {
         if (!currentUser || currentUser.role !== 'admin') {
             alert('Chỉ Admin mới có thể tạo key!');
@@ -1460,21 +1606,25 @@
     });
 
     // ========== MISC: Ban / Unban ==========
-    function renderBannedList() {
+    function renderBannedTable() {
+        const tbody = bannedTableBody;
         if (appData.bannedUsers.length === 0) {
-            bannedList.innerHTML = '<div style="color:#00aa66;font-size:13px;">Chưa có tài khoản nào bị ban</div>';
+            tbody.innerHTML = '<tr class="empty-row"><td colspan="3">Chưa có tài khoản nào bị ban</td></tr>';
+            bannedTableContainer.classList.remove('active');
             return;
         }
+        bannedTableContainer.classList.add('active');
         let html = '';
-        for (const username of appData.bannedUsers) {
+        appData.bannedUsers.forEach((username, index) => {
             html += `
-                <div class="banned-item">
-                    <span>🚫 ${username}</span>
-                    <button class="unban-btn" onclick="unbanUser('${username}')">✅ Unban</button>
-                </div>
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>🚫 ${username}</td>
+                    <td><button class="unban-btn" onclick="unbanUser('${username}')">✅ Unban</button></td>
+                </tr>
             `;
-        }
-        bannedList.innerHTML = html;
+        });
+        tbody.innerHTML = html;
     }
 
     window.unbanUser = function(username) {
@@ -1486,7 +1636,7 @@
         if (index > -1) {
             appData.bannedUsers.splice(index, 1);
             saveData();
-            renderBannedList();
+            renderBannedTable();
             banStatus.innerHTML = `✅ Đã unban tài khoản: ${username}`;
             banStatus.style.color = '#00ff88';
             appendLog(`✅ Admin đã unban tài khoản: ${username}`);
@@ -1524,7 +1674,7 @@
         }
         appData.bannedUsers.push(username);
         saveData();
-        renderBannedList();
+        renderBannedTable();
         banUsernameInput.value = '';
         banStatus.innerHTML = `✅ Đã ban tài khoản: ${username}`;
         banStatus.style.color = '#ff5566';
@@ -1553,20 +1703,19 @@
         }
         appData.bannedUsers.splice(index, 1);
         saveData();
-        renderBannedList();
+        renderBannedTable();
         banUsernameInput.value = '';
         banStatus.innerHTML = `✅ Đã unban tài khoản: ${username}`;
         banStatus.style.color = '#00ff88';
         appendLog(`✅ Admin đã unban tài khoản: ${username}`);
     });
 
-    // Nút xem danh sách ban
     viewBannedBtn.addEventListener('click', function() {
         if (!currentUser || currentUser.role !== 'admin') {
             alert('Chỉ Admin mới có thể xem!');
             return;
         }
-        renderBannedList();
+        renderBannedTable();
         if (appData.bannedUsers.length === 0) {
             banStatus.innerHTML = '📋 Hiện không có tài khoản nào bị ban.';
             banStatus.style.color = '#00ff88';
@@ -1574,8 +1723,28 @@
             banStatus.innerHTML = `📋 Hiển thị ${appData.bannedUsers.length} tài khoản bị ban.`;
             banStatus.style.color = '#ff8800';
         }
-        // Scroll đến danh sách
-        bannedList.scrollIntoView({ behavior: 'smooth' });
+        bannedTableContainer.classList.add('active');
+        bannedTableContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    deleteBanHistoryBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể thực hiện!');
+            return;
+        }
+        if (appData.bannedUsers.length === 0) {
+            banStatus.innerHTML = '📋 Danh sách ban đã trống.';
+            banStatus.style.color = '#00ff88';
+            return;
+        }
+        if (confirm(`Bạn có chắc muốn xóa toàn bộ ${appData.bannedUsers.length} tài khoản khỏi danh sách ban?\n(Lưu ý: Các tài khoản sẽ được unban)`) ) {
+            appData.bannedUsers = [];
+            saveData();
+            renderBannedTable();
+            banStatus.innerHTML = '🗑️ Đã xóa toàn bộ danh sách ban!';
+            banStatus.style.color = '#ff8800';
+            appendLog('🗑️ Admin đã xóa toàn bộ danh sách ban');
+        }
     });
 
     // ========== SPAM TOOL ==========
@@ -1929,7 +2098,7 @@
     }
 
     renderKeyHistory();
-    renderBannedList();
+    renderBannedTable();
     updateBypassLinkDisplay();
     updateUI();
     setAuthMode('login');
