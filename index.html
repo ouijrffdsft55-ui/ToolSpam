@@ -147,14 +147,15 @@
         .modal-box .modal-btn-primary:hover { background: #00dd77; }
         .modal-box .modal-btn-close { background: #ff3344; color: #fff; }
         .modal-box .modal-btn-close:hover { background: #cc2233; }
-        .modal-box .free-key { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #ff880066; margin: 10px 0; }
-        .modal-box .free-key .key-display { color: #00ff88; font-size: 24px; font-weight: bold; font-family: monospace; letter-spacing: 3px; }
-        .modal-box .free-key .key-label { color: #888; font-size: 13px; }
-        .modal-box .free-key .key-expiry-text { color: #ff8800; font-size: 13px; margin-top: 5px; }
-        .modal-box .loading-text { color: #ffcc00; }
-        .modal-box .copy-key-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 5px 15px; border-radius: 4px; cursor: pointer; font-size: 13px; margin-top: 8px; }
-        .modal-box .copy-key-btn:hover { background: #00ff8844; }
-        .modal-box .key-ready { color: #00ff88; font-size: 14px; margin-top: 8px; }
+        .free-key-box { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #ff880066; margin: 10px 0; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .free-key-box .key-display { color: #00ff88; font-size: 24px; font-weight: bold; font-family: monospace; letter-spacing: 3px; word-break: break-all; }
+        .free-key-box .key-label { color: #888; font-size: 13px; }
+        .free-key-box .key-expiry-text { color: #ff8800; font-size: 13px; margin-top: 5px; }
+        .free-key-box .loading-text { color: #ffcc00; font-size: 14px; }
+        .free-key-box .copy-key-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 10px; }
+        .free-key-box .copy-key-btn:hover { background: #00ff8844; }
+        .free-key-box .key-ready-text { color: #00ff88; font-size: 14px; margin-top: 8px; }
+        .free-key-box .key-status-text { font-size: 13px; margin-top: 5px; }
 
         .auth-mode { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-left: 8px; }
         .auth-mode.login-mode { background: #00ff8822; color: #00ff88; border: 1px solid #00ff88; }
@@ -338,8 +339,8 @@
             <button class="modal-btn modal-btn-primary" id="openLinkBtn">🌐 Mở link</button>
         </div>
         <p style="font-size:13px;color:#00aa66;">Sau khi vượt link xong, key sẽ hiển thị bên dưới:</p>
-        <div class="free-key" id="freeKeyDisplay">
-            <div style="color:#ff8800;font-size:13px;">⏳ Nhấn "Mở link" để lấy key...</div>
+        <div class="free-key-box" id="freeKeyDisplay">
+            <div class="loading-text">⏳ Nhấn "Mở link" để lấy key...</div>
         </div>
         <button class="modal-btn modal-btn-close" id="closeModalBtn">Đóng</button>
     </div>
@@ -353,8 +354,8 @@
         users: {
             'Nduc': { password: 'Ducanh05092008', role: 'admin' }
         },
-        keys: {}, // { key: { username, expiry, createdAt, status: 'active'|'used'|'expired', activatedAt: null } }
-        keyHistory: [] // [{ key, username, expiry, createdAt, status, type: 'admin'|'free', activatedAt: null }]
+        keys: {},
+        keyHistory: []
     };
 
     let currentUser = null;
@@ -492,34 +493,6 @@
     function isKeyExpired(keyData) {
         if (keyData.expiry === Infinity) return false;
         return Date.now() > keyData.expiry;
-    }
-
-    function formatExpiry(expiry) {
-        if (expiry === Infinity) return 'Vĩnh viễn';
-        const diff = expiry - Date.now();
-        if (diff <= 0) return 'Hết hạn';
-        const hours = Math.floor(diff / (60 * 60 * 1000));
-        const days = Math.floor(diff / (24 * 60 * 60 * 1000));
-        if (days > 0) return `${days} ngày ${hours % 24} giờ`;
-        return `${hours} giờ ${Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000))} phút`;
-    }
-
-    function getStatusText(status) {
-        const map = {
-            'active': '✅ Còn hạn',
-            'used': '🔑 Đã dùng',
-            'expired': '❌ Hết hạn'
-        };
-        return map[status] || status;
-    }
-
-    function getStatusClass(status) {
-        const map = {
-            'active': 'active',
-            'used': 'used',
-            'expired': 'expired'
-        };
-        return map[status] || 'active';
     }
 
     function getTimeRemaining(expiry) {
@@ -753,7 +726,6 @@
         }
         if (isKeyExpired(keyData)) {
             keyData.status = 'expired';
-            // Update history
             const historyItem = appData.keyHistory.find(item => item.key === key);
             if (historyItem) historyItem.status = 'expired';
             saveData();
@@ -762,7 +734,6 @@
             keyStatusInfo.style.color = '#ff5566';
             return false;
         }
-        // Mark key as used and set activated time
         keyData.status = 'used';
         keyData.activatedAt = Date.now();
         const historyItem = appData.keyHistory.find(item => item.key === key);
@@ -848,8 +819,8 @@
             if (status === 'active' && isKeyExpired(item)) {
                 status = 'expired';
             }
-            const statusText = getStatusText(status);
-            const statusClass = getStatusClass(status);
+            const statusText = status === 'active' ? '✅ Còn hạn' : status === 'used' ? '🔑 Đã dùng' : '❌ Hết hạn';
+            const statusClass = status === 'active' ? 'active' : status === 'used' ? 'used' : 'expired';
             const timeRemaining = item.expiry === Infinity ? 'Vĩnh viễn' : getTimeRemaining(item.expiry);
             const typeLabel = item.type === 'free' ? '🎁 Free' : '👑 Admin';
             const activatedInfo = item.activatedAt ? '🔑 Đã kích hoạt' : '⏳ Chưa kích hoạt';
@@ -937,6 +908,10 @@
     });
 
     // ========== GET KEY FREE ==========
+    let keyGenerated = false;
+    let checkInterval = null;
+    let keyGenerationTimeout = null;
+
     getKeyBtn.addEventListener('click', function() {
         if (!currentUser) {
             alert('Vui lòng đăng nhập trước!');
@@ -958,76 +933,98 @@
             alert('Bạn đã có key hợp lệ! Không cần lấy thêm.');
             return;
         }
-        getKeyModal.classList.add('active');
-        freeKeyDisplay.innerHTML = '<div style="color:#ff8800;font-size:13px;">⏳ Nhấn "Mở link" để lấy key...</div>';
-    });
-
-    let keyGenerated = false;
-    let keyGenerationTimeout = null;
-
-    openLinkBtn.addEventListener('click', function() {
-        // Open link in new tab
-        window.open('https://link4m.org/0CSnon', '_blank');
-        freeKeyDisplay.innerHTML = `
-            <div style="color:#ffcc00;font-size:13px;">⏳ Đang tạo key cho bạn...</div>
-            <div style="color:#888;font-size:12px;margin-top:5px;">Vui lòng quay lại sau khi vượt link</div>
-        `;
-        
-        // Check when user returns to tab
-        const checkReturn = setInterval(() => {
-            if (document.hasFocus() && !keyGenerated) {
-                clearInterval(checkReturn);
-                // User returned to tab, generate key
-                if (currentUser) {
-                    const newKey = generateFreeKey(currentUser.username);
-                    keyGenerated = true;
-                    const keyData = appData.keys[newKey];
-                    freeKeyDisplay.innerHTML = `
-                        <div style="margin-bottom:8px;">
-                            <span class="key-label">🔑 Key free của bạn:</span>
-                        </div>
-                        <div class="key-display">${newKey}</div>
-                        <div style="margin-top:8px;">
-                            <span style="color:#888;font-size:13px;">⏳ Hạn: ${getTimeRemaining(keyData.expiry)}</span>
-                        </div>
-                        <button class="copy-key-btn" onclick="copyKey('${newKey}')">📋 Sao chép key</button>
-                        <div style="margin-top:8px;font-size:13px;color:#00ff88;">
-                            ✅ Key đã được tạo! Vui lòng sao chép và kích hoạt.
-                        </div>
-                    `;
-                    appendLog(`🎁 Key free đã được tạo cho ${currentUser.username}`);
-                }
-            }
-        }, 1000);
-
-        // Auto close after 30 seconds if no return
-        keyGenerationTimeout = setTimeout(() => {
-            clearInterval(checkReturn);
-            if (!keyGenerated) {
-                freeKeyDisplay.innerHTML = `
-                    <div style="color:#ff3344;font-size:13px;">⏰ Quá thời gian chờ. Vui lòng thử lại!</div>
-                `;
-            }
-        }, 30000);
-    });
-
-    closeModalBtn.addEventListener('click', function() {
-        getKeyModal.classList.remove('active');
+        // Reset state
+        keyGenerated = false;
         if (keyGenerationTimeout) {
             clearTimeout(keyGenerationTimeout);
             keyGenerationTimeout = null;
         }
-        keyGenerated = false;
+        if (checkInterval) {
+            clearInterval(checkInterval);
+            checkInterval = null;
+        }
+        getKeyModal.classList.add('active');
+        freeKeyDisplay.innerHTML = `
+            <div class="loading-text">⏳ Nhấn "Mở link" để lấy key...</div>
+        `;
+    });
+
+    openLinkBtn.addEventListener('click', function() {
+        // Mở link trong tab mới
+        window.open('https://link4m.org/0CSnon', '_blank');
+        
+        // Hiển thị trạng thái đang chờ
+        freeKeyDisplay.innerHTML = `
+            <div class="loading-text">⏳ Đang chờ bạn vượt link...</div>
+            <div style="color:#888;font-size:12px;margin-top:5px;">Sau khi vượt link xong, key sẽ tự động hiển thị</div>
+        `;
+        
+        // Bắt đầu kiểm tra khi user quay lại tab
+        let checkCount = 0;
+        if (checkInterval) clearInterval(checkInterval);
+        checkInterval = setInterval(() => {
+            checkCount++;
+            // Kiểm tra nếu tab đang được focus và chưa tạo key
+            if (document.hasFocus() && !keyGenerated && currentUser) {
+                clearInterval(checkInterval);
+                checkInterval = null;
+                // Tạo key
+                const newKey = generateFreeKey(currentUser.username);
+                keyGenerated = true;
+                const keyData = appData.keys[newKey];
+                const timeRemaining = getTimeRemaining(keyData.expiry);
+                
+                freeKeyDisplay.innerHTML = `
+                    <div style="margin-bottom:5px;">
+                        <span class="key-label">🔑 Key free của bạn:</span>
+                    </div>
+                    <div class="key-display">${newKey}</div>
+                    <div style="margin-top:5px;">
+                        <span style="color:#888;font-size:13px;">⏳ Hạn: ${timeRemaining}</span>
+                    </div>
+                    <button class="copy-key-btn" onclick="copyKey('${newKey}')">📋 Sao chép key</button>
+                    <div class="key-ready-text">✅ Key đã được tạo! Sao chép và kích hoạt để sử dụng.</div>
+                `;
+                appendLog(`🎁 Key free đã được tạo cho ${currentUser.username}`);
+            }
+            
+            // Timeout sau 60 giây
+            if (checkCount > 60) {
+                clearInterval(checkInterval);
+                checkInterval = null;
+                if (!keyGenerated) {
+                    freeKeyDisplay.innerHTML = `
+                        <div style="color:#ff3344;font-size:14px;">⏰ Quá thời gian chờ (60s). Vui lòng thử lại!</div>
+                        <button class="copy-key-btn" onclick="document.getElementById('openLinkBtn').click()" style="margin-top:10px;">🔄 Thử lại</button>
+                    `;
+                }
+            }
+        }, 1000);
+    });
+
+    closeModalBtn.addEventListener('click', function() {
+        getKeyModal.classList.remove('active');
+        if (checkInterval) {
+            clearInterval(checkInterval);
+            checkInterval = null;
+        }
+        if (keyGenerationTimeout) {
+            clearTimeout(keyGenerationTimeout);
+            keyGenerationTimeout = null;
+        }
     });
 
     getKeyModal.addEventListener('click', function(e) {
         if (e.target === this) {
             getKeyModal.classList.remove('active');
+            if (checkInterval) {
+                clearInterval(checkInterval);
+                checkInterval = null;
+            }
             if (keyGenerationTimeout) {
                 clearTimeout(keyGenerationTimeout);
                 keyGenerationTimeout = null;
             }
-            keyGenerated = false;
         }
     });
 
