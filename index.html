@@ -47,6 +47,8 @@
         .btn-copy-key:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
         .btn-delete-history { background: #ff3344; color: #fff; }
         .btn-delete-history:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        .btn-reset-key { background: #ff8800; color: #0a0a0a; }
+        .btn-reset-key:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
         .key-list { margin-top: 12px; max-height: 250px; overflow-y: auto; }
         .key-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #111; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #00ff88; font-size: 13px; color: #00dd77; flex-wrap: wrap; gap: 5px; }
         .key-item .key-code { color: #00ff88; font-weight: bold; font-family: monospace; font-size: 14px; }
@@ -56,6 +58,7 @@
         .key-item .key-status.active { color: #00ff88; background: #00ff8822; border: 1px solid #00ff88; }
         .key-item .key-status.used { color: #ff8800; background: #ff880022; border: 1px solid #ff8800; }
         .key-item .key-status.expired { color: #ff3344; background: #ff334422; border: 1px solid #ff3344; }
+        .key-item .key-status.reseted { color: #ff8800; background: #ff880022; border: 1px solid #ff8800; }
         .key-item .copy-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 2px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
         .key-item .copy-btn:hover { background: #00ff8844; }
 
@@ -185,6 +188,11 @@
         .auth-mode.register-mode { background: #ff880022; color: #ff8800; border: 1px solid #ff8800; }
 
         .key-owner-info { font-size: 12px; color: #888; margin-top: 4px; }
+        .reset-key-box { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #ff880066; margin-top: 10px; }
+        .reset-key-box .reset-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .reset-key-box .reset-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; min-width: 150px; }
+        .reset-key-box .reset-row button { padding: 10px 20px; background: #ff8800; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .reset-key-box .reset-row button:hover { background: #dd7700; }
     </style>
 </head>
 <body>
@@ -386,6 +394,19 @@
                 </div>
             </div>
         </div>
+
+        <!-- Phần 3: Reset Key -->
+        <div class="misc-section">
+            <h4>🔄 RESET KEY</h4>
+            <p style="color:#00aa66;font-size:13px;margin-bottom:10px;">Reset key để có thể kích hoạt lại cho acc khác. Thời gian còn lại vẫn được giữ nguyên.</p>
+            <div class="reset-key-box">
+                <div class="reset-row">
+                    <input type="text" id="resetKeyInput" placeholder="Nhập key cần reset">
+                    <button id="resetKeyBtn">🔄 Reset Key</button>
+                </div>
+                <div id="resetStatus" class="misc-status" style="margin-top:8px;">Nhập key và bấm Reset để reset key</div>
+            </div>
+        </div>
     </div>
 
     <div class="footer">⚡ Dev Nduc ⚡</div>
@@ -419,7 +440,9 @@
         keys: {},
         keyHistory: [],
         bannedUsers: [],
-        bypassLink: 'https://link4m.org/0CSnon' // Link mặc định
+        bypassLink: 'https://link4m.org/0CSnon',
+        // keyActivations: { key: { username, activatedAt } }
+        keyActivations: {}
     };
 
     let currentUser = null;
@@ -437,6 +460,7 @@
                 appData.keyHistory = parsed.keyHistory || [];
                 appData.bannedUsers = parsed.bannedUsers || [];
                 appData.bypassLink = parsed.bypassLink || 'https://link4m.org/0CSnon';
+                appData.keyActivations = parsed.keyActivations || {};
             }
         } catch (e) {}
     }
@@ -448,7 +472,8 @@
                 keys: appData.keys,
                 keyHistory: appData.keyHistory,
                 bannedUsers: appData.bannedUsers,
-                bypassLink: appData.bypassLink
+                bypassLink: appData.bypassLink,
+                keyActivations: appData.keyActivations
             }));
         } catch (e) {}
     }
@@ -504,6 +529,9 @@
     const unbanUserBtn = document.getElementById('unbanUserBtn');
     const banStatus = document.getElementById('banStatus');
     const bannedList = document.getElementById('bannedList');
+    const resetKeyInput = document.getElementById('resetKeyInput');
+    const resetKeyBtn = document.getElementById('resetKeyBtn');
+    const resetStatus = document.getElementById('resetStatus');
 
     // Spam tool refs
     const idType = document.getElementById('idType');
@@ -750,17 +778,34 @@
         }
         isKeyValid = false;
         userKey = null;
+        
+        // Kiểm tra xem user hiện tại có key nào đang active không
         for (const [key, data] of Object.entries(appData.keys)) {
+            // Key phải ở trạng thái active và chưa hết hạn
             if (data.status === 'active' && !isKeyExpired(data)) {
-                isKeyValid = true;
-                userKey = key;
-                break;
+                // Kiểm tra xem key đã được kích hoạt cho user nào chưa
+                const activation = appData.keyActivations[key];
+                if (!activation) {
+                    // Key chưa được kích hoạt bởi ai -> có thể sử dụng
+                    isKeyValid = true;
+                    userKey = key;
+                    break;
+                } else if (activation.username === currentUser.username) {
+                    // Key đã được kích hoạt bởi chính user này
+                    isKeyValid = true;
+                    userKey = key;
+                    break;
+                }
+                // Key đã được kích hoạt bởi user khác -> không sử dụng được
             }
         }
+        
         if (isKeyValid) {
             const keyData = appData.keys[userKey];
-            const owner = keyData.username || 'Không rõ';
-            keyStatusInfo.innerHTML = `✅ Key hợp lệ! Chủ sở hữu: ${owner}. Bạn có thể sử dụng tool.`;
+            const activation = appData.keyActivations[userKey];
+            const owner = activation ? activation.username : 'Chưa kích hoạt';
+            const timeRemaining = getTimeRemaining(keyData.expiry);
+            keyStatusInfo.innerHTML = `✅ Key hợp lệ! Chủ sở hữu: ${owner}. Thời gian còn lại: ${timeRemaining}`;
             keyStatusInfo.style.color = '#00ff88';
             spamContent.classList.remove('hidden');
             keyTimer.classList.remove('hidden');
@@ -787,8 +832,19 @@
         if (userKey && appData.keys[userKey]) {
             const keyData = appData.keys[userKey];
             if (keyData.status === 'active' && !isKeyExpired(keyData)) {
-                keyTimer.classList.remove('hidden');
-                keyTimer.textContent = '⏳ ' + getTimeRemaining(keyData.expiry);
+                // Kiểm tra xem key có thuộc về user hiện tại không
+                const activation = appData.keyActivations[userKey];
+                if (activation && activation.username === currentUser.username) {
+                    keyTimer.classList.remove('hidden');
+                    keyTimer.textContent = '⏳ ' + getTimeRemaining(keyData.expiry);
+                } else {
+                    keyTimer.classList.add('hidden');
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    checkUserKey();
+                }
             } else {
                 keyTimer.classList.add('hidden');
                 if (timerInterval) {
@@ -810,11 +866,42 @@
             keyStatusInfo.style.color = '#ff5566';
             return false;
         }
-        if (keyData.status === 'used') {
-            keyStatusInfo.innerHTML = '❌ Key đã được sử dụng!';
+        
+        // Kiểm tra key đã được kích hoạt chưa
+        const activation = appData.keyActivations[key];
+        if (activation) {
+            if (activation.username === currentUser.username) {
+                // User đã kích hoạt key này trước đó
+                if (keyData.status === 'active' && !isKeyExpired(keyData)) {
+                    keyStatusInfo.innerHTML = `✅ Key đã được kích hoạt cho bạn. Thời gian còn lại: ${getTimeRemaining(keyData.expiry)}`;
+                    keyStatusInfo.style.color = '#00ff88';
+                    isKeyValid = true;
+                    userKey = key;
+                    spamContent.classList.remove('hidden');
+                    keyTimer.classList.remove('hidden');
+                    if (timerInterval) clearInterval(timerInterval);
+                    timerInterval = setInterval(updateKeyTimer, 1000);
+                    updateKeyTimer();
+                    return true;
+                } else {
+                    keyStatusInfo.innerHTML = '❌ Key đã hết hạn!';
+                    keyStatusInfo.style.color = '#ff5566';
+                    return false;
+                }
+            } else {
+                keyStatusInfo.innerHTML = `❌ Key này đã được kích hoạt bởi "${activation.username}". Không thể sử dụng!`;
+                keyStatusInfo.style.color = '#ff5566';
+                return false;
+            }
+        }
+        
+        // Key chưa được kích hoạt
+        if (keyData.status === 'used' || keyData.status === 'expired') {
+            keyStatusInfo.innerHTML = '❌ Key đã được sử dụng hoặc hết hạn!';
             keyStatusInfo.style.color = '#ff5566';
             return false;
         }
+        
         if (isKeyExpired(keyData)) {
             keyData.status = 'expired';
             const historyItem = appData.keyHistory.find(item => item.key === key);
@@ -825,9 +912,13 @@
             keyStatusInfo.style.color = '#ff5566';
             return false;
         }
+        
+        // Kích hoạt key cho user
+        appData.keyActivations[key] = {
+            username: currentUser.username,
+            activatedAt: Date.now()
+        };
         keyData.status = 'used';
-        keyData.activatedBy = currentUser.username;
-        keyData.activatedAt = Date.now();
         const historyItem = appData.keyHistory.find(item => item.key === key);
         if (historyItem) {
             historyItem.status = 'used';
@@ -838,8 +929,7 @@
         renderKeyHistory();
         isKeyValid = true;
         userKey = key;
-        const owner = keyData.username || 'Không rõ';
-        keyStatusInfo.innerHTML = `✅ Kích hoạt key thành công! Chủ sở hữu: ${owner}. Thời gian còn lại: ${getTimeRemaining(keyData.expiry)}`;
+        keyStatusInfo.innerHTML = `✅ Kích hoạt key thành công! Chủ sở hữu: ${currentUser.username}. Thời gian còn lại: ${getTimeRemaining(keyData.expiry)}`;
         keyStatusInfo.style.color = '#00ff88';
         spamContent.classList.remove('hidden');
         keyTimer.classList.remove('hidden');
@@ -871,6 +961,8 @@
             activatedAt: null,
             activatedBy: null
         });
+        // Xóa activation cũ nếu có
+        delete appData.keyActivations[newKey];
         saveData();
         renderKeyHistory();
         return newKey;
@@ -899,6 +991,8 @@
                 activatedAt: null,
                 activatedBy: null
             });
+            // Xóa activation cũ nếu có
+            delete appData.keyActivations[newKey];
             keys.push(newKey);
         }
         saveData();
@@ -917,11 +1011,17 @@
             if (status === 'active' && isKeyExpired(item)) {
                 status = 'expired';
             }
-            const statusText = status === 'active' ? '✅ Còn hạn' : status === 'used' ? '🔑 Đã dùng' : '❌ Hết hạn';
-            const statusClass = status === 'active' ? 'active' : status === 'used' ? 'used' : 'expired';
+            const activation = appData.keyActivations[item.key];
+            const activatedBy = activation ? activation.username : 'Chưa kích hoạt';
+            const statusText = status === 'active' ? '✅ Còn hạn' : 
+                              status === 'used' ? '🔑 Đã dùng' : 
+                              status === 'reseted' ? '🔄 Đã reset' : '❌ Hết hạn';
+            const statusClass = status === 'active' ? 'active' : 
+                               status === 'used' ? 'used' : 
+                               status === 'reseted' ? 'reseted' : 'expired';
             const timeRemaining = item.expiry === Infinity ? 'Vĩnh viễn' : getTimeRemaining(item.expiry);
             const typeLabel = item.type === 'free' ? '🎁 Free' : '👑 Admin';
-            const activatedInfo = item.activatedAt ? `🔑 Kích hoạt bởi: ${item.activatedBy || 'N/A'}` : '⏳ Chưa kích hoạt';
+            const activatedInfo = `🔑 Kích hoạt bởi: ${activatedBy}`;
             html += `
                 <div class="key-item">
                     <span>
@@ -954,6 +1054,66 @@
             appendLog(`📋 Đã sao chép key: ${key}`);
         });
     };
+
+    // ========== RESET KEY ==========
+    function resetKey(key) {
+        if (!currentUser || currentUser.role !== 'admin') {
+            resetStatus.innerHTML = '❌ Chỉ Admin mới có thể reset key!';
+            resetStatus.style.color = '#ff5566';
+            return false;
+        }
+        
+        const keyData = appData.keys[key];
+        if (!keyData) {
+            resetStatus.innerHTML = '❌ Key không tồn tại!';
+            resetStatus.style.color = '#ff5566';
+            return false;
+        }
+        
+        // Kiểm tra key đã hết hạn chưa
+        if (isKeyExpired(keyData)) {
+            resetStatus.innerHTML = '❌ Key đã hết hạn! Không thể reset.';
+            resetStatus.style.color = '#ff5566';
+            return false;
+        }
+        
+        // Xóa activation
+        delete appData.keyActivations[key];
+        
+        // Cập nhật trạng thái key
+        keyData.status = 'reseted';
+        const historyItem = appData.keyHistory.find(item => item.key === key);
+        if (historyItem) {
+            historyItem.status = 'reseted';
+            historyItem.activatedBy = null;
+            historyItem.activatedAt = null;
+        }
+        
+        saveData();
+        renderKeyHistory();
+        resetStatus.innerHTML = `✅ Đã reset key: ${key}. Key có thể được kích hoạt lại cho acc khác. Thời gian còn lại: ${getTimeRemaining(keyData.expiry)}`;
+        resetStatus.style.color = '#00ff88';
+        appendLog(`🔄 Admin đã reset key: ${key}`);
+        
+        // Nếu user hiện tại đang dùng key này thì cập nhật
+        if (userKey === key) {
+            isKeyValid = false;
+            userKey = null;
+            checkUserKey();
+        }
+        return true;
+    }
+
+    resetKeyBtn.addEventListener('click', function() {
+        const key = resetKeyInput.value.trim().toUpperCase();
+        if (!key) {
+            resetStatus.innerHTML = '❌ Vui lòng nhập key cần reset!';
+            resetStatus.style.color = '#ff5566';
+            return;
+        }
+        resetKey(key);
+        resetKeyInput.value = '';
+    });
 
     // ========== TABS ==========
     function switchTab(tabId) {
@@ -1030,8 +1190,11 @@
         let hasActiveKey = false;
         for (const [key, data] of Object.entries(appData.keys)) {
             if (data.status === 'active' && !isKeyExpired(data)) {
-                hasActiveKey = true;
-                break;
+                const activation = appData.keyActivations[key];
+                if (!activation || activation.username === currentUser.username) {
+                    hasActiveKey = true;
+                    break;
+                }
             }
         }
         if (hasActiveKey) {
