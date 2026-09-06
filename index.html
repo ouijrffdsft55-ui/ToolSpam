@@ -47,8 +47,6 @@
         .btn-copy-key:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
         .btn-delete-history { background: #ff3344; color: #fff; }
         .btn-delete-history:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
-        .btn-delete-ban-history { background: #ff3344; color: #fff; }
-        .btn-delete-ban-history:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
         .key-list { margin-top: 12px; max-height: 250px; overflow-y: auto; }
         .key-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #111; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #00ff88; font-size: 13px; color: #00dd77; flex-wrap: wrap; gap: 5px; }
         .key-item .key-code { color: #00ff88; font-weight: bold; font-family: monospace; font-size: 14px; }
@@ -75,7 +73,9 @@
         .btn-ban { background: #ff3344; color: #fff; }
         .btn-ban:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
         .btn-unban { background: #00ff88; color: #0a0a0a; }
-        .btn-unban:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
+        .btn-unban:hover { background: #00dd77; box-shadow: 0 0 30px #ff8866; }
+        .btn-view-banned { background: #ff8800; color: #0a0a0a; }
+        .btn-view-banned:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
         .banned-list { margin-top: 12px; padding: 10px; background: #0a0a0a; border-radius: 6px; border: 1px solid #ff334444; max-height: 150px; overflow-y: auto; }
         .banned-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-bottom: 1px solid #ff334422; color: #ff5566; font-size: 13px; }
         .banned-item:last-child { border-bottom: none; }
@@ -186,7 +186,6 @@
         .auth-mode.login-mode { background: #00ff8822; color: #00ff88; border: 1px solid #00ff88; }
         .auth-mode.register-mode { background: #ff880022; color: #ff8800; border: 1px solid #ff8800; }
 
-        .key-owner-info { font-size: 12px; color: #888; margin-top: 4px; }
         .reset-key-box { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #ff880066; margin-top: 10px; }
         .reset-key-box .reset-row { display: flex; gap: 10px; flex-wrap: wrap; }
         .reset-key-box .reset-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; min-width: 150px; }
@@ -384,7 +383,7 @@
             <div class="misc-row">
                 <button class="btn-ban" id="banUserBtn">🔨 Ban</button>
                 <button class="btn-unban" id="unbanUserBtn">✅ Unban</button>
-                <button class="btn-delete-ban-history" id="deleteBanHistoryBtn">🗑️ Xóa lịch sử ban</button>
+                <button class="btn-view-banned" id="viewBannedBtn">📋 Danh sách ban</button>
             </div>
             <div id="banStatus" class="misc-status">Nhập tên tài khoản và chọn hành động</div>
             <div style="margin-top:12px;">
@@ -448,7 +447,7 @@
     let isKeyValid = false;
     let userKey = null;
     let timerInterval = null;
-    let pendingKeyForActivation = null; // Lưu key vừa get free để tự động kích hoạt
+    let pendingKeyForActivation = null;
 
     function loadData() {
         try {
@@ -510,7 +509,6 @@
     const genKeyBtn = document.getElementById('genKeyBtn');
     const copyKeysBtn = document.getElementById('copyKeysBtn');
     const deleteHistoryBtn = document.getElementById('deleteHistoryBtn');
-    const deleteBanHistoryBtn = document.getElementById('deleteBanHistoryBtn');
     const keyList = document.getElementById('keyList');
     const spamContent = document.getElementById('spamContent');
     const getKeyModal = document.getElementById('getKeyModal');
@@ -528,6 +526,7 @@
     const banUsernameInput = document.getElementById('banUsernameInput');
     const banUserBtn = document.getElementById('banUserBtn');
     const unbanUserBtn = document.getElementById('unbanUserBtn');
+    const viewBannedBtn = document.getElementById('viewBannedBtn');
     const banStatus = document.getElementById('banStatus');
     const bannedList = document.getElementById('bannedList');
     const resetKeyInput = document.getElementById('resetKeyInput');
@@ -1297,7 +1296,6 @@
                     if (pendingKeyForActivation && currentUser) {
                         userKeyInput.value = pendingKeyForActivation;
                         activateKey(pendingKeyForActivation);
-                        // Chuyển focus vào ô nhập key
                         userKeyInput.focus();
                         userKeyInput.select();
                         pendingKeyForActivation = null;
@@ -1373,7 +1371,7 @@
         const expiryStr = keyExpiry.value;
         const keys = generateAdminKeys(count, expiryStr);
         const expiryLabel = keyExpiry.options[keyExpiry.selectedIndex].text;
-        alert(`✅ Đã tạo ${keys.length} key thành công!\nThời hạn: ${expiryLabel}\n\n${keys.join('\n')}\n\nLưu ý: Key sẽ chỉ bắt đầu tính thời gian khi được kích hoạt.`);
+        alert(`✅ Đã tạo ${keys.length} key thành công!\nThời hạn: ${expiryLabel}\n\n${keys.join('\n')}\n\n⚠️ Lưu ý: Key sẽ chỉ bắt đầu tính thời gian từ lúc được kích hoạt!`);
         appendLog(`🔑 Admin đã tạo ${keys.length} key mới (${expiryLabel})`);
     });
 
@@ -1562,24 +1560,22 @@
         appendLog(`✅ Admin đã unban tài khoản: ${username}`);
     });
 
-    // Xóa lịch sử ban (chỉ xóa danh sách hiển thị, không ảnh hưởng đến dữ liệu ban thực tế)
-    deleteBanHistoryBtn.addEventListener('click', function() {
+    // Nút xem danh sách ban
+    viewBannedBtn.addEventListener('click', function() {
         if (!currentUser || currentUser.role !== 'admin') {
-            alert('Chỉ Admin mới có thể thực hiện!');
+            alert('Chỉ Admin mới có thể xem!');
             return;
         }
-        if (confirm('Bạn có chắc muốn xóa lịch sử ban?\n(Lưu ý: Chỉ xóa danh sách hiển thị, các tài khoản vẫn bị ban)')) {
-            // Chỉ xóa hiển thị, không xóa dữ liệu ban thực tế
-            // Chúng ta sẽ xóa danh sách bannedUsers nhưng lưu vào một biến tạm để phục hồi nếu cần
-            // Thực tế là xóa toàn bộ danh sách ban (vì không có lịch sử riêng)
-            // Nhưng để an toàn, chúng ta sẽ xóa danh sách hiển thị
-            appData.bannedUsers = [];
-            saveData();
-            renderBannedList();
-            banStatus.innerHTML = '🗑️ Đã xóa lịch sử ban! (Các tài khoản đã ban vẫn bị ban)';
+        renderBannedList();
+        if (appData.bannedUsers.length === 0) {
+            banStatus.innerHTML = '📋 Hiện không có tài khoản nào bị ban.';
+            banStatus.style.color = '#00ff88';
+        } else {
+            banStatus.innerHTML = `📋 Hiển thị ${appData.bannedUsers.length} tài khoản bị ban.`;
             banStatus.style.color = '#ff8800';
-            appendLog('🗑️ Admin đã xóa lịch sử ban');
         }
+        // Scroll đến danh sách
+        bannedList.scrollIntoView({ behavior: 'smooth' });
     });
 
     // ========== SPAM TOOL ==========
