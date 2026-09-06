@@ -59,6 +59,30 @@
         .key-item .copy-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 2px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
         .key-item .copy-btn:hover { background: #00ff8844; }
 
+        /* Misc Tab Styles */
+        .misc-section { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; margin-bottom: 15px; }
+        .misc-section h4 { color: #00ff88; margin-bottom: 12px; border-bottom: 1px solid #00ff8844; padding-bottom: 8px; }
+        .misc-section label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
+        .misc-section input { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
+        .misc-section input:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; }
+        .misc-section input::placeholder { color: #00aa6666; }
+        .misc-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .misc-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; min-width: 100px; }
+        .btn-save-link { background: #00ff88; color: #0a0a0a; }
+        .btn-save-link:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
+        .btn-ban { background: #ff3344; color: #fff; }
+        .btn-ban:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        .btn-unban { background: #00ff88; color: #0a0a0a; }
+        .btn-unban:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
+        .banned-list { margin-top: 12px; padding: 10px; background: #0a0a0a; border-radius: 6px; border: 1px solid #ff334444; max-height: 150px; overflow-y: auto; }
+        .banned-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-bottom: 1px solid #ff334422; color: #ff5566; font-size: 13px; }
+        .banned-item:last-child { border-bottom: none; }
+        .banned-item .unban-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 2px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .banned-item .unban-btn:hover { background: #00ff8844; }
+        .misc-status { color: #00dd77; font-size: 13px; margin-top: 8px; padding: 8px; background: #0d0d0d; border-radius: 6px; border: 1px solid #00ff8844; }
+        .current-link-display { background: #111; padding: 10px; border-radius: 6px; border: 1px solid #ff880066; margin: 8px 0; color: #00dd77; font-size: 13px; word-break: break-all; }
+        .current-link-display .link-value { color: #ff8800; font-weight: bold; }
+
         label { display: block; margin: 12px 0 6px; font-size: 14px; color: #00dd77; font-weight: bold; }
         input, textarea, select { width: 100%; padding: 12px; background: #0d0d0d; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 8px; font-size: 14px; outline: none; transition: 0.3s; }
         input:focus, textarea:focus, select:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; background: #111; }
@@ -155,11 +179,12 @@
         .free-key-box .copy-key-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 10px; }
         .free-key-box .copy-key-btn:hover { background: #00ff8844; }
         .free-key-box .key-ready-text { color: #00ff88; font-size: 14px; margin-top: 8px; }
-        .free-key-box .key-status-text { font-size: 13px; margin-top: 5px; }
 
         .auth-mode { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-left: 8px; }
         .auth-mode.login-mode { background: #00ff8822; color: #00ff88; border: 1px solid #00ff88; }
         .auth-mode.register-mode { background: #ff880022; color: #ff8800; border: 1px solid #ff8800; }
+
+        .key-owner-info { font-size: 12px; color: #888; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -198,6 +223,7 @@
     <div id="tabContainer" class="tabs hidden">
         <button class="tab-btn active" data-tab="tabSpam">📨 Spam Tool</button>
         <button class="tab-btn" data-tab="tabKey" id="adminTabBtn">🔑 Quản lý Key</button>
+        <button class="tab-btn" data-tab="tabMisc" id="miscTabBtn">⚙️ Misc</button>
     </div>
 
     <div id="tabSpam" class="tab-content active">
@@ -326,6 +352,42 @@
         </div>
     </div>
 
+    <!-- Tab Misc (Chỉ Admin) -->
+    <div id="tabMisc" class="tab-content">
+        <!-- Phần 1: Thay đổi link vượt link -->
+        <div class="misc-section">
+            <h4>🔗 CẤU HÌNH LINK VƯỢT</h4>
+            <label>Link vượt (thay thế link mặc định)</label>
+            <input type="text" id="bypassLinkInput" placeholder="Nhập link vượt mới (ví dụ: https://link4m.org/abc)">
+            <div class="misc-row">
+                <button class="btn-save-link" id="saveBypassLinkBtn">💾 Lưu link</button>
+                <button class="btn-save-link" id="resetBypassLinkBtn" style="background:#ff8800;">↩️ Khôi phục mặc định</button>
+            </div>
+            <div class="current-link-display">
+                🔗 Link hiện tại: <span class="link-value" id="currentBypassLinkDisplay">https://link4m.org/0CSnon</span>
+            </div>
+            <div id="linkStatus" class="misc-status">Nhập link mới và bấm Lưu để thay đổi</div>
+        </div>
+
+        <!-- Phần 2: Ban / Unban Acc -->
+        <div class="misc-section">
+            <h4>🚫 QUẢN LÝ BAN ACCOUNT</h4>
+            <label>Tên tài khoản</label>
+            <input type="text" id="banUsernameInput" placeholder="Nhập tên tài khoản cần ban">
+            <div class="misc-row">
+                <button class="btn-ban" id="banUserBtn">🔨 Ban</button>
+                <button class="btn-unban" id="unbanUserBtn">✅ Unban</button>
+            </div>
+            <div id="banStatus" class="misc-status">Nhập tên tài khoản và chọn hành động</div>
+            <div style="margin-top:12px;">
+                <h4 style="color:#ff5566;font-size:14px;">Danh sách tài khoản bị Ban</h4>
+                <div id="bannedList" class="banned-list">
+                    <div style="color:#00aa66;font-size:13px;">Chưa có tài khoản nào bị ban</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="footer">⚡ Dev Nduc ⚡</div>
 </div>
 
@@ -334,7 +396,7 @@
     <div class="modal-box">
         <h3>🎁 LẤY KEY FREE</h3>
         <p>Bấm vào link bên dưới để lấy key:</p>
-        <div class="modal-link">🔗 https://link4m.org/0CSnon</div>
+        <div class="modal-link" id="modalBypassLink">🔗 https://link4m.org/0CSnon</div>
         <div style="margin:15px 0;">
             <button class="modal-btn modal-btn-primary" id="openLinkBtn">🌐 Mở link</button>
         </div>
@@ -355,7 +417,9 @@
             'Nduc': { password: 'Ducanh05092008', role: 'admin' }
         },
         keys: {},
-        keyHistory: []
+        keyHistory: [],
+        bannedUsers: [],
+        bypassLink: 'https://link4m.org/0CSnon' // Link mặc định
     };
 
     let currentUser = null;
@@ -371,6 +435,8 @@
                 appData.users = parsed.users || appData.users;
                 appData.keys = parsed.keys || {};
                 appData.keyHistory = parsed.keyHistory || [];
+                appData.bannedUsers = parsed.bannedUsers || [];
+                appData.bypassLink = parsed.bypassLink || 'https://link4m.org/0CSnon';
             }
         } catch (e) {}
     }
@@ -380,7 +446,9 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ 
                 users: appData.users, 
                 keys: appData.keys,
-                keyHistory: appData.keyHistory 
+                keyHistory: appData.keyHistory,
+                bannedUsers: appData.bannedUsers,
+                bypassLink: appData.bypassLink
             }));
         } catch (e) {}
     }
@@ -403,8 +471,10 @@
     const authModeDisplay = document.getElementById('authModeDisplay');
     const tabContainer = document.getElementById('tabContainer');
     const adminTabBtn = document.getElementById('adminTabBtn');
+    const miscTabBtn = document.getElementById('miscTabBtn');
     const tabSpam = document.getElementById('tabSpam');
     const tabKey = document.getElementById('tabKey');
+    const tabMisc = document.getElementById('tabMisc');
     const keyInputSection = document.getElementById('keyInputSection');
     const userKeyInput = document.getElementById('userKeyInput');
     const activateKeyBtn = document.getElementById('activateKeyBtn');
@@ -421,6 +491,19 @@
     const openLinkBtn = document.getElementById('openLinkBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const freeKeyDisplay = document.getElementById('freeKeyDisplay');
+    const modalBypassLink = document.getElementById('modalBypassLink');
+
+    // Misc refs
+    const bypassLinkInput = document.getElementById('bypassLinkInput');
+    const saveBypassLinkBtn = document.getElementById('saveBypassLinkBtn');
+    const resetBypassLinkBtn = document.getElementById('resetBypassLinkBtn');
+    const currentBypassLinkDisplay = document.getElementById('currentBypassLinkDisplay');
+    const linkStatus = document.getElementById('linkStatus');
+    const banUsernameInput = document.getElementById('banUsernameInput');
+    const banUserBtn = document.getElementById('banUserBtn');
+    const unbanUserBtn = document.getElementById('unbanUserBtn');
+    const banStatus = document.getElementById('banStatus');
+    const bannedList = document.getElementById('bannedList');
 
     // Spam tool refs
     const idType = document.getElementById('idType');
@@ -545,6 +628,11 @@
     });
 
     function login(username, password) {
+        // Check if user is banned
+        if (appData.bannedUsers.includes(username)) {
+            authStatus.innerHTML = '🚫 Tài khoản này đã bị BAN! Liên hệ Admin.';
+            return false;
+        }
         const user = appData.users[username];
         if (!user) {
             authStatus.innerHTML = '❌ Tài khoản không tồn tại!';
@@ -616,6 +704,7 @@
 
             if (currentUser.role === 'admin') {
                 adminTabBtn.classList.remove('hidden');
+                miscTabBtn.classList.remove('hidden');
                 isKeyValid = true;
                 keyInputSection.classList.add('hidden');
                 spamContent.classList.remove('hidden');
@@ -624,8 +713,11 @@
                     clearInterval(timerInterval);
                     timerInterval = null;
                 }
+                renderBannedList();
+                updateBypassLinkDisplay();
             } else {
                 adminTabBtn.classList.add('hidden');
+                miscTabBtn.classList.add('hidden');
                 keyInputSection.classList.remove('hidden');
                 spamContent.classList.add('hidden');
                 checkUserKey();
@@ -640,6 +732,8 @@
             tabSpam.style.display = 'none';
             tabKey.classList.remove('active');
             tabKey.style.display = 'none';
+            tabMisc.classList.remove('active');
+            tabMisc.style.display = 'none';
             if (running) stopSpam();
             if (timerInterval) {
                 clearInterval(timerInterval);
@@ -657,14 +751,16 @@
         isKeyValid = false;
         userKey = null;
         for (const [key, data] of Object.entries(appData.keys)) {
-            if (data.username === currentUser.username && data.status === 'active' && !isKeyExpired(data)) {
+            if (data.status === 'active' && !isKeyExpired(data)) {
                 isKeyValid = true;
                 userKey = key;
                 break;
             }
         }
         if (isKeyValid) {
-            keyStatusInfo.innerHTML = '✅ Key hợp lệ! Bạn có thể sử dụng tool.';
+            const keyData = appData.keys[userKey];
+            const owner = keyData.username || 'Không rõ';
+            keyStatusInfo.innerHTML = `✅ Key hợp lệ! Chủ sở hữu: ${owner}. Bạn có thể sử dụng tool.`;
             keyStatusInfo.style.color = '#00ff88';
             spamContent.classList.remove('hidden');
             keyTimer.classList.remove('hidden');
@@ -672,7 +768,7 @@
             if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(updateKeyTimer, 1000);
         } else {
-            keyStatusInfo.innerHTML = '❌ Key không hợp lệ hoặc đã hết hạn. Vui lòng nhập key mới hoặc lấy key free.';
+            keyStatusInfo.innerHTML = '❌ Không có key hợp lệ. Vui lòng nhập key hoặc lấy key free.';
             keyStatusInfo.style.color = '#ff5566';
             spamContent.classList.add('hidden');
             keyTimer.classList.add('hidden');
@@ -714,11 +810,6 @@
             keyStatusInfo.style.color = '#ff5566';
             return false;
         }
-        if (keyData.username !== currentUser.username) {
-            keyStatusInfo.innerHTML = '❌ Key không thuộc về bạn!';
-            keyStatusInfo.style.color = '#ff5566';
-            return false;
-        }
         if (keyData.status === 'used') {
             keyStatusInfo.innerHTML = '❌ Key đã được sử dụng!';
             keyStatusInfo.style.color = '#ff5566';
@@ -735,17 +826,20 @@
             return false;
         }
         keyData.status = 'used';
+        keyData.activatedBy = currentUser.username;
         keyData.activatedAt = Date.now();
         const historyItem = appData.keyHistory.find(item => item.key === key);
         if (historyItem) {
             historyItem.status = 'used';
+            historyItem.activatedBy = currentUser.username;
             historyItem.activatedAt = Date.now();
         }
         saveData();
         renderKeyHistory();
         isKeyValid = true;
         userKey = key;
-        keyStatusInfo.innerHTML = '✅ Kích hoạt key thành công! Thời gian còn lại: ' + getTimeRemaining(keyData.expiry);
+        const owner = keyData.username || 'Không rõ';
+        keyStatusInfo.innerHTML = `✅ Kích hoạt key thành công! Chủ sở hữu: ${owner}. Thời gian còn lại: ${getTimeRemaining(keyData.expiry)}`;
         keyStatusInfo.style.color = '#00ff88';
         spamContent.classList.remove('hidden');
         keyTimer.classList.remove('hidden');
@@ -764,7 +858,8 @@
             expiry: expiryTime,
             createdAt: Date.now(),
             status: 'active',
-            activatedAt: null
+            activatedAt: null,
+            activatedBy: null
         };
         appData.keyHistory.unshift({
             key: newKey,
@@ -773,7 +868,8 @@
             createdAt: Date.now(),
             status: 'active',
             type: 'free',
-            activatedAt: null
+            activatedAt: null,
+            activatedBy: null
         });
         saveData();
         renderKeyHistory();
@@ -786,20 +882,22 @@
             const newKey = generateUniqueKey();
             const expiryTime = getExpiryTime(expiryStr);
             appData.keys[newKey] = {
-                username: 'Nduc',
+                username: 'Nduc (Admin)',
                 expiry: expiryTime,
                 createdAt: Date.now(),
                 status: 'active',
-                activatedAt: null
+                activatedAt: null,
+                activatedBy: null
             };
             appData.keyHistory.unshift({
                 key: newKey,
-                username: 'Nduc',
+                username: 'Nduc (Admin)',
                 expiry: expiryTime,
                 createdAt: Date.now(),
                 status: 'active',
                 type: 'admin',
-                activatedAt: null
+                activatedAt: null,
+                activatedBy: null
             });
             keys.push(newKey);
         }
@@ -823,7 +921,7 @@
             const statusClass = status === 'active' ? 'active' : status === 'used' ? 'used' : 'expired';
             const timeRemaining = item.expiry === Infinity ? 'Vĩnh viễn' : getTimeRemaining(item.expiry);
             const typeLabel = item.type === 'free' ? '🎁 Free' : '👑 Admin';
-            const activatedInfo = item.activatedAt ? '🔑 Đã kích hoạt' : '⏳ Chưa kích hoạt';
+            const activatedInfo = item.activatedAt ? `🔑 Kích hoạt bởi: ${item.activatedBy || 'N/A'}` : '⏳ Chưa kích hoạt';
             html += `
                 <div class="key-item">
                     <span>
@@ -879,6 +977,7 @@
             if (!currentUser) return;
             const tabId = this.dataset.tab;
             if (tabId === 'tabKey' && currentUser.role !== 'admin') return;
+            if (tabId === 'tabMisc' && currentUser.role !== 'admin') return;
             switchTab(tabId);
         });
     });
@@ -912,6 +1011,12 @@
     let checkInterval = null;
     let keyGenerationTimeout = null;
 
+    // Update bypass link in modal
+    function updateBypassLinkDisplay() {
+        currentBypassLinkDisplay.textContent = appData.bypassLink;
+        modalBypassLink.innerHTML = `🔗 ${appData.bypassLink}`;
+    }
+
     getKeyBtn.addEventListener('click', function() {
         if (!currentUser) {
             alert('Vui lòng đăng nhập trước!');
@@ -924,7 +1029,7 @@
         // Check if user already has an active key
         let hasActiveKey = false;
         for (const [key, data] of Object.entries(appData.keys)) {
-            if (data.username === currentUser.username && data.status === 'active' && !isKeyExpired(data)) {
+            if (data.status === 'active' && !isKeyExpired(data)) {
                 hasActiveKey = true;
                 break;
             }
@@ -947,28 +1052,24 @@
         freeKeyDisplay.innerHTML = `
             <div class="loading-text">⏳ Nhấn "Mở link" để lấy key...</div>
         `;
+        updateBypassLinkDisplay();
     });
 
     openLinkBtn.addEventListener('click', function() {
-        // Mở link trong tab mới
-        window.open('https://link4m.org/0CSnon', '_blank');
+        window.open(appData.bypassLink, '_blank');
         
-        // Hiển thị trạng thái đang chờ
         freeKeyDisplay.innerHTML = `
             <div class="loading-text">⏳ Đang chờ bạn vượt link...</div>
             <div style="color:#888;font-size:12px;margin-top:5px;">Sau khi vượt link xong, key sẽ tự động hiển thị</div>
         `;
         
-        // Bắt đầu kiểm tra khi user quay lại tab
         let checkCount = 0;
         if (checkInterval) clearInterval(checkInterval);
         checkInterval = setInterval(() => {
             checkCount++;
-            // Kiểm tra nếu tab đang được focus và chưa tạo key
             if (document.hasFocus() && !keyGenerated && currentUser) {
                 clearInterval(checkInterval);
                 checkInterval = null;
-                // Tạo key
                 const newKey = generateFreeKey(currentUser.username);
                 keyGenerated = true;
                 const keyData = appData.keys[newKey];
@@ -982,13 +1083,13 @@
                     <div style="margin-top:5px;">
                         <span style="color:#888;font-size:13px;">⏳ Hạn: ${timeRemaining}</span>
                     </div>
+                    <div style="color:#888;font-size:12px;margin-top:4px;">Chủ sở hữu: ${currentUser.username}</div>
                     <button class="copy-key-btn" onclick="copyKey('${newKey}')">📋 Sao chép key</button>
                     <div class="key-ready-text">✅ Key đã được tạo! Sao chép và kích hoạt để sử dụng.</div>
                 `;
                 appendLog(`🎁 Key free đã được tạo cho ${currentUser.username}`);
             }
             
-            // Timeout sau 60 giây
             if (checkCount > 60) {
                 clearInterval(checkInterval);
                 checkInterval = null;
@@ -1080,6 +1181,155 @@
             alert('✅ Đã xóa lịch sử key!');
             appendLog('🗑️ Admin đã xóa lịch sử key');
         }
+    });
+
+    // ========== MISC: Bypass Link ==========
+    function updateBypassLinkDisplay() {
+        currentBypassLinkDisplay.textContent = appData.bypassLink;
+        modalBypassLink.innerHTML = `🔗 ${appData.bypassLink}`;
+    }
+
+    saveBypassLinkBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể thay đổi link!');
+            return;
+        }
+        const newLink = bypassLinkInput.value.trim();
+        if (!newLink) {
+            linkStatus.innerHTML = '❌ Vui lòng nhập link hợp lệ!';
+            linkStatus.style.color = '#ff5566';
+            return;
+        }
+        if (!newLink.startsWith('http://') && !newLink.startsWith('https://')) {
+            linkStatus.innerHTML = '❌ Link phải bắt đầu bằng http:// hoặc https://!';
+            linkStatus.style.color = '#ff5566';
+            return;
+        }
+        appData.bypassLink = newLink;
+        saveData();
+        updateBypassLinkDisplay();
+        bypassLinkInput.value = '';
+        linkStatus.innerHTML = `✅ Đã cập nhật link thành công!\n🔗 ${newLink}`;
+        linkStatus.style.color = '#00ff88';
+        appendLog(`🔗 Admin đã thay đổi link vượt thành: ${newLink}`);
+    });
+
+    resetBypassLinkBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể thực hiện!');
+            return;
+        }
+        if (confirm('Khôi phục link mặc định (https://link4m.org/0CSnon)?')) {
+            appData.bypassLink = 'https://link4m.org/0CSnon';
+            saveData();
+            updateBypassLinkDisplay();
+            bypassLinkInput.value = '';
+            linkStatus.innerHTML = '✅ Đã khôi phục link mặc định!';
+            linkStatus.style.color = '#00ff88';
+            appendLog('↩️ Admin đã khôi phục link mặc định');
+        }
+    });
+
+    // ========== MISC: Ban / Unban ==========
+    function renderBannedList() {
+        if (appData.bannedUsers.length === 0) {
+            bannedList.innerHTML = '<div style="color:#00aa66;font-size:13px;">Chưa có tài khoản nào bị ban</div>';
+            return;
+        }
+        let html = '';
+        for (const username of appData.bannedUsers) {
+            html += `
+                <div class="banned-item">
+                    <span>🚫 ${username}</span>
+                    <button class="unban-btn" onclick="unbanUser('${username}')">✅ Unban</button>
+                </div>
+            `;
+        }
+        bannedList.innerHTML = html;
+    }
+
+    window.unbanUser = function(username) {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể unban!');
+            return;
+        }
+        const index = appData.bannedUsers.indexOf(username);
+        if (index > -1) {
+            appData.bannedUsers.splice(index, 1);
+            saveData();
+            renderBannedList();
+            banStatus.innerHTML = `✅ Đã unban tài khoản: ${username}`;
+            banStatus.style.color = '#00ff88';
+            appendLog(`✅ Admin đã unban tài khoản: ${username}`);
+        } else {
+            banStatus.innerHTML = `❌ Tài khoản ${username} không có trong danh sách ban!`;
+            banStatus.style.color = '#ff5566';
+        }
+    };
+
+    banUserBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể ban!');
+            return;
+        }
+        const username = banUsernameInput.value.trim();
+        if (!username) {
+            banStatus.innerHTML = '❌ Vui lòng nhập tên tài khoản!';
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        if (username === 'Nduc') {
+            banStatus.innerHTML = '❌ Không thể ban tài khoản Admin!';
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        if (!appData.users[username]) {
+            banStatus.innerHTML = `❌ Tài khoản "${username}" không tồn tại!`;
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        if (appData.bannedUsers.includes(username)) {
+            banStatus.innerHTML = `⚠️ Tài khoản "${username}" đã bị ban từ trước!`;
+            banStatus.style.color = '#ff8800';
+            return;
+        }
+        appData.bannedUsers.push(username);
+        saveData();
+        renderBannedList();
+        banUsernameInput.value = '';
+        banStatus.innerHTML = `✅ Đã ban tài khoản: ${username}`;
+        banStatus.style.color = '#ff5566';
+        appendLog(`🔨 Admin đã ban tài khoản: ${username}`);
+        // Nếu tài khoản đang đăng nhập thì đăng xuất
+        if (currentUser.username === username) {
+            logout();
+        }
+    });
+
+    unbanUserBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể unban!');
+            return;
+        }
+        const username = banUsernameInput.value.trim();
+        if (!username) {
+            banStatus.innerHTML = '❌ Vui lòng nhập tên tài khoản!';
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        const index = appData.bannedUsers.indexOf(username);
+        if (index === -1) {
+            banStatus.innerHTML = `❌ Tài khoản "${username}" không có trong danh sách ban!`;
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        appData.bannedUsers.splice(index, 1);
+        saveData();
+        renderBannedList();
+        banUsernameInput.value = '';
+        banStatus.innerHTML = `✅ Đã unban tài khoản: ${username}`;
+        banStatus.style.color = '#00ff88';
+        appendLog(`✅ Admin đã unban tài khoản: ${username}`);
     });
 
     // ========== SPAM TOOL ==========
@@ -1433,6 +1683,8 @@
     }
 
     renderKeyHistory();
+    renderBannedList();
+    updateBypassLinkDisplay();
     updateUI();
     setAuthMode('login');
 })();
