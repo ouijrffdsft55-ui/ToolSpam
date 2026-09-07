@@ -3,474 +3,2488 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Key Free</title>
+    <title>Telegram Spam Pro - By Nduc</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background: #0a0a0a;
-            display: flex;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', monospace; }
+        body { background: #0d0d0d; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        /* ===== POPUP THÔNG BÁO ===== */
+        .notice-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            animation: fadeInOverlay 0.5s ease;
         }
-        .container {
-            background: #1a1a1a;
+        .notice-overlay.active {
+            display: flex;
+        }
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .notice-box {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
             border: 2px solid #ff8800;
             border-radius: 20px;
-            padding: 40px;
-            max-width: 450px;
-            width: 100%;
-            box-shadow: 0 0 60px #ff880033;
+            padding: 40px 35px;
+            max-width: 500px;
+            width: 92%;
+            box-shadow: 0 0 80px #ff880044, 0 0 150px #ff880022;
             text-align: center;
+            animation: slideUpNotice 0.5s ease;
+            position: relative;
         }
-        h1 {
+        @keyframes slideUpNotice {
+            from { transform: translateY(50px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        
+        .notice-box .notice-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .notice-box .notice-title {
             color: #ff8800;
-            font-size: 28px;
+            font-size: 24px;
+            font-weight: bold;
             letter-spacing: 2px;
             margin-bottom: 5px;
             text-shadow: 0 0 30px #ff880066;
         }
-        .sub {
+        .notice-box .notice-subtitle {
             color: #ff8800;
             font-size: 14px;
             opacity: 0.7;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
-        .key-display {
+        .notice-box .notice-divider {
+            border: none;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff8800, transparent);
+            margin: 15px 0;
+        }
+        .notice-box .notice-content {
+            color: #00dd77;
+            font-size: 15px;
+            line-height: 1.8;
+            padding: 5px 0;
+        }
+        .notice-box .notice-content .highlight {
+            color: #ff8800;
+            font-weight: bold;
+        }
+        .notice-box .notice-content .tele {
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .notice-box .notice-content .zalo {
+            color: #ff8800;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .notice-box .notice-contact {
             background: #0d0d0d;
-            border: 2px solid #00ff88;
+            border: 1px solid #ff880044;
             border-radius: 12px;
-            padding: 25px;
-            margin: 20px 0;
-            position: relative;
+            padding: 15px;
+            margin: 15px 0;
         }
-        .key-label {
+        .notice-box .notice-contact .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 6px 0;
+            color: #00dd77;
+            font-size: 15px;
+        }
+        .notice-box .notice-contact .contact-item .label {
             color: #888;
             font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
-        .key-value {
+        .notice-box .notice-contact .contact-item .value {
             color: #00ff88;
-            font-size: 42px;
             font-weight: bold;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 8px;
-            word-break: break-all;
-            margin: 10px 0;
-            text-shadow: 0 0 20px #00ff8844;
         }
-        .key-status {
-            display: inline-block;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            margin: 5px 0;
-        }
-        .status-waiting {
-            background: #ff880022;
+        .notice-box .notice-contact .contact-item .value.zalo-text {
             color: #ff8800;
-            border: 1px solid #ff8800;
         }
-        .status-active {
-            background: #00ff8822;
-            color: #00ff88;
-            border: 1px solid #00ff88;
-        }
-        .status-expired {
-            background: #ff334422;
-            color: #ff3344;
-            border: 1px solid #ff3344;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-        .btn {
-            flex: 1;
-            padding: 14px 20px;
+        
+        .notice-box .btn-close-notice {
+            background: #ff8800;
+            color: #0a0a0a;
             border: none;
+            padding: 14px 40px;
             border-radius: 10px;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            min-width: 120px;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            width: 100%;
         }
-        .btn-copy {
-            background: #ff8800;
-            color: #0a0a0a;
-        }
-        .btn-copy:hover {
+        .notice-box .btn-close-notice:hover {
             background: #dd7700;
-            box-shadow: 0 0 30px #ff880066;
+            box-shadow: 0 0 40px #ff880066;
             transform: scale(1.02);
         }
-        .btn-spam {
-            background: #00ff88;
-            color: #0a0a0a;
-        }
-        .btn-spam:hover {
-            background: #00dd77;
-            box-shadow: 0 0 30px #00ff8866;
-            transform: scale(1.02);
-        }
-        .copy-notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #00ff88;
-            color: #0a0a0a;
-            padding: 12px 30px;
-            border-radius: 10px;
-            font-weight: bold;
-            z-index: 999;
-            display: none;
-            animation: slideDown 0.5s ease;
-            box-shadow: 0 0 30px #00ff8866;
-        }
-        @keyframes slideDown {
-            from {
-                transform: translate(-50%, -100px);
-                opacity: 0;
-            }
-            to {
-                transform: translate(-50%, 0);
-                opacity: 1;
-            }
-        }
-        .info-text {
+        
+        .notice-box .btn-close-notice.secondary {
+            background: transparent;
             color: #888;
-            font-size: 12px;
-            margin-top: 10px;
-            line-height: 1.6;
-        }
-        .info-text a {
-            color: #ff8800;
-            text-decoration: none;
-        }
-        .info-text a:hover {
-            text-decoration: underline;
-        }
-        .status-message {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 8px;
+            border: 1px solid #888;
+            margin-top: 8px;
+            padding: 10px 20px;
             font-size: 13px;
-            display: none;
         }
-        .status-message.success {
-            display: block;
-            background: #00ff8822;
-            color: #00ff88;
-            border: 1px solid #00ff88;
+        .notice-box .btn-close-notice.secondary:hover {
+            background: #888;
+            color: #0a0a0a;
+            box-shadow: none;
+            transform: none;
         }
-        .status-message.error {
-            display: block;
-            background: #ff334422;
+        
+        .notice-box .notice-close-x {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 5px;
+        }
+        .notice-box .notice-close-x:hover {
             color: #ff3344;
-            border: 1px solid #ff3344;
+            transform: rotate(90deg);
         }
-        .status-message.info {
-            display: block;
+        /* ===== END POPUP ===== */
+
+        .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 750px; box-shadow: 0 0 50px #00ff8833; }
+        h1 { text-align: center; color: #00ff88; font-size: 26px; letter-spacing: 3px; border-bottom: 2px solid #00ff88; padding-bottom: 15px; margin-bottom: 5px; text-shadow: 0 0 20px #00ff8866; }
+        .sub { text-align: center; color: #00dd77; font-size: 14px; margin-bottom: 25px; opacity: 0.7; }
+        
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #00ff8844; padding-bottom: 5px; flex-wrap: wrap; }
+        .tab-btn { padding: 10px 25px; background: transparent; border: none; color: #00aa66; font-weight: bold; cursor: pointer; border-radius: 8px 8px 0 0; transition: 0.3s; font-size: 15px; }
+        .tab-btn:hover { background: #00ff8822; color: #00ff88; }
+        .tab-btn.active { background: #00ff88; color: #0a0a0a; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .auth-form { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; margin-bottom: 15px; }
+        .auth-form label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
+        .auth-form input { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
+        .auth-form input:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; }
+        .auth-form input::placeholder { color: #00aa6666; }
+        .auth-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+        .auth-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; min-width: 100px; }
+        .btn-login { background: #00ff88; color: #0a0a0a; }
+        .btn-login:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
+        .btn-register { background: #ff8800; color: #0a0a0a; }
+        .btn-register:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
+        .btn-admin-login { background: #ff3366; color: #fff; }
+        .btn-admin-login:hover { background: #cc2244; box-shadow: 0 0 30px #ff336666; }
+        .btn-logout { background: #ff3344; color: #fff; }
+        .btn-logout:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        .auth-status { color: #00dd77; font-size: 13px; margin-top: 8px; padding: 8px; background: #0d0d0d; border-radius: 6px; border: 1px solid #00ff8844; }
+
+        .key-section { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; }
+        .key-section label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
+        .key-section input, .key-section select { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
+        .key-section select option { background: #1a1a1a; }
+        .key-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .key-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; min-width: 120px; }
+        .btn-gen-key { background: #00ff88; color: #0a0a0a; }
+        .btn-gen-key:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
+        .btn-copy-key { background: #ff8800; color: #0a0a0a; }
+        .btn-copy-key:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
+        .btn-delete-history { background: #ff3344; color: #fff; }
+        .btn-delete-history:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        .key-list { margin-top: 12px; max-height: 250px; overflow-y: auto; }
+        .key-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #111; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #00ff88; font-size: 13px; color: #00dd77; flex-wrap: wrap; gap: 5px; }
+        .key-item .key-code { color: #00ff88; font-weight: bold; font-family: monospace; font-size: 14px; }
+        .key-item .key-user { color: #ff8800; font-size: 12px; }
+        .key-item .key-expiry { color: #888; font-size: 12px; }
+        .key-item .key-status { font-size: 12px; padding: 2px 10px; border-radius: 10px; }
+        .key-item .key-status.active { color: #00ff88; background: #00ff8822; border: 1px solid #00ff88; }
+        .key-item .key-status.used { color: #ff8800; background: #ff880022; border: 1px solid #ff8800; }
+        .key-item .key-status.expired { color: #ff3344; background: #ff334422; border: 1px solid #ff3344; }
+        .key-item .key-status.reseted { color: #ff8800; background: #ff880022; border: 1px solid #ff8800; }
+        .key-item .copy-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 2px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .key-item .copy-btn:hover { background: #00ff8844; }
+        .key-item .device-info { color: #888; font-size: 11px; background: #00ff8822; padding: 2px 8px; border-radius: 4px; }
+
+        .misc-section { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; margin-bottom: 15px; }
+        .misc-section h4 { color: #00ff88; margin-bottom: 12px; border-bottom: 1px solid #00ff8844; padding-bottom: 8px; }
+        .misc-section label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
+        .misc-section input { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
+        .misc-section input:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; }
+        .misc-section input::placeholder { color: #00aa6666; }
+        .misc-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .misc-row button { flex: 1; padding: 12px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; min-width: 100px; }
+        .btn-save-link { background: #00ff88; color: #0a0a0a; }
+        .btn-save-link:hover { background: #00dd77; box-shadow: 0 0 30px #00ff8866; }
+        .btn-ban { background: #ff3344; color: #fff; }
+        .btn-ban:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        .btn-unban { background: #00ff88; color: #0a0a0a; }
+        .btn-unban:hover { background: #00dd77; box-shadow: 0 0 30px #ff8866; }
+        .btn-view-banned { background: #ff8800; color: #0a0a0a; }
+        .btn-view-banned:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
+        .btn-delete-ban-history { background: #ff3344; color: #fff; }
+        .btn-delete-ban-history:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        
+        .banned-table-container { margin-top: 12px; max-height: 200px; overflow-y: auto; background: #0a0a0a; border-radius: 8px; border: 1px solid #ff334466; display: none; }
+        .banned-table-container.active { display: block; }
+        .banned-table { width: 100%; border-collapse: collapse; }
+        .banned-table th { background: #1a1a1a; color: #ff5566; padding: 10px; text-align: left; font-size: 13px; border-bottom: 2px solid #ff334466; position: sticky; top: 0; z-index: 1; }
+        .banned-table td { padding: 8px 10px; color: #ff5566; font-size: 13px; border-bottom: 1px solid #ff334422; }
+        .banned-table tr:hover { background: #ff334411; }
+        .banned-table .unban-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 4px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .banned-table .unban-btn:hover { background: #00ff8844; }
+        .banned-table .empty-row td { color: #00aa66; text-align: center; padding: 20px; font-size: 14px; }
+        
+        .misc-status { color: #00dd77; font-size: 13px; margin-top: 8px; padding: 8px; background: #0d0d0d; border-radius: 6px; border: 1px solid #00ff8844; }
+        .current-link-display { background: #111; padding: 10px; border-radius: 6px; border: 1px solid #ff880066; margin: 8px 0; color: #00dd77; font-size: 13px; word-break: break-all; }
+        .current-link-display .link-value { color: #ff8800; font-weight: bold; }
+
+        label { display: block; margin: 12px 0 6px; font-size: 14px; color: #00dd77; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 12px; background: #0d0d0d; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 8px; font-size: 14px; outline: none; transition: 0.3s; }
+        input:focus, textarea:focus, select:focus { border-color: #00ffbb; box-shadow: 0 0 20px #00ff8844; background: #111; }
+        textarea { resize: vertical; min-height: 60px; }
+        select option { background: #1a1a1a; color: #00ff88; }
+        .row-2col { display: flex; gap: 12px; flex-wrap: wrap; }
+        .row-2col > div { flex: 1; min-width: 200px; }
+        .btn-row { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+        .btn-row button { flex: 1; padding: 16px; font-weight: 900; font-size: 16px; border: none; border-radius: 10px; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 2px; min-width: 100px; }
+        #sendBtn { background: #00ff88; color: #0a0a0a; }
+        #sendBtn:hover:not(:disabled) { background: #00dd77; box-shadow: 0 0 40px #00ff88; transform: scale(1.01); }
+        #sendBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        #stopBtn { background: #ff3344; color: #fff; display: none; }
+        #stopBtn:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
+        #clearBtn { background: #ff8800; color: #0a0a0a; }
+        #clearBtn:hover { background: #dd7700; box-shadow: 0 0 30px #ff880066; }
+        .token-list { margin-top: 12px; padding: 12px; background: #0d0d0d; border: 1px solid #00ff8844; border-radius: 8px; }
+        .token-list .token-item { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+        .token-list .token-item:last-child { margin-bottom: 0; }
+        .token-list .token-item label { margin: 0; font-size: 12px; color: #00aa66; min-width: 70px; }
+        .token-list .token-item input { flex: 1; padding: 6px 10px; font-size: 12px; min-width: 150px; }
+        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding: 10px 14px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8855; flex-wrap: wrap; gap: 8px; }
+        .status-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 10px; vertical-align: middle; }
+        .idle { background: #555; }
+        .sending { background: #ffcc00; animation: pulse 0.3s infinite; }
+        .success { background: #00ff88; }
+        .error { background: #ff3344; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.2; transform: scale(1.4); } }
+        #log { margin-top: 14px; padding: 14px; background: #0a0a0a; border: 1px solid #00ff8844; border-radius: 8px; max-height: 180px; overflow-y: auto; font-size: 12px; white-space: pre-wrap; word-break: break-all; color: #00dd77; line-height: 1.6; }
+        #log::-webkit-scrollbar { width: 5px; }
+        #log::-webkit-scrollbar-thumb { background: #00ff88; border-radius: 4px; }
+        .counter { font-size: 15px; color: #00ff88; font-weight: bold; }
+        .error-text { color: #ff5566; }
+        .success-text { color: #00ff88; }
+        .footer { text-align: center; margin-top: 18px; color: #00aa66; font-size: 13px; border-top: 1px solid #00ff8844; padding-top: 14px; letter-spacing: 2px; }
+        .speed-control { display: flex; gap: 20px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+        .speed-control label { margin: 0; font-size: 13px; }
+        .speed-control input { width: 80px; padding: 6px; background: #0d0d0d; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; text-align: center; }
+        .speed-control span { color: #00dd77; font-size: 13px; }
+        .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #00dd77; cursor: pointer; margin-top: 8px; }
+        .checkbox-label input { width: 18px; height: 18px; accent-color: #00ff88; cursor: pointer; }
+        .image-upload { margin-top: 10px; padding: 12px; background: #0d0d0d; border: 1.5px dashed #00ff8866; border-radius: 8px; }
+        .image-upload input[type="file"] { padding: 8px; background: transparent; border: none; color: #00dd77; font-size: 13px; }
+        .image-upload .preview { margin-top: 8px; max-width: 100%; max-height: 150px; border-radius: 6px; display: none; border: 1px solid #00ff8844; }
+        .image-upload .url-input { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .image-upload .url-input input { flex: 1; padding: 8px; font-size: 13px; min-width: 150px; }
+        .image-upload .url-input button { padding: 8px 16px; background: #00ff88; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .image-upload .url-input button:hover { background: #00dd77; }
+        .type-selector { display: flex; gap: 12px; margin: 8px 0; flex-wrap: wrap; }
+        .type-selector label { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; margin: 0; }
+        .type-selector input[type="radio"] { width: 16px; height: 16px; accent-color: #00ff88; cursor: pointer; }
+        .speed-control .spam-count { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .speed-control .spam-count input { width: 100px; }
+        .spam-count .unlimited-label { color: #00dd77; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+        .spam-count .unlimited-label input { width: 16px; height: 16px; accent-color: #00ff88; cursor: pointer; }
+
+        .key-input-section { background: #0d0d0d; padding: 15px; border-radius: 10px; border: 1px solid #ff880066; margin-top: 10px; }
+        .key-input-section .key-input-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .key-input-section .key-input-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; min-width: 150px; }
+        .key-input-section .key-input-row button { padding: 10px 20px; background: #ff8800; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .key-input-section .key-input-row button:hover { background: #dd7700; }
+        .key-input-section .key-input-row .btn-get-key { background: #00ff88; color: #0a0a0a; }
+        .key-input-section .key-input-row .btn-get-key:hover { background: #00dd77; }
+        .key-info { font-size: 12px; color: #00aa66; margin-top: 6px; }
+
+        .user-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8844; margin-bottom: 15px; flex-wrap: wrap; gap: 8px; }
+        .user-info .username { color: #00ff88; font-weight: bold; font-size: 16px; }
+        .user-info .key-timer { color: #ff8800; font-size: 13px; background: #ff880022; padding: 2px 12px; border-radius: 12px; border: 1px solid #ff880066; }
+        .user-info .role { color: #ff8800; font-size: 13px; padding: 3px 12px; border-radius: 12px; background: #00ff8822; border: 1px solid #ff880066; }
+        .user-info .role.admin { color: #00ff88; border-color: #00ff88; background: #00ff8822; }
+        .user-info .role.user { color: #ff8800; border-color: #ff8800; background: #ff880022; }
+
+        .hidden { display: none !important; }
+        
+        .auth-form input.default-placeholder::placeholder { color: #00ff8844; }
+        .auth-form input.default-placeholder { color: #00ff88; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 30px; max-width: 450px; width: 90%; box-shadow: 0 0 50px #00ff8833; text-align: center; }
+        .modal-box h3 { color: #00ff88; margin-bottom: 15px; }
+        .modal-box p { color: #00dd77; margin-bottom: 15px; font-size: 14px; }
+        .modal-box .modal-link { color: #ff8800; font-size: 18px; word-break: break-all; margin: 10px 0; padding: 10px; background: #0d0d0d; border-radius: 8px; border: 1px solid #ff880066; }
+        .modal-box .modal-btn { padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; margin: 5px; }
+        .modal-box .modal-btn-primary { background: #00ff88; color: #0a0a0a; }
+        .modal-box .modal-btn-primary:hover { background: #00dd77; }
+        .modal-box .modal-btn-close { background: #ff3344; color: #fff; }
+        .modal-box .modal-btn-close:hover { background: #cc2233; }
+        .free-key-box { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #ff880066; margin: 10px 0; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .free-key-box .key-display { color: #00ff88; font-size: 24px; font-weight: bold; font-family: monospace; letter-spacing: 3px; word-break: break-all; }
+        .free-key-box .key-label { color: #888; font-size: 13px; }
+        .free-key-box .key-expiry-text { color: #ff8800; font-size: 13px; margin-top: 5px; }
+        .free-key-box .loading-text { color: #ffcc00; font-size: 14px; }
+        .free-key-box .copy-key-btn { background: #00ff8822; border: 1px solid #00ff8866; color: #00ff88; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 10px; }
+        .free-key-box .copy-key-btn:hover { background: #00ff8844; }
+        .free-key-box .key-ready-text { color: #00ff88; font-size: 14px; margin-top: 8px; }
+
+        .auth-mode { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-left: 8px; }
+        .auth-mode.login-mode { background: #00ff8822; color: #00ff88; border: 1px solid #00ff88; }
+        .auth-mode.register-mode { background: #ff880022; color: #ff8800; border: 1px solid #ff8800; }
+
+        .reset-key-box { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #ff880066; margin-top: 10px; }
+        .reset-key-box .reset-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .reset-key-box .reset-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; min-width: 150px; }
+        .reset-key-box .reset-row button { padding: 10px 20px; background: #ff8800; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .reset-key-box .reset-row button:hover { background: #dd7700; }
+        
+        .device-count-input { display: flex; align-items: center; gap: 10px; }
+        .device-count-input input { width: 80px; text-align: center; }
+        .device-count-input span { color: #00dd77; font-size: 13px; }
+        
+        .gen-key-box { background: #0d0d0d; padding: 15px; border-radius: 8px; border: 1px solid #00ff8844; margin-top: 10px; }
+        .gen-key-box .gen-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .gen-key-box .gen-row label { margin: 0; font-size: 13px; min-width: 100px; }
+        .gen-key-box .gen-row input { flex: 1; min-width: 80px; padding: 8px; }
+        .gen-key-box .gen-row select { flex: 1; min-width: 120px; padding: 8px; }
+        .gen-key-box .gen-row button { padding: 10px 30px; background: #00ff88; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .gen-key-box .gen-row button:hover { background: #00dd77; }
+        .gen-key-box .key-result { margin-top: 10px; padding: 10px; background: #111; border-radius: 6px; color: #00ff88; font-size: 13px; word-break: break-all; }
+
+        .web-key-notification {
             background: #ff880022;
-            color: #ff8800;
             border: 1px solid #ff8800;
-        }
-        .auto-info {
-            margin-top: 15px;
-            padding: 12px;
-            background: #0d0d0d;
             border-radius: 8px;
-            border: 1px solid #ff880044;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        .auto-info .highlight {
+        .web-key-notification.show {
+            display: flex;
+        }
+        .web-key-notification .key-info {
+            color: #ff8800;
+            font-size: 14px;
+        }
+        .web-key-notification .key-info .key-value {
             color: #00ff88;
             font-weight: bold;
+            font-family: monospace;
+            font-size: 16px;
         }
-        @media (max-width: 500px) {
-            .container {
-                padding: 20px;
-            }
-            .key-value {
-                font-size: 28px;
-                letter-spacing: 5px;
-            }
-            .btn {
-                font-size: 13px;
-                padding: 12px 15px;
-                min-width: 80px;
-            }
+        .web-key-notification .btn-use-key {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .web-key-notification .btn-use-key:hover {
+            background: #00dd77;
+        }
+        .web-key-notification .btn-dismiss {
+            background: transparent;
+            color: #888;
+            border: 1px solid #888;
+            padding: 6px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .web-key-notification .btn-dismiss:hover {
+            background: #888;
+            color: #0a0a0a;
         }
     </style>
 </head>
 <body>
 
-<div class="copy-notification" id="copyNotification">✅ Đã sao chép key!</div>
+<!-- ===== POPUP THÔNG BÁO MUA KEY ===== -->
+<div class="notice-overlay active" id="noticeOverlay">
+    <div class="notice-box">
+        <button class="notice-close-x" id="noticeCloseX">✕</button>
+        <span class="notice-icon">💎</span>
+        <div class="notice-title">🔑 MUA KEY</div>
+        <div class="notice-subtitle">Liên hệ để mua key sử dụng tool</div>
+        <hr class="notice-divider">
+        <div class="notice-content">
+            <p>📌 Để sử dụng tool, bạn cần có <span class="highlight">Key</span></p>
+            <p>Liên hệ Admin để mua key:</p>
+        </div>
+        <div class="notice-contact">
+            <div class="contact-item">
+                <span class="label">📱 Telegram:</span>
+                <span class="value tele">@DevNduc</span>
+            </div>
+            <div class="contact-item">
+                <span class="label">📞 Zalo:</span>
+                <span class="value zalo-text">0325976017</span>
+            </div>
+        </div>
+        <button class="btn-close-notice" id="noticeCloseBtn">✅ ĐÃ HIỂU</button>
+        <button class="btn-close-notice secondary" id="noticeCloseSecondary">✖ Đóng</button>
+    </div>
+</div>
+<!-- ===== END POPUP ===== -->
 
-<div class="container">
-    <h1>🔑 GET KEY FREE</h1>
-    <div class="sub">Chỉ tính giờ khi kích hoạt</div>
+<div class="container" id="app">
+    <h1>⚡ SPAM TELEGRAM PRO</h1>
+    <div class="sub">Dev Nduc</div>
 
-    <!-- Key Display -->
-    <div class="key-display">
-        <div class="key-label">🔑 KEY CỦA BẠN</div>
-        <div class="key-value" id="currentKey">XXXXXXXXXX</div>
-        <div class="key-status status-waiting" id="statusBadge">⏳ Chờ kích hoạt</div>
-        <div style="margin-top:10px; font-size:13px; color:#888;" id="expiryInfo">⏳ Chưa kích hoạt</div>
+    <div id="userInfo" class="user-info hidden">
+        <span>
+            <span class="username" id="displayUsername">Nduc</span>
+            <span class="key-timer hidden" id="keyTimer">⏳ 0h 0m</span>
+        </span>
+        <span>
+            <span class="role" id="displayRole">Admin</span>
+            <button class="btn-logout" id="logoutBtn" style="padding:6px 15px;font-size:12px;margin-left:8px;">Đăng xuất</button>
+        </span>
     </div>
 
-    <div id="statusMessage" class="status-message"></div>
-
-    <!-- Buttons -->
-    <div class="btn-group">
-        <button class="btn btn-copy" id="copyBtn">📋 Sao Chép Key</button>
-        <button class="btn btn-spam" id="spamBtn">🚀 Mở Web Spam</button>
+    <div id="loginForm" class="auth-form">
+        <h3 style="color:#00ff88;margin-bottom:10px;">
+            🔐 ĐĂNG NHẬP 
+            <span class="auth-mode login-mode" id="authModeDisplay">🔑 Đăng nhập</span>
+        </h3>
+        <label>Tài khoản</label>
+        <input type="text" id="loginUsername" class="default-placeholder" placeholder="Nhập tài khoản của bạn" value="">
+        <label>Mật khẩu</label>
+        <input type="password" id="loginPassword" class="default-placeholder" placeholder="Nhập mật khẩu của bạn" value="">
+        <div class="auth-row">
+            <button class="btn-login" id="loginBtn">🔑 Đăng nhập</button>
+            <button class="btn-register" id="registerBtn">📝 Đăng ký</button>
+            <button class="btn-admin-login" id="adminLoginBtn">👑 Admin</button>
+        </div>
+        <div id="authStatus" class="auth-status">Nhập thông tin để đăng nhập hoặc đăng ký</div>
     </div>
 
-    <div class="auto-info">
-        <span style="color:#ff8800;">⚡</span> Mỗi lần vào trang, key mới sẽ được tự động tạo<br>
-        <span style="color:#00aa66;">📌</span> Key sẽ tự động kích hoạt khi bạn mở <span class="highlight">Web Spam</span>
+    <div id="tabContainer" class="tabs hidden">
+        <button class="tab-btn active" data-tab="tabSpam">📨 Spam Tool</button>
+        <button class="tab-btn" data-tab="tabKey" id="adminTabBtn">🔑 Quản lý Key</button>
+        <button class="tab-btn" data-tab="tabMisc" id="miscTabBtn">⚙️ Misc</button>
     </div>
 
-    <div class="info-text">
-        💡 Sao chép key và dán vào Web Spam để sử dụng<br>
-        <span style="color:#00aa66;">📌 Lưu ý: Mỗi key chỉ kích hoạt được 1 lần duy nhất</span>
+    <div id="tabSpam" class="tab-content active">
+        <div id="webKeyNotification" class="web-key-notification">
+            <span class="key-info">
+                🔑 Key từ Web Key: <span class="key-value" id="webKeyDisplay">XXXXXXXXXX</span>
+            </span>
+            <span>
+                <button class="btn-use-key" id="useWebKeyBtn">✅ Sử dụng key này</button>
+                <button class="btn-dismiss" id="dismissWebKeyBtn">✖ Bỏ qua</button>
+            </span>
+        </div>
+
+        <div id="keyInputSection" class="key-input-section hidden">
+            <h4 style="color:#ff8800;margin-bottom:8px;">🔑 Nhập Key để sử dụng</h4>
+            <div class="key-input-row">
+                <input type="text" id="userKeyInput" placeholder="Nhập key của bạn">
+                <button id="activateKeyBtn">Kích hoạt</button>
+                <button class="btn-get-key" id="getKeyBtn">🎁 Lấy Key Free</button>
+            </div>
+            <div id="keyStatusInfo" class="key-info">Vui lòng nhập key để sử dụng tool</div>
+        </div>
+
+        <div id="spamContent" class="hidden">
+            <div class="row-2col">
+                <div>
+                    <label>📨 LOẠI ID</label>
+                    <select id="idType">
+                        <option value="chat">Group ID</option>
+                        <option value="user">User ID</option>
+                    </select>
+                </div>
+                <div>
+                    <label>📌 Group ID / USER ID</label>
+                    <input type="text" id="targetId" placeholder="Nhập ID">
+                </div>
+            </div>
+
+            <div class="type-selector">
+                <label><input type="radio" name="msgType" value="text" checked> 📝 Văn bản</label>
+                <label><input type="radio" name="msgType" value="image"> 🖼️ Ảnh</label>
+            </div>
+
+            <div id="textContent">
+                <label>📝 NỘI DUNG</label>
+                <textarea id="message" placeholder="Nhập nội dung muốn spam"></textarea>
+            </div>
+
+            <div id="imageContent" style="display:none;">
+                <label>🖼️ ẢNH</label>
+                <div class="image-upload">
+                    <input type="file" id="imageFile" accept="image/*">
+                    <div class="url-input">
+                        <input type="text" id="imageUrl" placeholder="Hoặc nhập URL ảnh">
+                        <button id="previewBtn">🔍 Xem trước</button>
+                    </div>
+                    <img id="imagePreview" class="preview" alt="Preview">
+                    <div style="margin-top:6px; font-size:12px; color:#00aa66;">Hỗ trợ: JPG, PNG, GIF (dưới 10MB)</div>
+                </div>
+                <label style="margin-top:10px;">📝 CHÚ THÍCH (tùy chọn)</label>
+                <textarea id="imageCaption" placeholder="Nhập chú thích cho ảnh (tùy chọn)"></textarea>
+            </div>
+
+            <div class="speed-control">
+                <div>
+                    <label>⚡ Tốc độ (ms/gửi):</label>
+                    <input type="number" id="speed" value="150" min="50" max="5000">
+                    <span>(50 = nhanh nhất)</span>
+                </div>
+                <div class="spam-count">
+                    <label>🔢 Số lần spam:</label>
+                    <input type="number" id="spamCount" value="10" min="1" max="999999">
+                    <span>lần</span>
+                    <label class="unlimited-label">
+                        <input type="checkbox" id="unlimitedSpam"> Vô hạn
+                    </label>
+                </div>
+            </div>
+
+            <label style="margin-top:8px;">🤖 DANH SÁCH BOT TOKEN (tối thiểu 1 token có giá trị)</label>
+            <div class="token-list" id="tokenList">
+                <div class="token-item"><label>Bot 1</label><input type="text" class="bot-token" placeholder="Token bot 1"></div>
+                <div class="token-item"><label>Bot 2</label><input type="text" class="bot-token" placeholder="Token bot 2"></div>
+                <div class="token-item"><label>Bot 3</label><input type="text" class="bot-token" placeholder="Token bot 3"></div>
+                <div class="token-item"><label>Bot 4</label><input type="text" class="bot-token" placeholder="Token bot 4"></div>
+                <div class="token-item"><label>Bot 5</label><input type="text" class="bot-token" placeholder="Token bot 5"></div>
+            </div>
+
+            <div class="checkbox-label">
+                <input type="checkbox" id="useAllBots" checked>
+                <span>Sử dụng tất cả bot có token (nếu bỏ chọn chỉ dùng Bot 1)</span>
+            </div>
+
+            <div class="btn-row">
+                <button id="sendBtn">🚀 SPAM Start</button>
+                <button id="stopBtn">⏹ DỪNG</button>
+                <button id="clearBtn">🗑️ Delete Log</button>
+            </div>
+
+            <div class="status-bar">
+                <span>
+                    <span class="status-dot idle" id="statusDot"></span>
+                    <span id="statusText" style="color:#00dd77;font-weight:bold;">Sẵn sàng</span>
+                </span>
+                <span class="counter" id="counter">📤 0 / 10</span>
+            </div>
+            <div id="log">[+] Tool đã sẵn sàng. Nhập token, ID và nội dung để bắt đầu.</div>
+        </div>
+    </div>
+
+    <div id="tabKey" class="tab-content">
+        <div class="key-section">
+            <h3 style="color:#00ff88;margin-bottom:12px;">🔑 QUẢN LÝ KEY</h3>
+            
+            <div class="gen-key-box">
+                <h4 style="color:#00dd77;font-size:14px;margin-bottom:10px;">📱 TẠO KEY CHO NHIỀU THIẾT BỊ</h4>
+                <div class="gen-row">
+                    <label>Số thiết bị:</label>
+                    <input type="number" id="deviceCount" value="1" min="1" max="50" style="width:80px;">
+                    <label>Thời hạn:</label>
+                    <select id="genKeyExpiry">
+                        <option value="1h">1 giờ</option>
+                        <option value="3h">3 giờ</option>
+                        <option value="1d">1 ngày</option>
+                        <option value="7d">7 ngày</option>
+                        <option value="30d" selected>1 tháng</option>
+                        <option value="forever">Vĩnh viễn</option>
+                    </select>
+                    <button id="genMultiKeyBtn">🔑 Tạo Key</button>
+                </div>
+                <div id="genKeyResult" class="key-result" style="display:none;"></div>
+            </div>
+
+            <hr style="border-color:#00ff8844;margin:15px 0;">
+
+            <label>Số lượng key cần tạo (1 key 1 thiết bị)</label>
+            <input type="number" id="keyCount" value="1" min="1" max="100">
+            <label>Thời hạn key</label>
+            <select id="keyExpiry">
+                <option value="1h">1 giờ</option>
+                <option value="3h">3 giờ</option>
+                <option value="1d">1 ngày</option>
+                <option value="7d">7 ngày</option>
+                <option value="30d">1 tháng</option>
+                <option value="forever">Vĩnh viễn</option>
+            </select>
+            <div class="key-row">
+                <button class="btn-gen-key" id="genKeyBtn">🔑 Tạo Key</button>
+                <button class="btn-copy-key" id="copyKeysBtn">📋 Sao chép Key</button>
+                <button class="btn-delete-history" id="deleteHistoryBtn">🗑️ Xóa lịch sử</button>
+            </div>
+            <div style="margin-top:12px;">
+                <h4 style="color:#00dd77;font-size:14px;">Danh sách Key đã tạo <span style="color:#888;font-size:12px;">(lịch sử tạo key)</span></h4>
+                <div id="keyList" class="key-list">
+                    <div style="color:#00aa66;font-size:13px;">Chưa có key nào</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tabMisc" class="tab-content">
+        <div class="misc-section">
+            <h4>🔗 CẤU HÌNH LINK VƯỢT</h4>
+            <label>Link vượt (thay thế link mặc định)</label>
+            <input type="text" id="bypassLinkInput" placeholder="Nhập link vượt mới (ví dụ: https://link4m.org/abc)">
+            <div class="misc-row">
+                <button class="btn-save-link" id="saveBypassLinkBtn">💾 Lưu link</button>
+                <button class="btn-save-link" id="resetBypassLinkBtn" style="background:#ff8800;">↩️ Khôi phục mặc định</button>
+            </div>
+            <div class="current-link-display">
+                🔗 Link hiện tại: <span class="link-value" id="currentBypassLinkDisplay">https://link4m.org/0CSnon</span>
+            </div>
+            <div id="linkStatus" class="misc-status">Nhập link mới và bấm Lưu để thay đổi</div>
+        </div>
+
+        <div class="misc-section">
+            <h4>🚫 QUẢN LÝ BAN ACCOUNT</h4>
+            <label>Tên tài khoản</label>
+            <input type="text" id="banUsernameInput" placeholder="Nhập tên tài khoản cần ban">
+            <div class="misc-row">
+                <button class="btn-ban" id="banUserBtn">🔨 Ban</button>
+                <button class="btn-unban" id="unbanUserBtn">✅ Unban</button>
+                <button class="btn-view-banned" id="viewBannedBtn">📋 Danh sách ban</button>
+                <button class="btn-delete-ban-history" id="deleteBanHistoryBtn">🗑️ Xóa lịch sử</button>
+            </div>
+            <div id="banStatus" class="misc-status">Nhập tên tài khoản và chọn hành động</div>
+            
+            <div class="banned-table-container" id="bannedTableContainer">
+                <h4 style="color:#ff5566;font-size:14px;margin:10px 0 8px 0;">📋 DANH SÁCH TÀI KHOẢN BỊ BAN</h4>
+                <table class="banned-table" id="bannedTable">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên tài khoản</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bannedTableBody">
+                        <tr class="empty-row">
+                            <td colspan="3">Chưa có tài khoản nào bị ban</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="misc-section">
+            <h4>🔄 RESET KEY</h4>
+            <p style="color:#00aa66;font-size:13px;margin-bottom:10px;">Reset key để có thể kích hoạt lại cho acc khác. Thời gian còn lại vẫn được giữ nguyên.</p>
+            <div class="reset-key-box">
+                <div class="reset-row">
+                    <input type="text" id="resetKeyInput" placeholder="Nhập key cần reset">
+                    <button id="resetKeyBtn">🔄 Reset Key</button>
+                </div>
+                <div id="resetStatus" class="misc-status" style="margin-top:8px;">Nhập key và bấm Reset để reset key</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">⚡ Dev Nduc ⚡</div>
+</div>
+
+<!-- Modal Get Key -->
+<div class="modal-overlay" id="getKeyModal">
+    <div class="modal-box">
+        <h3>🎁 LẤY KEY FREE</h3>
+        <p>Bấm vào link bên dưới để lấy key:</p>
+        <div class="modal-link" id="modalBypassLink">🔗 https://link4m.org/0CSnon</div>
+        <div style="margin:15px 0;">
+            <button class="modal-btn modal-btn-primary" id="openLinkBtn">🌐 Mở link</button>
+        </div>
+        <p style="font-size:13px;color:#00aa66;">Sau khi vượt link xong, key sẽ hiển thị bên dưới:</p>
+        <div class="free-key-box" id="freeKeyDisplay">
+            <div class="loading-text">⏳ Nhấn "Mở link" để lấy key...</div>
+        </div>
+        <button class="modal-btn modal-btn-close" id="closeModalBtn">Đóng</button>
     </div>
 </div>
 
 <script>
-    (function() {
-        // ========== CONFIG ==========
-        const SPAM_WEB_URL = 'https://telegram-spam-pro.vercel.app/'; // Thay bằng URL web spam của bạn
-        const STORAGE_KEY = 'all_keys_data';
-        const ACTIVATED_KEYS_KEY = 'activated_keys';
+(function() {
+    // ===== POPUP THÔNG BÁO =====
+    const noticeOverlay = document.getElementById('noticeOverlay');
+    const noticeCloseBtn = document.getElementById('noticeCloseBtn');
+    const noticeCloseSecondary = document.getElementById('noticeCloseSecondary');
+    const noticeCloseX = document.getElementById('noticeCloseX');
 
-        // ========== DOM REFS ==========
-        const currentKeyDisplay = document.getElementById('currentKey');
-        const statusBadge = document.getElementById('statusBadge');
-        const expiryInfo = document.getElementById('expiryInfo');
-        const copyNotification = document.getElementById('copyNotification');
-        const copyBtn = document.getElementById('copyBtn');
-        const spamBtn = document.getElementById('spamBtn');
-        const statusMessage = document.getElementById('statusMessage');
+    function closeNotice() {
+        noticeOverlay.classList.remove('active');
+        noticeOverlay.style.display = 'none';
+        // Lưu lại để không hiển thị lại trong phiên này
+        sessionStorage.setItem('notice_closed', 'true');
+    }
 
-        // ========== UTILITY ==========
-        function generateRandomKey() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let key = '';
-            for (let i = 0; i < 10; i++) {
-                key += chars.charAt(Math.floor(Math.random() * chars.length));
+    // Kiểm tra xem đã đóng thông báo chưa
+    if (sessionStorage.getItem('notice_closed') === 'true') {
+        noticeOverlay.classList.remove('active');
+        noticeOverlay.style.display = 'none';
+    } else {
+        noticeOverlay.classList.add('active');
+        noticeOverlay.style.display = 'flex';
+    }
+
+    noticeCloseBtn.addEventListener('click', closeNotice);
+    noticeCloseSecondary.addEventListener('click', closeNotice);
+    noticeCloseX.addEventListener('click', closeNotice);
+
+    // Click ra ngoài cũng đóng
+    noticeOverlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeNotice();
+        }
+    });
+    // ===== END POPUP =====
+
+    // ========== DATA STORAGE ==========
+    const STORAGE_KEY = 'telegram_spam_data';
+    const ACTIVATED_KEYS_KEY = 'activated_keys';
+    const ALL_KEYS_KEY = 'all_keys_data';
+    
+    let appData = {
+        users: {
+            'Nduc': { password: 'Ducanh05092008', role: 'admin' }
+        },
+        keys: {},
+        keyHistory: [],
+        bannedUsers: [],
+        bypassLink: 'https://link4m.org/0CSnon',
+        keyActivations: {}
+    };
+
+    let currentUser = null;
+    let isKeyValid = false;
+    let userKey = null;
+    let timerInterval = null;
+    let pendingKeyForActivation = null;
+    let webKeyDetected = null;
+
+    function getWebKeyFromStorage() {
+        try {
+            const activatedKeys = JSON.parse(localStorage.getItem(ACTIVATED_KEYS_KEY) || '{}');
+            for (const [key, data] of Object.entries(activatedKeys)) {
+                if (data.status === 'active' && data.expiryTime > Date.now()) {
+                    return { key, data };
+                }
             }
-            return key;
+            return null;
+        } catch (e) {
+            return null;
         }
+    }
 
-        function getAllKeys() {
-            try {
-                const data = localStorage.getItem(STORAGE_KEY);
-                return data ? JSON.parse(data) : [];
-            } catch (e) {
-                return [];
+    function loadData() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                appData.users = parsed.users || appData.users;
+                appData.keys = parsed.keys || {};
+                appData.keyHistory = parsed.keyHistory || [];
+                appData.bannedUsers = parsed.bannedUsers || [];
+                appData.bypassLink = parsed.bypassLink || 'https://link4m.org/0CSnon';
+                appData.keyActivations = parsed.keyActivations || {};
             }
+        } catch (e) {}
+    }
+
+    function saveData() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ 
+                users: appData.users, 
+                keys: appData.keys,
+                keyHistory: appData.keyHistory,
+                bannedUsers: appData.bannedUsers,
+                bypassLink: appData.bypassLink,
+                keyActivations: appData.keyActivations
+            }));
+        } catch (e) {}
+    }
+
+    loadData();
+
+    // ========== DOM REFS ==========
+    const loginForm = document.getElementById('loginForm');
+    const userInfo = document.getElementById('userInfo');
+    const displayUsername = document.getElementById('displayUsername');
+    const displayRole = document.getElementById('displayRole');
+    const keyTimer = document.getElementById('keyTimer');
+    const loginUsername = document.getElementById('loginUsername');
+    const loginPassword = document.getElementById('loginPassword');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const authStatus = document.getElementById('authStatus');
+    const authModeDisplay = document.getElementById('authModeDisplay');
+    const tabContainer = document.getElementById('tabContainer');
+    const adminTabBtn = document.getElementById('adminTabBtn');
+    const miscTabBtn = document.getElementById('miscTabBtn');
+    const tabSpam = document.getElementById('tabSpam');
+    const tabKey = document.getElementById('tabKey');
+    const tabMisc = document.getElementById('tabMisc');
+    const keyInputSection = document.getElementById('keyInputSection');
+    const userKeyInput = document.getElementById('userKeyInput');
+    const activateKeyBtn = document.getElementById('activateKeyBtn');
+    const getKeyBtn = document.getElementById('getKeyBtn');
+    const keyStatusInfo = document.getElementById('keyStatusInfo');
+    const keyCount = document.getElementById('keyCount');
+    const keyExpiry = document.getElementById('keyExpiry');
+    const deviceCount = document.getElementById('deviceCount');
+    const genKeyExpiry = document.getElementById('genKeyExpiry');
+    const genMultiKeyBtn = document.getElementById('genMultiKeyBtn');
+    const genKeyResult = document.getElementById('genKeyResult');
+    const genKeyBtn = document.getElementById('genKeyBtn');
+    const copyKeysBtn = document.getElementById('copyKeysBtn');
+    const deleteHistoryBtn = document.getElementById('deleteHistoryBtn');
+    const deleteBanHistoryBtn = document.getElementById('deleteBanHistoryBtn');
+    const keyList = document.getElementById('keyList');
+    const spamContent = document.getElementById('spamContent');
+    const getKeyModal = document.getElementById('getKeyModal');
+    const openLinkBtn = document.getElementById('openLinkBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const freeKeyDisplay = document.getElementById('freeKeyDisplay');
+    const modalBypassLink = document.getElementById('modalBypassLink');
+
+    const webKeyNotification = document.getElementById('webKeyNotification');
+    const webKeyDisplay = document.getElementById('webKeyDisplay');
+    const useWebKeyBtn = document.getElementById('useWebKeyBtn');
+    const dismissWebKeyBtn = document.getElementById('dismissWebKeyBtn');
+
+    const bypassLinkInput = document.getElementById('bypassLinkInput');
+    const saveBypassLinkBtn = document.getElementById('saveBypassLinkBtn');
+    const resetBypassLinkBtn = document.getElementById('resetBypassLinkBtn');
+    const currentBypassLinkDisplay = document.getElementById('currentBypassLinkDisplay');
+    const linkStatus = document.getElementById('linkStatus');
+    const banUsernameInput = document.getElementById('banUsernameInput');
+    const banUserBtn = document.getElementById('banUserBtn');
+    const unbanUserBtn = document.getElementById('unbanUserBtn');
+    const viewBannedBtn = document.getElementById('viewBannedBtn');
+    const banStatus = document.getElementById('banStatus');
+    const bannedTableContainer = document.getElementById('bannedTableContainer');
+    const bannedTableBody = document.getElementById('bannedTableBody');
+    const resetKeyInput = document.getElementById('resetKeyInput');
+    const resetKeyBtn = document.getElementById('resetKeyBtn');
+    const resetStatus = document.getElementById('resetStatus');
+
+    const idType = document.getElementById('idType');
+    const targetId = document.getElementById('targetId');
+    const message = document.getElementById('message');
+    const speed = document.getElementById('speed');
+    const spamCount = document.getElementById('spamCount');
+    const unlimitedSpam = document.getElementById('unlimitedSpam');
+    const sendBtn = document.getElementById('sendBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const log = document.getElementById('log');
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const counter = document.getElementById('counter');
+    const useAllBots = document.getElementById('useAllBots');
+    const tokenInputs = document.querySelectorAll('.bot-token');
+    const msgTypeRadios = document.querySelectorAll('input[name="msgType"]');
+    const textContent = document.getElementById('textContent');
+    const imageContent = document.getElementById('imageContent');
+    const imageFile = document.getElementById('imageFile');
+    const imageUrl = document.getElementById('imageUrl');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewBtn = document.getElementById('previewBtn');
+    const imageCaption = document.getElementById('imageCaption');
+
+    let totalSent = 0;
+    let running = false;
+    let stopRequested = false;
+    let sendTimeout = null;
+    let currentBotIndex = 0;
+    let currentImageData = null;
+    let isUnlimited = false;
+
+    // ========== UTILITY ==========
+    function generateKey() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let key = '';
+        for (let i = 0; i < 10; i++) {
+            key += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return key;
+    }
+
+    function generateUniqueKey() {
+        let key;
+        let attempts = 0;
+        do {
+            key = generateKey();
+            attempts++;
+        } while (appData.keys[key] && attempts < 100);
+        return key;
+    }
+
+    function getDurationMs(expiryStr) {
+        const map = {
+            '1h': 60 * 60 * 1000,
+            '3h': 3 * 60 * 60 * 1000,
+            '1d': 24 * 60 * 60 * 1000,
+            '7d': 7 * 24 * 60 * 60 * 1000,
+            '30d': 30 * 24 * 60 * 60 * 1000,
+            'forever': Infinity
+        };
+        return map[expiryStr] || 0;
+    }
+
+    function getTimeRemaining(expiry) {
+        if (expiry === Infinity) return 'Vĩnh viễn';
+        const diff = expiry - Date.now();
+        if (diff <= 0) return 'Hết hạn';
+        const hours = Math.floor(diff / (60 * 60 * 1000));
+        const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+        if (hours > 24) {
+            const days = Math.floor(hours / 24);
+            return `${days} ngày ${hours % 24} giờ`;
+        }
+        if (hours > 0) return `${hours} giờ ${minutes} phút`;
+        return `${minutes} phút`;
+    }
+
+    function isKeyActive(key) {
+        const activation = appData.keyActivations[key];
+        if (!activation) return false;
+        const keyData = appData.keys[key];
+        if (!keyData) return false;
+        const duration = keyData.duration || 0;
+        const activatedAt = activation.activatedAt || keyData.createdAt;
+        const expiryTime = activatedAt + duration;
+        return Date.now() <= expiryTime;
+    }
+
+    // ========== AUTH ==========
+    function setAuthMode(mode) {
+        if (mode === 'login') {
+            authModeDisplay.textContent = '🔑 Đăng nhập';
+            authModeDisplay.className = 'auth-mode login-mode';
+            authStatus.innerHTML = '🔑 Nhập thông tin để đăng nhập';
+        } else {
+            authModeDisplay.textContent = '📝 Đăng ký';
+            authModeDisplay.className = 'auth-mode register-mode';
+            authStatus.innerHTML = '📝 Nhập thông tin để đăng ký tài khoản mới';
+        }
+    }
+
+    loginBtn.addEventListener('click', function() {
+        setAuthMode('login');
+        const username = loginUsername.value.trim();
+        const password = loginPassword.value.trim();
+        if (!username || !password) {
+            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+            return;
+        }
+        login(username, password);
+    });
+
+    registerBtn.addEventListener('click', function() {
+        setAuthMode('register');
+        const username = loginUsername.value.trim();
+        const password = loginPassword.value.trim();
+        if (!username || !password) {
+            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+            return;
+        }
+        register(username, password);
+    });
+
+    function login(username, password) {
+        if (appData.bannedUsers.includes(username)) {
+            authStatus.innerHTML = '🚫 Tài khoản này đã bị BAN! Liên hệ Admin.';
+            return false;
+        }
+        const user = appData.users[username];
+        if (!user) {
+            authStatus.innerHTML = '❌ Tài khoản không tồn tại!';
+            return false;
+        }
+        if (user.password !== password) {
+            authStatus.innerHTML = '❌ Sai mật khẩu!';
+            return false;
+        }
+        currentUser = { username, role: user.role };
+        authStatus.innerHTML = `✅ Đăng nhập thành công! Chào ${username}`;
+        updateUI();
+        return true;
+    }
+
+    function adminLogin(password) {
+        const adminUser = appData.users['Nduc'];
+        if (!adminUser) {
+            authStatus.innerHTML = '❌ Tài khoản Admin không tồn tại!';
+            return false;
+        }
+        if (adminUser.password !== password) {
+            authStatus.innerHTML = '❌ Sai mật khẩu Admin!';
+            return false;
+        }
+        currentUser = { username: 'Nduc', role: 'admin' };
+        authStatus.innerHTML = `✅ Đăng nhập Admin thành công!`;
+        updateUI();
+        return true;
+    }
+
+    function register(username, password) {
+        if (appData.users[username]) {
+            authStatus.innerHTML = '❌ Tài khoản đã tồn tại!';
+            return false;
+        }
+        if (username.length < 3 || password.length < 3) {
+            authStatus.innerHTML = '❌ Tên và mật khẩu phải có ít nhất 3 ký tự!';
+            return false;
+        }
+        appData.users[username] = { password, role: 'user' };
+        saveData();
+        authStatus.innerHTML = `✅ Đăng ký thành công! Bạn có thể đăng nhập ngay.`;
+        setAuthMode('login');
+        return true;
+    }
+
+    function logout() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        currentUser = null;
+        isKeyValid = false;
+        userKey = null;
+        pendingKeyForActivation = null;
+        webKeyDetected = null;
+        updateUI();
+        authStatus.innerHTML = 'Đã đăng xuất.';
+        setAuthMode('login');
+    }
+
+    function checkWebKey() {
+        if (!currentUser || currentUser.role === 'admin') {
+            webKeyNotification.classList.remove('show');
+            return;
         }
 
-        function saveAllKeys(keys) {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
-            } catch (e) {}
+        const webKey = getWebKeyFromStorage();
+        if (webKey) {
+            webKeyDisplay.textContent = webKey.key;
+            webKeyNotification.classList.add('show');
+            webKeyDetected = webKey;
+        } else {
+            webKeyNotification.classList.remove('show');
+            webKeyDetected = null;
         }
+    }
 
-        function getActivatedKeys() {
-            try {
-                const data = localStorage.getItem(ACTIVATED_KEYS_KEY);
-                return data ? JSON.parse(data) : {};
-            } catch (e) {
-                return {};
-            }
-        }
-
-        function saveActivatedKeys(activated) {
-            try {
-                localStorage.setItem(ACTIVATED_KEYS_KEY, JSON.stringify(activated));
-            } catch (e) {}
-        }
-
-        function showStatusMessage(message, type = 'info') {
-            statusMessage.textContent = message;
-            statusMessage.className = 'status-message ' + type;
-        }
-
-        function hideStatusMessage() {
-            statusMessage.className = 'status-message';
-            statusMessage.style.display = 'none';
-        }
-
-        function showNotification(message) {
-            copyNotification.style.display = 'block';
-            copyNotification.textContent = message;
-            setTimeout(() => {
-                copyNotification.style.display = 'none';
-            }, 3000);
-        }
-
-        function getTimeRemaining(expiry) {
-            const diff = expiry - Date.now();
-            if (diff <= 0) return 'Hết hạn';
-            const hours = Math.floor(diff / (60 * 60 * 1000));
-            const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
-            if (hours > 24) {
-                const days = Math.floor(hours / 24);
-                return `${days} ngày ${hours % 24} giờ`;
-            }
-            if (hours > 0) return `${hours} giờ ${minutes} phút`;
-            return `${minutes} phút`;
-        }
-
-        // ========== TẠO KEY MỚI ==========
-        function createNewKey() {
-            const newKey = generateRandomKey();
-            const allKeys = getAllKeys();
-            
-            // Kiểm tra key đã tồn tại chưa
-            const exists = allKeys.some(item => item.key === newKey);
-            if (exists) {
-                return createNewKey();
-            }
-
-            // Xóa tất cả key cũ (chỉ giữ key mới nhất)
-            // Lưu key mới với trạng thái 'waiting'
-            allKeys.unshift({
-                key: newKey,
-                createdAt: Date.now(),
-                status: 'waiting',
-                activatedAt: null,
-                expiryTime: null
+    useWebKeyBtn.addEventListener('click', function() {
+        if (!webKeyDetected) return;
+        
+        const key = webKeyDetected.key;
+        const keyData = webKeyDetected.data;
+        
+        if (!appData.keys[key]) {
+            const duration = keyData.expiryTime - keyData.activatedAt;
+            appData.keys[key] = {
+                username: 'Web Key',
+                expiry: keyData.expiryTime,
+                duration: duration,
+                createdAt: keyData.activatedAt,
+                status: 'used'
+            };
+            appData.keyActivations[key] = {
+                username: currentUser.username,
+                activatedAt: keyData.activatedAt
+            };
+            appData.keyHistory.unshift({
+                key: key,
+                username: 'Web Key',
+                expiry: keyData.expiryTime,
+                duration: duration,
+                createdAt: keyData.activatedAt,
+                status: 'used',
+                type: 'web'
             });
-            
-            saveAllKeys(allKeys);
-            
-            currentKeyDisplay.textContent = newKey;
-            statusBadge.textContent = '⏳ Chờ kích hoạt';
-            statusBadge.className = 'key-status status-waiting';
-            expiryInfo.textContent = '⏳ Chưa kích hoạt - Mở Web Spam để kích hoạt tự động';
-            hideStatusMessage();
-            
-            // Tự động copy key
-            setTimeout(() => {
-                copyCurrentKey();
-            }, 500);
-            
-            return newKey;
+            saveData();
+            renderKeyHistory();
         }
 
-        // ========== COPY KEY ==========
-        function copyCurrentKey() {
-            const key = currentKeyDisplay.textContent;
-            if (!key || key === 'XXXXXXXXXX') {
-                showStatusMessage('❌ Chưa có key!', 'error');
-                return;
+        isKeyValid = true;
+        userKey = key;
+        spamContent.classList.remove('hidden');
+        keyInputSection.classList.add('hidden');
+        keyTimer.classList.remove('hidden');
+        const timeRemaining = getTimeRemaining(keyData.expiryTime);
+        keyStatusInfo.innerHTML = `✅ Key từ Web Key đã được kích hoạt! Còn lại: ${timeRemaining}`;
+        keyStatusInfo.style.color = '#00ff88';
+        
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(updateKeyTimer, 1000);
+        updateKeyTimer();
+        
+        webKeyNotification.classList.remove('show');
+        webKeyDetected = null;
+        
+        appendLog(`✅ Đã kích hoạt key từ Web Key: ${key}`);
+    });
+
+    dismissWebKeyBtn.addEventListener('click', function() {
+        webKeyNotification.classList.remove('show');
+        webKeyDetected = null;
+    });
+
+    // ========== UPDATE UI ==========
+    function updateUI() {
+        if (currentUser) {
+            loginForm.classList.add('hidden');
+            userInfo.classList.remove('hidden');
+            displayUsername.textContent = currentUser.username;
+            displayRole.textContent = currentUser.role === 'admin' ? '👑 Admin' : '👤 User';
+            displayRole.className = 'role ' + (currentUser.role === 'admin' ? 'admin' : 'user');
+            tabContainer.classList.remove('hidden');
+
+            if (currentUser.role === 'admin') {
+                adminTabBtn.classList.remove('hidden');
+                miscTabBtn.classList.remove('hidden');
+                isKeyValid = true;
+                keyInputSection.classList.add('hidden');
+                spamContent.classList.remove('hidden');
+                keyTimer.classList.add('hidden');
+                webKeyNotification.classList.remove('show');
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                renderBannedTable();
+                updateBypassLinkDisplay();
+            } else {
+                adminTabBtn.classList.add('hidden');
+                miscTabBtn.classList.add('hidden');
+                keyInputSection.classList.remove('hidden');
+                spamContent.classList.add('hidden');
+                checkWebKey();
+                checkUserKey();
             }
 
-            navigator.clipboard.writeText(key).then(() => {
-                showNotification(`✅ Đã sao chép key: ${key}`);
-                showStatusMessage(`✅ Đã sao chép key: ${key}`, 'success');
-            }).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = key;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showNotification(`✅ Đã sao chép key: ${key}`);
-                showStatusMessage(`✅ Đã sao chép key: ${key}`, 'success');
-            });
+            switchTab('tabSpam');
+        } else {
+            loginForm.classList.remove('hidden');
+            userInfo.classList.add('hidden');
+            tabContainer.classList.add('hidden');
+            tabSpam.classList.remove('active');
+            tabSpam.style.display = 'none';
+            tabKey.classList.remove('active');
+            tabKey.style.display = 'none';
+            tabMisc.classList.remove('active');
+            tabMisc.style.display = 'none';
+            webKeyNotification.classList.remove('show');
+            if (running) stopSpam();
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
         }
+        renderKeyHistory();
+    }
 
-        // ========== KIỂM TRA KEY ĐÃ KÍCH HOẠT CHƯA ==========
-        function checkKeyStatus() {
-            const key = currentKeyDisplay.textContent;
-            if (!key || key === 'XXXXXXXXXX') return;
-            
-            const activatedKeys = getActivatedKeys();
-            if (activatedKeys[key]) {
-                const data = activatedKeys[key];
-                if (data.status === 'active') {
-                    statusBadge.textContent = '✅ Đã kích hoạt';
-                    statusBadge.className = 'key-status status-active';
-                    const timeRemaining = getTimeRemaining(data.expiryTime);
-                    expiryInfo.textContent = `⏳ Còn lại: ${timeRemaining}`;
-                    showStatusMessage(`✅ Key đã được kích hoạt! Còn lại: ${timeRemaining}`, 'success');
+    function checkUserKey() {
+        if (!currentUser || currentUser.role === 'admin') {
+            isKeyValid = true;
+            return;
+        }
+        isKeyValid = false;
+        userKey = null;
+        
+        for (const [key, data] of Object.entries(appData.keys)) {
+            const activation = appData.keyActivations[key];
+            if (!activation) continue;
+            if (activation.username === currentUser.username) {
+                const keyData = appData.keys[key];
+                if (!keyData) continue;
+                const duration = keyData.duration || 0;
+                const activatedAt = activation.activatedAt || data.createdAt;
+                const expiryTime = activatedAt + duration;
+                
+                if (Date.now() <= expiryTime) {
+                    isKeyValid = true;
+                    userKey = key;
+                    keyData.expiry = expiryTime;
+                    break;
+                } else {
+                    keyData.status = 'expired';
+                    saveData();
+                    renderKeyHistory();
                 }
             }
         }
+        
+        if (isKeyValid) {
+            const keyData = appData.keys[userKey];
+            const activation = appData.keyActivations[userKey];
+            const owner = activation ? activation.username : 'Chưa kích hoạt';
+            const timeRemaining = getTimeRemaining(keyData.expiry);
+            keyStatusInfo.innerHTML = `✅ Key hợp lệ! Chủ sở hữu: ${owner}. Thời gian còn lại: ${timeRemaining}`;
+            keyStatusInfo.style.color = '#00ff88';
+            spamContent.classList.remove('hidden');
+            keyInputSection.classList.add('hidden');
+            keyTimer.classList.remove('hidden');
+            updateKeyTimer();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateKeyTimer, 1000);
+        } else {
+            let hasAvailableKey = false;
+            for (const [key, data] of Object.entries(appData.keys)) {
+                if (data.status === 'active' && !appData.keyActivations[key]) {
+                    hasAvailableKey = true;
+                    break;
+                }
+            }
+            if (hasAvailableKey) {
+                keyStatusInfo.innerHTML = '🔑 Có key chưa được kích hoạt. Nhập key để kích hoạt và sử dụng!';
+                keyStatusInfo.style.color = '#ff8800';
+            } else {
+                keyStatusInfo.innerHTML = '❌ Không có key hợp lệ. Vui lòng nhập key hoặc lấy key free.';
+                keyStatusInfo.style.color = '#ff5566';
+            }
+            spamContent.classList.add('hidden');
+            keyInputSection.classList.remove('hidden');
+            keyTimer.classList.add('hidden');
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+    }
 
-        // ========== EVENT LISTENERS ==========
-        copyBtn.addEventListener('click', copyCurrentKey);
-
-        spamBtn.addEventListener('click', function() {
-            // Mở Web Spam
-            window.open(SPAM_WEB_URL, '_blank');
-            
-            // Thông báo
-            showStatusMessage('🚀 Đã mở Web Spam! Hãy dán key vào để sử dụng.', 'info');
-        });
-
-        // ========== TỰ ĐỘNG LÀM MỚI TRANG ==========
-        function autoRefresh() {
-            // Lưu thời gian vào sessionStorage để kiểm tra
-            const lastVisit = sessionStorage.getItem('last_visit_key_page');
-            const now = Date.now();
-            
-            if (lastVisit) {
-                const diff = now - parseInt(lastVisit);
-                // Nếu đã qua 5 phút, refresh lại trang để tạo key mới
-                if (diff > 5 * 60 * 1000) {
-                    sessionStorage.setItem('last_visit_key_page', now.toString());
-                    location.reload();
-                    return;
+    function updateKeyTimer() {
+        if (!currentUser || currentUser.role === 'admin') {
+            keyTimer.classList.add('hidden');
+            return;
+        }
+        if (userKey && appData.keys[userKey]) {
+            const keyData = appData.keys[userKey];
+            const activation = appData.keyActivations[userKey];
+            if (activation && activation.username === currentUser.username) {
+                const duration = keyData.duration || 0;
+                const activatedAt = activation.activatedAt || keyData.createdAt;
+                const expiryTime = activatedAt + duration;
+                
+                if (Date.now() <= expiryTime) {
+                    keyTimer.classList.remove('hidden');
+                    keyTimer.textContent = '⏳ ' + getTimeRemaining(expiryTime);
+                    keyData.expiry = expiryTime;
+                } else {
+                    keyTimer.classList.add('hidden');
+                    keyData.status = 'expired';
+                    saveData();
+                    renderKeyHistory();
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                    checkUserKey();
                 }
             } else {
-                sessionStorage.setItem('last_visit_key_page', now.toString());
+                keyTimer.classList.add('hidden');
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                checkUserKey();
+            }
+        } else {
+            keyTimer.classList.add('hidden');
+        }
+    }
+
+    function activateKey(key) {
+        if (!currentUser) return false;
+        const keyData = appData.keys[key];
+        if (!keyData) {
+            keyStatusInfo.innerHTML = '❌ Key không tồn tại!';
+            keyStatusInfo.style.color = '#ff5566';
+            return false;
+        }
+        
+        const activation = appData.keyActivations[key];
+        if (activation) {
+            if (activation.username === currentUser.username) {
+                const duration = keyData.duration || 0;
+                const activatedAt = activation.activatedAt || keyData.createdAt;
+                const expiryTime = activatedAt + duration;
+                if (Date.now() <= expiryTime) {
+                    keyStatusInfo.innerHTML = `✅ Key đã được kích hoạt cho bạn. Thời gian còn lại: ${getTimeRemaining(expiryTime)}`;
+                    keyStatusInfo.style.color = '#00ff88';
+                    isKeyValid = true;
+                    userKey = key;
+                    keyData.expiry = expiryTime;
+                    spamContent.classList.remove('hidden');
+                    keyInputSection.classList.add('hidden');
+                    keyTimer.classList.remove('hidden');
+                    if (timerInterval) clearInterval(timerInterval);
+                    timerInterval = setInterval(updateKeyTimer, 1000);
+                    updateKeyTimer();
+                    return true;
+                } else {
+                    keyStatusInfo.innerHTML = '❌ Key đã hết hạn!';
+                    keyStatusInfo.style.color = '#ff5566';
+                    keyData.status = 'expired';
+                    saveData();
+                    renderKeyHistory();
+                    return false;
+                }
+            } else {
+                keyStatusInfo.innerHTML = `❌ Key này đã được kích hoạt bởi "${activation.username}". Không thể sử dụng!`;
+                keyStatusInfo.style.color = '#ff5566';
+                return false;
+            }
+        }
+        
+        if (keyData.status === 'used' || keyData.status === 'expired') {
+            keyStatusInfo.innerHTML = '❌ Key đã được sử dụng hoặc hết hạn!';
+            keyStatusInfo.style.color = '#ff5566';
+            return false;
+        }
+        
+        const duration = keyData.duration || 0;
+        const activatedAt = Date.now();
+        const expiryTime = activatedAt + duration;
+        
+        appData.keyActivations[key] = {
+            username: currentUser.username,
+            activatedAt: activatedAt
+        };
+        keyData.status = 'used';
+        keyData.expiry = expiryTime;
+        
+        const historyItem = appData.keyHistory.find(item => item.key === key);
+        if (historyItem) {
+            historyItem.status = 'used';
+            historyItem.activatedBy = currentUser.username;
+            historyItem.activatedAt = activatedAt;
+            historyItem.expiry = expiryTime;
+        }
+        saveData();
+        renderKeyHistory();
+        isKeyValid = true;
+        userKey = key;
+        keyStatusInfo.innerHTML = `✅ Kích hoạt key thành công! Chủ sở hữu: ${currentUser.username}. Thời gian còn lại: ${getTimeRemaining(expiryTime)}`;
+        keyStatusInfo.style.color = '#00ff88';
+        spamContent.classList.remove('hidden');
+        keyInputSection.classList.add('hidden');
+        keyTimer.classList.remove('hidden');
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(updateKeyTimer, 1000);
+        updateKeyTimer();
+        pendingKeyForActivation = null;
+        return true;
+    }
+
+    // ========== KEY MANAGEMENT ==========
+    function generateFreeKey(username) {
+        const newKey = generateUniqueKey();
+        const duration = 60 * 60 * 1000;
+        appData.keys[newKey] = {
+            username: username,
+            expiry: Date.now() + duration,
+            duration: duration,
+            createdAt: Date.now(),
+            status: 'active'
+        };
+        appData.keyHistory.unshift({
+            key: newKey,
+            username: username,
+            expiry: Date.now() + duration,
+            duration: duration,
+            createdAt: Date.now(),
+            status: 'active',
+            type: 'free'
+        });
+        delete appData.keyActivations[newKey];
+        saveData();
+        renderKeyHistory();
+        return newKey;
+    }
+
+    function generateAdminKeys(count, expiryStr) {
+        const keys = [];
+        const duration = getDurationMs(expiryStr);
+        
+        for (let i = 0; i < count; i++) {
+            const newKey = generateUniqueKey();
+            appData.keys[newKey] = {
+                username: 'Nduc (Admin)',
+                expiry: duration === Infinity ? Infinity : Date.now() + duration,
+                duration: duration,
+                createdAt: Date.now(),
+                status: 'active'
+            };
+            appData.keyHistory.unshift({
+                key: newKey,
+                username: 'Nduc (Admin)',
+                expiry: duration === Infinity ? Infinity : Date.now() + duration,
+                duration: duration,
+                createdAt: Date.now(),
+                status: 'active',
+                type: 'admin'
+            });
+            delete appData.keyActivations[newKey];
+            keys.push(newKey);
+        }
+        saveData();
+        renderKeyHistory();
+        return keys;
+    }
+
+    function generateMultiDeviceKey(deviceCount, expiryStr) {
+        const duration = getDurationMs(expiryStr);
+        const newKey = generateUniqueKey();
+        appData.keys[newKey] = {
+            username: 'Nduc (Admin) - Multi Device',
+            expiry: duration === Infinity ? Infinity : Date.now() + duration,
+            duration: duration,
+            createdAt: Date.now(),
+            status: 'active',
+            maxDevices: deviceCount,
+            usedDevices: 0
+        };
+        appData.keyHistory.unshift({
+            key: newKey,
+            username: 'Nduc (Admin) - Multi Device',
+            expiry: duration === Infinity ? Infinity : Date.now() + duration,
+            duration: duration,
+            createdAt: Date.now(),
+            status: 'active',
+            type: 'multi',
+            maxDevices: deviceCount,
+            usedDevices: 0
+        });
+        delete appData.keyActivations[newKey];
+        saveData();
+        renderKeyHistory();
+        return newKey;
+    }
+
+    function renderKeyHistory() {
+        if (appData.keyHistory.length === 0) {
+            keyList.innerHTML = '<div style="color:#00aa66;font-size:13px;">Chưa có key nào</div>';
+            return;
+        }
+        let html = '';
+        for (const item of appData.keyHistory) {
+            let status = item.status;
+            const activation = appData.keyActivations[item.key];
+            
+            if (activation && status !== 'expired' && status !== 'reseted') {
+                const duration = item.duration || 0;
+                const activatedAt = activation.activatedAt || item.createdAt;
+                const expiryTime = activatedAt + duration;
+                if (Date.now() > expiryTime) {
+                    status = 'expired';
+                    const keyData = appData.keys[item.key];
+                    if (keyData) keyData.status = 'expired';
+                    item.status = 'expired';
+                }
+            }
+            
+            const activatedBy = activation ? activation.username : 'Chưa kích hoạt';
+            const statusText = status === 'active' ? '✅ Còn hạn' : 
+                              status === 'used' ? '🔑 Đã dùng' : 
+                              status === 'reseted' ? '🔄 Đã reset' : '❌ Hết hạn';
+            const statusClass = status === 'active' ? 'active' : 
+                               status === 'used' ? 'used' : 
+                               status === 'reseted' ? 'reseted' : 'expired';
+            
+            let timeRemaining = 'Chưa kích hoạt';
+            if (activation) {
+                const duration = item.duration || 0;
+                const activatedAt = activation.activatedAt || item.createdAt;
+                const expiryTime = activatedAt + duration;
+                timeRemaining = duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(expiryTime);
+            }
+            
+            let typeLabel = item.type === 'free' ? '🎁 Free' : 
+                           item.type === 'multi' ? '📱 Multi Device' : 
+                           item.type === 'web' ? '🌐 Web Key' : '👑 Admin';
+            let deviceInfo = '';
+            if (item.type === 'multi' && item.maxDevices) {
+                const used = item.usedDevices || 0;
+                deviceInfo = `<span class="device-info">📱 ${used}/${item.maxDevices} thiết bị</span>`;
+            }
+            const activatedInfo = `🔑 Kích hoạt bởi: ${activatedBy}`;
+            html += `
+                <div class="key-item">
+                    <span>
+                        <span class="key-code">${item.key}</span>
+                        <span class="key-user">- ${item.username}</span>
+                        <span style="color:#888;font-size:11px;">${typeLabel}</span>
+                        ${deviceInfo}
+                    </span>
+                    <span>
+                        <span class="key-expiry">⏳ ${timeRemaining}</span>
+                        <span style="color:#888;font-size:11px;">${activatedInfo}</span>
+                        <span class="key-status ${statusClass}">${statusText}</span>
+                        <button class="copy-btn" onclick="copyKey('${item.key}')">📋 Copy</button>
+                    </span>
+                </div>
+            `;
+        }
+        keyList.innerHTML = html;
+    }
+
+    window.copyKey = function(key) {
+        navigator.clipboard.writeText(key).then(() => {
+            appendLog(`📋 Đã sao chép key: ${key}`);
+        }).catch(() => {
+            const textarea = document.createElement('textarea');
+            textarea.value = key;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            appendLog(`📋 Đã sao chép key: ${key}`);
+        });
+    };
+
+    // ========== RESET KEY ==========
+    function resetKey(key) {
+        if (!currentUser || currentUser.role !== 'admin') {
+            resetStatus.innerHTML = '❌ Chỉ Admin mới có thể reset key!';
+            resetStatus.style.color = '#ff5566';
+            return false;
+        }
+        
+        const keyData = appData.keys[key];
+        if (!keyData) {
+            resetStatus.innerHTML = '❌ Key không tồn tại!';
+            resetStatus.style.color = '#ff5566';
+            return false;
+        }
+        
+        delete appData.keyActivations[key];
+        keyData.status = 'reseted';
+        if (keyData.maxDevices) {
+            keyData.usedDevices = 0;
+        }
+        const historyItem = appData.keyHistory.find(item => item.key === key);
+        if (historyItem) {
+            historyItem.status = 'reseted';
+            historyItem.activatedBy = null;
+            historyItem.activatedAt = null;
+            if (historyItem.maxDevices) {
+                historyItem.usedDevices = 0;
+            }
+        }
+        
+        saveData();
+        renderKeyHistory();
+        const timeDisplay = keyData.duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(Date.now() + keyData.duration);
+        resetStatus.innerHTML = `✅ Đã reset key: ${key}. Key có thể được kích hoạt lại cho acc khác. Thời hạn: ${timeDisplay}`;
+        resetStatus.style.color = '#00ff88';
+        appendLog(`🔄 Admin đã reset key: ${key}`);
+        
+        if (userKey === key) {
+            isKeyValid = false;
+            userKey = null;
+            checkUserKey();
+        }
+        return true;
+    }
+
+    resetKeyBtn.addEventListener('click', function() {
+        const key = resetKeyInput.value.trim().toUpperCase();
+        if (!key) {
+            resetStatus.innerHTML = '❌ Vui lòng nhập key cần reset!';
+            resetStatus.style.color = '#ff5566';
+            return;
+        }
+        resetKey(key);
+        resetKeyInput.value = '';
+    });
+
+    // ========== TABS ==========
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.remove('active');
+            el.style.display = 'none';
+        });
+        document.querySelectorAll('.tab-btn').forEach(el => {
+            el.classList.remove('active');
+        });
+        const target = document.getElementById(tabId);
+        if (target) {
+            target.classList.add('active');
+            target.style.display = 'block';
+        }
+        document.querySelector(`.tab-btn[data-tab="${tabId}"]`)?.classList.add('active');
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!currentUser) return;
+            const tabId = this.dataset.tab;
+            if (tabId === 'tabKey' && currentUser.role !== 'admin') return;
+            if (tabId === 'tabMisc' && currentUser.role !== 'admin') return;
+            switchTab(tabId);
+        });
+    });
+
+    // ========== EVENTS ==========
+    adminLoginBtn.addEventListener('click', function() {
+        const password = prompt('👑 Nhập mật khẩu Admin:');
+        if (password === null) return;
+        if (!password.trim()) {
+            authStatus.innerHTML = '❌ Vui lòng nhập mật khẩu!';
+            return;
+        }
+        adminLogin(password.trim());
+    });
+
+    logoutBtn.addEventListener('click', logout);
+
+    activateKeyBtn.addEventListener('click', function() {
+        const key = userKeyInput.value.trim().toUpperCase();
+        if (!key) {
+            keyStatusInfo.innerHTML = '❌ Vui lòng nhập key!';
+            keyStatusInfo.style.color = '#ff5566';
+            return;
+        }
+        activateKey(key);
+        userKeyInput.value = '';
+    });
+
+    // ========== GET KEY FREE ==========
+    let keyGenerated = false;
+    let checkInterval = null;
+    let keyGenerationTimeout = null;
+
+    function updateBypassLinkDisplay() {
+        currentBypassLinkDisplay.textContent = appData.bypassLink;
+        modalBypassLink.innerHTML = `🔗 ${appData.bypassLink}`;
+    }
+
+    getKeyBtn.addEventListener('click', function() {
+        if (!currentUser) {
+            alert('Vui lòng đăng nhập trước!');
+            return;
+        }
+        if (currentUser.role === 'admin') {
+            alert('Admin không cần lấy key free!');
+            return;
+        }
+        let hasActiveKey = false;
+        for (const [key, data] of Object.entries(appData.keys)) {
+            const activation = appData.keyActivations[key];
+            if (activation && activation.username === currentUser.username) {
+                const duration = data.duration || 0;
+                const activatedAt = activation.activatedAt || data.createdAt;
+                const expiryTime = activatedAt + duration;
+                if (Date.now() <= expiryTime) {
+                    hasActiveKey = true;
+                    break;
+                }
+            }
+        }
+        if (hasActiveKey) {
+            alert('Bạn đã có key hợp lệ! Không cần lấy thêm.');
+            return;
+        }
+        keyGenerated = false;
+        pendingKeyForActivation = null;
+        if (keyGenerationTimeout) {
+            clearTimeout(keyGenerationTimeout);
+            keyGenerationTimeout = null;
+        }
+        if (checkInterval) {
+            clearInterval(checkInterval);
+            checkInterval = null;
+        }
+        getKeyModal.classList.add('active');
+        freeKeyDisplay.innerHTML = `
+            <div class="loading-text">⏳ Nhấn "Mở link" để lấy key...</div>
+        `;
+        updateBypassLinkDisplay();
+    });
+
+    openLinkBtn.addEventListener('click', function() {
+        window.open(appData.bypassLink, '_blank');
+        
+        freeKeyDisplay.innerHTML = `
+            <div class="loading-text">⏳ Đang chờ bạn vượt link...</div>
+            <div style="color:#888;font-size:12px;margin-top:5px;">Sau khi vượt link xong, key sẽ tự động hiển thị</div>
+        `;
+        
+        let checkCount = 0;
+        if (checkInterval) clearInterval(checkInterval);
+        checkInterval = setInterval(() => {
+            checkCount++;
+            if (document.hasFocus() && !keyGenerated && currentUser) {
+                clearInterval(checkInterval);
+                checkInterval = null;
+                const newKey = generateFreeKey(currentUser.username);
+                keyGenerated = true;
+                pendingKeyForActivation = newKey;
+                const keyData = appData.keys[newKey];
+                const timeDisplay = keyData.duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(Date.now() + keyData.duration);
+                
+                freeKeyDisplay.innerHTML = `
+                    <div style="margin-bottom:5px;">
+                        <span class="key-label">🔑 Key free của bạn:</span>
+                    </div>
+                    <div class="key-display">${newKey}</div>
+                    <div style="margin-top:5px;">
+                        <span style="color:#888;font-size:13px;">⏳ Thời hạn: ${timeDisplay}</span>
+                    </div>
+                    <div style="color:#888;font-size:12px;margin-top:4px;">Chủ sở hữu: ${currentUser.username}</div>
+                    <button class="copy-key-btn" onclick="copyKey('${newKey}')">📋 Sao chép key</button>
+                    <div class="key-ready-text">✅ Key đã được tạo! Đang tự động kích hoạt...</div>
+                `;
+                appendLog(`🎁 Key free đã được tạo cho ${currentUser.username}`);
+                
+                setTimeout(() => {
+                    getKeyModal.classList.remove('active');
+                    if (checkInterval) {
+                        clearInterval(checkInterval);
+                        checkInterval = null;
+                    }
+                    switchTab('tabSpam');
+                    if (pendingKeyForActivation && currentUser) {
+                        userKeyInput.value = pendingKeyForActivation;
+                        keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
+                        keyStatusInfo.style.color = '#00ff88';
+                        activateKey(pendingKeyForActivation);
+                        userKeyInput.focus();
+                        userKeyInput.select();
+                        pendingKeyForActivation = null;
+                    }
+                }, 2000);
+            }
+            
+            if (checkCount > 60) {
+                clearInterval(checkInterval);
+                checkInterval = null;
+                if (!keyGenerated) {
+                    freeKeyDisplay.innerHTML = `
+                        <div style="color:#ff3344;font-size:14px;">⏰ Quá thời gian chờ (60s). Vui lòng thử lại!</div>
+                        <button class="copy-key-btn" onclick="document.getElementById('openLinkBtn').click()" style="margin-top:10px;">🔄 Thử lại</button>
+                    `;
+                }
+            }
+        }, 1000);
+    });
+
+    closeModalBtn.addEventListener('click', function() {
+        getKeyModal.classList.remove('active');
+        if (checkInterval) {
+            clearInterval(checkInterval);
+            checkInterval = null;
+        }
+        if (keyGenerationTimeout) {
+            clearTimeout(keyGenerationTimeout);
+            keyGenerationTimeout = null;
+        }
+        if (pendingKeyForActivation && currentUser) {
+            switchTab('tabSpam');
+            userKeyInput.value = pendingKeyForActivation;
+            keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
+            keyStatusInfo.style.color = '#00ff88';
+            activateKey(pendingKeyForActivation);
+            userKeyInput.focus();
+            userKeyInput.select();
+            pendingKeyForActivation = null;
+        }
+    });
+
+    getKeyModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            getKeyModal.classList.remove('active');
+            if (checkInterval) {
+                clearInterval(checkInterval);
+                checkInterval = null;
+            }
+            if (keyGenerationTimeout) {
+                clearTimeout(keyGenerationTimeout);
+                keyGenerationTimeout = null;
+            }
+            if (pendingKeyForActivation && currentUser) {
+                switchTab('tabSpam');
+                userKeyInput.value = pendingKeyForActivation;
+                keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
+                keyStatusInfo.style.color = '#00ff88';
+                activateKey(pendingKeyForActivation);
+                userKeyInput.focus();
+                userKeyInput.select();
+                pendingKeyForActivation = null;
+            }
+        }
+    });
+
+    // ========== ADMIN KEY MANAGEMENT ==========
+    genMultiKeyBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể tạo key!');
+            return;
+        }
+        const count = parseInt(deviceCount.value) || 1;
+        if (count < 1 || count > 50) {
+            alert('Số thiết bị phải từ 1 đến 50!');
+            return;
+        }
+        const expiryStr = genKeyExpiry.value;
+        const newKey = generateMultiDeviceKey(count, expiryStr);
+        const keyData = appData.keys[newKey];
+        const timeDisplay = keyData.duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(Date.now() + keyData.duration);
+        
+        genKeyResult.style.display = 'block';
+        genKeyResult.innerHTML = `
+            ✅ Đã tạo key cho <strong>${count}</strong> thiết bị thành công!<br>
+            🔑 Key: <strong style="color:#ff8800;">${newKey}</strong><br>
+            ⏳ Thời hạn: ${timeDisplay}<br>
+            📱 Số thiết bị: ${count}<br>
+            <button class="copy-btn" onclick="copyKey('${newKey}')" style="margin-top:8px;">📋 Sao chép key</button>
+        `;
+        appendLog(`🔑 Admin đã tạo key multi-device (${count} thiết bị) - ${newKey}`);
+    });
+
+    genKeyBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể tạo key!');
+            return;
+        }
+        const count = parseInt(keyCount.value) || 1;
+        if (count < 1 || count > 100) {
+            alert('Số lượng phải từ 1 đến 100!');
+            return;
+        }
+        const expiryStr = keyExpiry.value;
+        const keys = generateAdminKeys(count, expiryStr);
+        const expiryLabel = keyExpiry.options[keyExpiry.selectedIndex].text;
+        alert(`✅ Đã tạo ${keys.length} key thành công!\nThời hạn: ${expiryLabel}\n\n${keys.join('\n')}\n\n⚠️ Lưu ý: Key sẽ chỉ bắt đầu tính thời gian từ lúc được kích hoạt!`);
+        appendLog(`🔑 Admin đã tạo ${keys.length} key mới (${expiryLabel})`);
+    });
+
+    copyKeysBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể sao chép key!');
+            return;
+        }
+        const activeKeys = appData.keyHistory
+            .filter(item => item.status === 'active' || item.status === 'reseted')
+            .map(item => item.key);
+        if (activeKeys.length === 0) {
+            alert('Không có key nào để sao chép!');
+            return;
+        }
+        const text = activeKeys.join('\n');
+        navigator.clipboard.writeText(text).then(() => {
+            alert(`✅ Đã sao chép ${activeKeys.length} key!\n\n${text}`);
+        }).catch(() => {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert(`✅ Đã sao chép ${activeKeys.length} key!`);
+        });
+    });
+
+    deleteHistoryBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử key?\n(Lưu ý: Chỉ xóa lịch sử hiển thị, không ảnh hưởng đến key đã tạo)')) {
+            appData.keyHistory = [];
+            saveData();
+            renderKeyHistory();
+            alert('✅ Đã xóa lịch sử key!');
+            appendLog('🗑️ Admin đã xóa lịch sử key');
+        }
+    });
+
+    // ========== MISC: Bypass Link ==========
+    function updateBypassLinkDisplay() {
+        currentBypassLinkDisplay.textContent = appData.bypassLink;
+        modalBypassLink.innerHTML = `🔗 ${appData.bypassLink}`;
+    }
+
+    saveBypassLinkBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể thay đổi link!');
+            return;
+        }
+        const newLink = bypassLinkInput.value.trim();
+        if (!newLink) {
+            linkStatus.innerHTML = '❌ Vui lòng nhập link hợp lệ!';
+            linkStatus.style.color = '#ff5566';
+            return;
+        }
+        if (!newLink.startsWith('http://') && !newLink.startsWith('https://')) {
+            linkStatus.innerHTML = '❌ Link phải bắt đầu bằng http:// hoặc https://!';
+            linkStatus.style.color = '#ff5566';
+            return;
+        }
+        appData.bypassLink = newLink;
+        saveData();
+        updateBypassLinkDisplay();
+        bypassLinkInput.value = '';
+        linkStatus.innerHTML = `✅ Đã cập nhật link thành công!\n🔗 ${newLink}`;
+        linkStatus.style.color = '#00ff88';
+        appendLog(`🔗 Admin đã thay đổi link vượt thành: ${newLink}`);
+    });
+
+    resetBypassLinkBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể thực hiện!');
+            return;
+        }
+        if (confirm('Khôi phục link mặc định (https://link4m.org/0CSnon)?')) {
+            appData.bypassLink = 'https://link4m.org/0CSnon';
+            saveData();
+            updateBypassLinkDisplay();
+            bypassLinkInput.value = '';
+            linkStatus.innerHTML = '✅ Đã khôi phục link mặc định!';
+            linkStatus.style.color = '#00ff88';
+            appendLog('↩️ Admin đã khôi phục link mặc định');
+        }
+    });
+
+    // ========== MISC: Ban / Unban ==========
+    function renderBannedTable() {
+        const tbody = bannedTableBody;
+        if (appData.bannedUsers.length === 0) {
+            tbody.innerHTML = '<tr class="empty-row"><td colspan="3">Chưa có tài khoản nào bị ban</td></tr>';
+            bannedTableContainer.classList.remove('active');
+            return;
+        }
+        bannedTableContainer.classList.add('active');
+        let html = '';
+        appData.bannedUsers.forEach((username, index) => {
+            html += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>🚫 ${username}</td>
+                    <td><button class="unban-btn" onclick="unbanUser('${username}')">✅ Unban</button></td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = html;
+    }
+
+    window.unbanUser = function(username) {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể unban!');
+            return;
+        }
+        const index = appData.bannedUsers.indexOf(username);
+        if (index > -1) {
+            appData.bannedUsers.splice(index, 1);
+            saveData();
+            renderBannedTable();
+            banStatus.innerHTML = `✅ Đã unban tài khoản: ${username}`;
+            banStatus.style.color = '#00ff88';
+            appendLog(`✅ Admin đã unban tài khoản: ${username}`);
+        } else {
+            banStatus.innerHTML = `❌ Tài khoản ${username} không có trong danh sách ban!`;
+            banStatus.style.color = '#ff5566';
+        }
+    };
+
+    banUserBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể ban!');
+            return;
+        }
+        const username = banUsernameInput.value.trim();
+        if (!username) {
+            banStatus.innerHTML = '❌ Vui lòng nhập tên tài khoản!';
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        if (username === 'Nduc') {
+            banStatus.innerHTML = '❌ Không thể ban tài khoản Admin!';
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        if (!appData.users[username]) {
+            banStatus.innerHTML = `❌ Tài khoản "${username}" không tồn tại!`;
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        if (appData.bannedUsers.includes(username)) {
+            banStatus.innerHTML = `⚠️ Tài khoản "${username}" đã bị ban từ trước!`;
+            banStatus.style.color = '#ff8800';
+            return;
+        }
+        appData.bannedUsers.push(username);
+        saveData();
+        renderBannedTable();
+        banUsernameInput.value = '';
+        banStatus.innerHTML = `✅ Đã ban tài khoản: ${username}`;
+        banStatus.style.color = '#ff5566';
+        appendLog(`🔨 Admin đã ban tài khoản: ${username}`);
+        if (currentUser.username === username) {
+            logout();
+        }
+    });
+
+    unbanUserBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể unban!');
+            return;
+        }
+        const username = banUsernameInput.value.trim();
+        if (!username) {
+            banStatus.innerHTML = '❌ Vui lòng nhập tên tài khoản!';
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        const index = appData.bannedUsers.indexOf(username);
+        if (index === -1) {
+            banStatus.innerHTML = `❌ Tài khoản "${username}" không có trong danh sách ban!`;
+            banStatus.style.color = '#ff5566';
+            return;
+        }
+        appData.bannedUsers.splice(index, 1);
+        saveData();
+        renderBannedTable();
+        banUsernameInput.value = '';
+        banStatus.innerHTML = `✅ Đã unban tài khoản: ${username}`;
+        banStatus.style.color = '#00ff88';
+        appendLog(`✅ Admin đã unban tài khoản: ${username}`);
+    });
+
+    viewBannedBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể xem!');
+            return;
+        }
+        renderBannedTable();
+        if (appData.bannedUsers.length === 0) {
+            banStatus.innerHTML = '📋 Hiện không có tài khoản nào bị ban.';
+            banStatus.style.color = '#00ff88';
+        } else {
+            banStatus.innerHTML = `📋 Hiển thị ${appData.bannedUsers.length} tài khoản bị ban.`;
+            banStatus.style.color = '#ff8800';
+        }
+        bannedTableContainer.classList.add('active');
+        bannedTableContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    deleteBanHistoryBtn.addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Chỉ Admin mới có thể thực hiện!');
+            return;
+        }
+        if (appData.bannedUsers.length === 0) {
+            banStatus.innerHTML = '📋 Danh sách ban đã trống.';
+            banStatus.style.color = '#00ff88';
+            return;
+        }
+        if (confirm(`Bạn có chắc muốn xóa toàn bộ ${appData.bannedUsers.length} tài khoản khỏi danh sách ban?\n(Lưu ý: Các tài khoản sẽ được unban)`) ) {
+            appData.bannedUsers = [];
+            saveData();
+            renderBannedTable();
+            banStatus.innerHTML = '🗑️ Đã xóa toàn bộ danh sách ban!';
+            banStatus.style.color = '#ff8800';
+            appendLog('🗑️ Admin đã xóa toàn bộ danh sách ban');
+        }
+    });
+
+    // ========== SPAM TOOL ==========
+    unlimitedSpam.addEventListener('change', function() {
+        if (this.checked) {
+            spamCount.disabled = true;
+            spamCount.value = 0;
+            isUnlimited = true;
+        } else {
+            spamCount.disabled = false;
+            spamCount.value = 10;
+            isUnlimited = false;
+        }
+        updateCounterDisplay();
+    });
+
+    spamCount.addEventListener('change', function() {
+        if (!unlimitedSpam.checked) updateCounterDisplay();
+    });
+
+    function updateCounterDisplay() {
+        if (isUnlimited) {
+            counter.textContent = `📤 ${totalSent} / ∞`;
+        } else {
+            const max = parseInt(spamCount.value) || 0;
+            counter.textContent = `📤 ${totalSent} / ${max}`;
+        }
+    }
+
+    msgTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'text') {
+                textContent.style.display = 'block';
+                imageContent.style.display = 'none';
+            } else {
+                textContent.style.display = 'none';
+                imageContent.style.display = 'block';
+            }
+        });
+    });
+
+    previewBtn.addEventListener('click', function() {
+        const url = imageUrl.value.trim();
+        if (url) {
+            imagePreview.src = url;
+            imagePreview.style.display = 'block';
+            currentImageData = url;
+        } else {
+            alert('Vui lòng nhập URL ảnh!');
+        }
+    });
+
+    imageFile.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 10 * 1024 * 1024) {
+                alert('⚠️ Ảnh lớn hơn 10MB! Sẽ gửi dưới dạng document.');
+            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imagePreview.src = event.target.result;
+                imagePreview.style.display = 'block';
+                currentImageData = event.target.result;
+                imageUrl.value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function getActiveTokens() {
+        const tokens = [];
+        tokenInputs.forEach(inp => {
+            const val = inp.value.trim();
+            if (val) tokens.push(val);
+        });
+        if (tokens.length === 0) return [];
+        if (!useAllBots.checked) return [tokens[0]];
+        return tokens;
+    }
+
+    function setStatus(state, text) {
+        statusDot.className = 'status-dot ' + state;
+        statusText.textContent = text;
+    }
+
+    function appendLog(msg, isError = false) {
+        const prefix = isError ? '❌ ' : '✅ ';
+        const cls = isError ? 'error-text' : 'success-text';
+        log.innerHTML += `<span class="${cls}">${prefix}${msg}</span>\n`;
+        log.scrollTop = log.scrollHeight;
+    }
+
+    function clearLog() {
+        log.innerHTML = '[+] Lịch sử đã được xoá.';
+        totalSent = 0;
+        updateCounterDisplay();
+        setStatus('idle', 'Sẵn sàng');
+    }
+
+    function getMessageType() {
+        for (let radio of msgTypeRadios) {
+            if (radio.checked) return radio.value;
+        }
+        return 'text';
+    }
+
+    async function sendOneMessage(token, chat, msgType, textMsg, imageData, caption) {
+        try {
+            let url, payload;
+
+            if (msgType === 'text') {
+                url = `https://api.telegram.org/bot${token}/sendMessage`;
+                payload = { chat_id: chat, text: textMsg, parse_mode: '' };
+            } else {
+                let isLargeFile = false;
+                if (imageData && imageData.startsWith('data:image')) {
+                    const base64 = imageData.split(',')[1];
+                    const fileSize = base64.length * 3 / 4;
+                    if (fileSize > 10 * 1024 * 1024) isLargeFile = true;
+                }
+
+                if (isLargeFile) {
+                    url = `https://api.telegram.org/bot${token}/sendDocument`;
+                    const formData = new FormData();
+                    formData.append('chat_id', chat);
+                    const response = await fetch(imageData);
+                    const blob = await response.blob();
+                    formData.append('document', blob, 'image.jpg');
+                    if (caption) formData.append('caption', caption);
+                    const resp = await fetch(url, { method: 'POST', body: formData });
+                    const data = await resp.json();
+                    if (data.ok) return { success: true, error: null };
+                    return { success: false, error: data.description || 'Lỗi không xác định' };
+                } else {
+                    url = `https://api.telegram.org/bot${token}/sendPhoto`;
+                    payload = { chat_id: chat, caption: caption || '' };
+                    if (imageData && (imageData.startsWith('http://') || imageData.startsWith('https://'))) {
+                        payload.photo = imageData;
+                    } else if (imageData && imageData.startsWith('data:image')) {
+                        const response = await fetch(imageData);
+                        const blob = await response.blob();
+                        const formData = new FormData();
+                        formData.append('chat_id', chat);
+                        formData.append('photo', blob, 'image.jpg');
+                        if (caption) formData.append('caption', caption);
+                        const resp = await fetch(url, { method: 'POST', body: formData });
+                        const data = await resp.json();
+                        if (data.ok) return { success: true, error: null };
+                        return { success: false, error: data.description || 'Lỗi không xác định' };
+                    } else {
+                        return { success: false, error: 'Không có ảnh để gửi!' };
+                    }
+                }
+            }
+
+            if (msgType === 'text' || (msgType === 'image' && imageData && imageData.startsWith('http'))) {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 10000);
+                const resp = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timeout);
+                const data = await resp.json();
+                if (data.ok) return { success: true, error: null };
+                let errMsg = data.description || 'Lỗi không xác định';
+                if (errMsg.includes('chat not found')) errMsg = 'ID không tồn tại hoặc bot chưa vào nhóm!';
+                else if (errMsg.includes('bot was blocked')) errMsg = 'Bot đã bị chặn!';
+                else if (errMsg.includes('Forbidden')) errMsg = 'Bot không có quyền!';
+                else if (errMsg.includes('user not found')) errMsg = 'User ID không tồn tại!';
+                else if (errMsg.includes('wrong file')) errMsg = 'File ảnh không hợp lệ!';
+                return { success: false, error: errMsg };
+            }
+        } catch (error) {
+            let errMsg = error.message;
+            if (error.name === 'AbortError') errMsg = 'Timeout - kiểm tra mạng!';
+            else if (errMsg.includes('Failed to fetch')) errMsg = 'Mất kết nối API!';
+            return { success: false, error: errMsg };
+        }
+    }
+
+    async function spamLoop() {
+        if (stopRequested || !running) return;
+
+        if (!isUnlimited) {
+            const max = parseInt(spamCount.value) || 0;
+            if (max > 0 && totalSent >= max) {
+                appendLog(`✅ Đã gửi đủ ${max} lần, dừng spam!`);
+                stopSpam();
+                return;
             }
         }
 
-        // ========== INIT ==========
-        function init() {
-            // Kiểm tra tự động refresh
-            autoRefresh();
-            
-            // Tạo key mới mỗi khi vào web
-            createNewKey();
-            
-            // Kiểm tra trạng thái key
-            setTimeout(checkKeyStatus, 1000);
-            
-            console.log('🔑 Key mới đã được tạo:', currentKeyDisplay.textContent);
-            console.log('💡 Key đã được tự động copy vào clipboard');
-            console.log('💡 Mở Web Spam và dán key để sử dụng');
+        const tokens = getActiveTokens();
+        if (tokens.length === 0) {
+            appendLog('Không có token hợp lệ!', true);
+            stopSpam();
+            return;
         }
 
-        // Chạy init
-        init();
+        const chat = targetId.value.trim();
+        if (!chat) {
+            appendLog('Thiếu ID!', true);
+            stopSpam();
+            return;
+        }
 
-        // ========== LẮNG NGHE SỰ KIỆN TỪ WEB SPAM ==========
-        // Khi web Spam kích hoạt key, nó sẽ lưu vào localStorage
-        // Web Key sẽ tự động cập nhật trạng thái
-        setInterval(checkKeyStatus, 5000);
+        const msgType = getMessageType();
+        let textMsg = message.value.trim();
+        let imageData = currentImageData;
+        let caption = imageCaption.value.trim();
 
-    })();
+        if (msgType === 'text' && !textMsg) {
+            appendLog('Thiếu nội dung!', true);
+            stopSpam();
+            return;
+        }
+        if (msgType === 'image' && !imageData) {
+            appendLog('Thiếu ảnh!', true);
+            stopSpam();
+            return;
+        }
+
+        const token = tokens[currentBotIndex % tokens.length];
+        currentBotIndex++;
+
+        const result = await sendOneMessage(token, chat, msgType, textMsg, imageData, caption);
+
+        if (result.success) {
+            totalSent++;
+            updateCounterDisplay();
+            const botLabel = tokens.length > 1 ? ` (Bot ${(currentBotIndex % tokens.length) || tokens.length})` : '';
+            const typeLabel = msgType === 'text' ? 'Text' : 'Ảnh';
+            appendLog(`Gửi ${typeLabel} thành công #${totalSent}${botLabel}`);
+        } else {
+            appendLog(`Thất bại: ${result.error}`, true);
+        }
+
+        if (running && !stopRequested) {
+            const delay = parseInt(speed.value) || 150;
+            sendTimeout = setTimeout(() => spamLoop(), Math.max(delay, 30));
+        }
+    }
+
+    function startSpam() {
+        if (!currentUser) {
+            appendLog('Vui lòng đăng nhập!', true);
+            return;
+        }
+        if (currentUser.role !== 'admin' && !isKeyValid) {
+            appendLog('Vui lòng nhập và kích hoạt key hợp lệ!', true);
+            return;
+        }
+
+        const tokens = getActiveTokens();
+        if (tokens.length === 0) {
+            appendLog('Chưa nhập token nào!', true);
+            return;
+        }
+
+        const chat = targetId.value.trim();
+        if (!chat) {
+            appendLog('Thiếu ID!', true);
+            return;
+        }
+
+        const msgType = getMessageType();
+        if (msgType === 'text') {
+            const msg = message.value.trim();
+            if (!msg) {
+                appendLog('Thiếu nội dung!', true);
+                return;
+            }
+        } else {
+            if (!currentImageData) {
+                appendLog('Thiếu ảnh!', true);
+                return;
+            }
+        }
+
+        if (!isUnlimited) {
+            const max = parseInt(spamCount.value) || 0;
+            if (max <= 0) {
+                appendLog('Vui lòng nhập số lần spam hợp lệ (>0)!', true);
+                return;
+            }
+        }
+
+        if (running) return;
+
+        running = true;
+        stopRequested = false;
+        totalSent = 0;
+        currentBotIndex = 0;
+        updateCounterDisplay();
+        sendBtn.style.display = 'none';
+        stopBtn.style.display = 'block';
+        setStatus('sending', 'Đang spam...');
+        const botCount = tokens.length;
+        const typeLabel = msgType === 'text' ? 'văn bản' : 'ảnh';
+        const countLabel = isUnlimited ? 'vô hạn' : spamCount.value;
+        appendLog(`🔥 Bắt đầu spam ${typeLabel} với ${botCount} bot, số lần: ${countLabel}`);
+        spamLoop();
+    }
+
+    function stopSpam() {
+        if (running) {
+            stopRequested = true;
+            running = false;
+            if (sendTimeout) {
+                clearTimeout(sendTimeout);
+                sendTimeout = null;
+            }
+            sendBtn.style.display = 'block';
+            stopBtn.style.display = 'none';
+            setStatus('idle', 'Đã dừng');
+            appendLog('⏹ Đã dừng spam.');
+        }
+    }
+
+    sendBtn.addEventListener('click', startSpam);
+    stopBtn.addEventListener('click', stopSpam);
+    clearBtn.addEventListener('click', clearLog);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            if (running) stopSpam();
+            else startSpam();
+        }
+    });
+
+    // ========== INIT ==========
+    targetId.value = '';
+    message.value = '';
+    imageCaption.value = '';
+    imageUrl.value = '';
+    imageFile.value = '';
+    imagePreview.style.display = 'none';
+    currentImageData = null;
+    spamCount.value = 10;
+    unlimitedSpam.checked = false;
+    isUnlimited = false;
+    updateCounterDisplay();
+    log.innerHTML = '[+] Tool đã sẵn sàng. Vui lòng đăng nhập để sử dụng.';
+    
+    if (!appData.users['Nduc']) {
+        appData.users['Nduc'] = { password: 'Ducanh05092008', role: 'admin' };
+        saveData();
+    }
+
+    renderKeyHistory();
+    renderBannedTable();
+    updateBypassLinkDisplay();
+    updateUI();
+    setAuthMode('login');
+
+    setInterval(checkWebKey, 5000);
+
+})();
 </script>
 </body>
 </html>
