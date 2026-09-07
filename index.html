@@ -229,8 +229,6 @@
         .key-input-section .key-input-row input { flex: 1; padding: 10px; background: #111; border: 1.5px solid #ff8800; color: #ff8800; border-radius: 6px; font-size: 14px; min-width: 150px; }
         .key-input-section .key-input-row button { padding: 10px 20px; background: #ff8800; color: #0a0a0a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .key-input-section .key-input-row button:hover { background: #dd7700; }
-        .key-input-section .key-input-row .btn-get-key { background: #00ff88; color: #0a0a0a; }
-        .key-input-section .key-input-row .btn-get-key:hover { background: #00dd77; }
         .key-info { font-size: 12px; color: #00aa66; margin-top: 6px; }
 
         .user-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8844; margin-bottom: 15px; flex-wrap: wrap; gap: 8px; }
@@ -352,6 +350,8 @@
         .btn-line-update:hover { background: #dd7700; }
         .btn-line-save { background: #00ff88; color: #0a0a0a; }
         .btn-line-save:hover { background: #00dd77; }
+        .btn-line-up { background: #ff8800; color: #0a0a0a; }
+        .btn-line-up:hover { background: #dd7700; }
         .btn-line-reset { background: #ff3344; color: #fff; }
         .btn-line-reset:hover { background: #cc2233; }
         
@@ -511,7 +511,6 @@
             <div class="key-input-row">
                 <input type="text" id="userKeyInput" placeholder="Nhập key của bạn">
                 <button id="activateKeyBtn">Kích hoạt</button>
-                <button class="btn-get-key" id="getKeyBtn">🎁 Lấy Key Free</button>
             </div>
             <div id="keyStatusInfo" class="key-info">Vui lòng nhập key để sử dụng tool</div>
         </div>
@@ -581,6 +580,7 @@
                         <input type="number" id="lineCount" value="3" min="1" max="20">
                         <button class="btn-line-update" id="updateLinesBtn">🔄 Cập nhật</button>
                         <button class="btn-line-save" id="saveLinesBtn">💾 Lưu</button>
+                        <button class="btn-line-up" id="upLinesBtn">⬆️ Up</button>
                         <button class="btn-line-reset" id="resetLinesBtn">🗑️ Xoá</button>
                     </div>
                     <div class="line-input-container" id="lineContainer">
@@ -589,7 +589,8 @@
                     <div class="line-info">
                         📌 Nội dung được <span class="highlight">lưu tự động</span> khi bạn nhập vào ô!
                         <br>🔄 Spam vòng lặp: Dòng 1 → Dòng 2 → ... → Dòng N → Dòng 1 → ...
-                        <br>💾 Dữ liệu được <span class="highlight">lưu vĩnh viễn</span>, chỉ mất khi ấn <span class="highlight">Xoá</span>!
+                        <br>💾 Ấn <span class="highlight">Lưu</span> để lưu số dòng và nội dung!
+                        <br>⬆️ Ấn <span class="highlight">Up</span> để tải lại dữ liệu đã lưu!
                     </div>
                 </div>
             </div>
@@ -751,23 +752,6 @@
     </div>
 
     <div class="footer">⚡ Dev Nduc ⚡</div>
-</div>
-
-<!-- Modal Get Key -->
-<div class="modal-overlay" id="getKeyModal">
-    <div class="modal-box">
-        <h3>🎁 LẤY KEY FREE</h3>
-        <p>Bấm vào link bên dưới để lấy key:</p>
-        <div class="modal-link" id="modalBypassLink">🔗 https://link4m.org/0CSnon</div>
-        <div style="margin:15px 0;">
-            <button class="modal-btn modal-btn-primary" id="openLinkBtn">🌐 Mở link</button>
-        </div>
-        <p style="font-size:13px;color:#00aa66;">Sau khi vượt link xong, key sẽ hiển thị bên dưới:</p>
-        <div class="free-key-box" id="freeKeyDisplay">
-            <div class="loading-text">⏳ Nhấn "Mở link" để lấy key...</div>
-        </div>
-        <button class="modal-btn modal-btn-close" id="closeModalBtn">Đóng</button>
-    </div>
 </div>
 
 <script>
@@ -954,7 +938,6 @@
     const keyInputSection = document.getElementById('keyInputSection');
     const userKeyInput = document.getElementById('userKeyInput');
     const activateKeyBtn = document.getElementById('activateKeyBtn');
-    const getKeyBtn = document.getElementById('getKeyBtn');
     const keyStatusInfo = document.getElementById('keyStatusInfo');
     const keyCount = document.getElementById('keyCount');
     const keyExpiry = document.getElementById('keyExpiry');
@@ -968,12 +951,6 @@
     const deleteBanHistoryBtn = document.getElementById('deleteBanHistoryBtn');
     const keyList = document.getElementById('keyList');
     const spamContent = document.getElementById('spamContent');
-    const getKeyModal = document.getElementById('getKeyModal');
-    const openLinkBtn = document.getElementById('openLinkBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const freeKeyDisplay = document.getElementById('freeKeyDisplay');
-    const modalBypassLink = document.getElementById('modalBypassLink');
-
     const webKeyNotification = document.getElementById('webKeyNotification');
     const webKeyDisplay = document.getElementById('webKeyDisplay');
     const useWebKeyBtn = document.getElementById('useWebKeyBtn');
@@ -1026,6 +1003,7 @@
     const lineCount = document.getElementById('lineCount');
     const updateLinesBtn = document.getElementById('updateLinesBtn');
     const saveLinesBtn = document.getElementById('saveLinesBtn');
+    const upLinesBtn = document.getElementById('upLinesBtn');
     const resetLinesBtn = document.getElementById('resetLinesBtn');
     const lineContainer = document.getElementById('lineContainer');
 
@@ -1315,7 +1293,7 @@
                 keyStatusInfo.innerHTML = '🔑 Có key chưa được kích hoạt. Nhập key để kích hoạt và sử dụng!';
                 keyStatusInfo.style.color = '#ff8800';
             } else {
-                keyStatusInfo.innerHTML = '❌ Không có key hợp lệ. Vui lòng nhập key hoặc lấy key free.';
+                keyStatusInfo.innerHTML = '❌ Không có key hợp lệ. Vui lòng nhập key!';
                 keyStatusInfo.style.color = '#ff5566';
             }
             spamContent.classList.add('hidden');
@@ -1453,31 +1431,6 @@
     }
 
     // ========== KEY MANAGEMENT ==========
-    function generateFreeKey(username) {
-        const newKey = generateUniqueKey();
-        const duration = 60 * 60 * 1000;
-        appData.keys[newKey] = {
-            username: username,
-            expiry: Date.now() + duration,
-            duration: duration,
-            createdAt: Date.now(),
-            status: 'active'
-        };
-        appData.keyHistory.unshift({
-            key: newKey,
-            username: username,
-            expiry: Date.now() + duration,
-            duration: duration,
-            createdAt: Date.now(),
-            status: 'active',
-            type: 'free'
-        });
-        delete appData.keyActivations[newKey];
-        saveData();
-        renderKeyHistory();
-        return newKey;
-    }
-
     function generateAdminKeys(count, expiryStr) {
         const keys = [];
         const duration = getDurationMs(expiryStr);
@@ -1575,8 +1528,7 @@
                 timeRemaining = duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(expiryTime);
             }
             
-            let typeLabel = item.type === 'free' ? '🎁 Free' : 
-                           item.type === 'multi' ? '📱 Multi Device' : 
+            let typeLabel = item.type === 'multi' ? '📱 Multi Device' : 
                            item.type === 'web' ? '🌐 Web Key' : '👑 Admin';
             let deviceInfo = '';
             if (item.type === 'multi' && item.maxDevices) {
@@ -1725,172 +1677,6 @@
         userKeyInput.value = '';
     });
 
-    // ========== GET KEY FREE ==========
-    let keyGenerated = false;
-    let checkInterval = null;
-    let keyGenerationTimeout = null;
-
-    function updateBypassLinkDisplay() {
-        currentBypassLinkDisplay.textContent = appData.bypassLink;
-        modalBypassLink.innerHTML = `🔗 ${appData.bypassLink}`;
-    }
-
-    getKeyBtn.addEventListener('click', function() {
-        if (!currentUser) {
-            alert('Vui lòng đăng nhập trước!');
-            return;
-        }
-        if (currentUser.role === 'admin') {
-            alert('Admin không cần lấy key free!');
-            return;
-        }
-        let hasActiveKey = false;
-        for (const [key, data] of Object.entries(appData.keys)) {
-            const activation = appData.keyActivations[key];
-            if (activation && activation.username === currentUser.username) {
-                const duration = data.duration || 0;
-                const activatedAt = activation.activatedAt || data.createdAt;
-                const expiryTime = activatedAt + duration;
-                if (Date.now() <= expiryTime) {
-                    hasActiveKey = true;
-                    break;
-                }
-            }
-        }
-        if (hasActiveKey) {
-            alert('Bạn đã có key hợp lệ! Không cần lấy thêm.');
-            return;
-        }
-        keyGenerated = false;
-        pendingKeyForActivation = null;
-        if (keyGenerationTimeout) {
-            clearTimeout(keyGenerationTimeout);
-            keyGenerationTimeout = null;
-        }
-        if (checkInterval) {
-            clearInterval(checkInterval);
-            checkInterval = null;
-        }
-        getKeyModal.classList.add('active');
-        freeKeyDisplay.innerHTML = `
-            <div class="loading-text">⏳ Nhấn "Mở link" để lấy key...</div>
-        `;
-        updateBypassLinkDisplay();
-    });
-
-    openLinkBtn.addEventListener('click', function() {
-        window.open(appData.bypassLink, '_blank');
-        
-        freeKeyDisplay.innerHTML = `
-            <div class="loading-text">⏳ Đang chờ bạn vượt link...</div>
-            <div style="color:#888;font-size:12px;margin-top:5px;">Sau khi vượt link xong, key sẽ tự động hiển thị</div>
-        `;
-        
-        let checkCount = 0;
-        if (checkInterval) clearInterval(checkInterval);
-        checkInterval = setInterval(() => {
-            checkCount++;
-            if (document.hasFocus() && !keyGenerated && currentUser) {
-                clearInterval(checkInterval);
-                checkInterval = null;
-                const newKey = generateFreeKey(currentUser.username);
-                keyGenerated = true;
-                pendingKeyForActivation = newKey;
-                const keyData = appData.keys[newKey];
-                const timeDisplay = keyData.duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(Date.now() + keyData.duration);
-                
-                freeKeyDisplay.innerHTML = `
-                    <div style="margin-bottom:5px;">
-                        <span class="key-label">🔑 Key free của bạn:</span>
-                    </div>
-                    <div class="key-display">${newKey}</div>
-                    <div style="margin-top:5px;">
-                        <span style="color:#888;font-size:13px;">⏳ Thời hạn: ${timeDisplay}</span>
-                    </div>
-                    <div style="color:#888;font-size:12px;margin-top:4px;">Chủ sở hữu: ${currentUser.username}</div>
-                    <button class="copy-key-btn" onclick="copyKey('${newKey}')">📋 Sao chép key</button>
-                    <div class="key-ready-text">✅ Key đã được tạo! Đang tự động kích hoạt...</div>
-                `;
-                appendLog(`🎁 Key free đã được tạo cho ${currentUser.username}`);
-                
-                setTimeout(() => {
-                    getKeyModal.classList.remove('active');
-                    if (checkInterval) {
-                        clearInterval(checkInterval);
-                        checkInterval = null;
-                    }
-                    switchTab('tabSpam');
-                    if (pendingKeyForActivation && currentUser) {
-                        userKeyInput.value = pendingKeyForActivation;
-                        keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
-                        keyStatusInfo.style.color = '#00ff88';
-                        activateKey(pendingKeyForActivation);
-                        userKeyInput.focus();
-                        userKeyInput.select();
-                        pendingKeyForActivation = null;
-                    }
-                }, 2000);
-            }
-            
-            if (checkCount > 60) {
-                clearInterval(checkInterval);
-                checkInterval = null;
-                if (!keyGenerated) {
-                    freeKeyDisplay.innerHTML = `
-                        <div style="color:#ff3344;font-size:14px;">⏰ Quá thời gian chờ (60s). Vui lòng thử lại!</div>
-                        <button class="copy-key-btn" onclick="document.getElementById('openLinkBtn').click()" style="margin-top:10px;">🔄 Thử lại</button>
-                    `;
-                }
-            }
-        }, 1000);
-    });
-
-    closeModalBtn.addEventListener('click', function() {
-        getKeyModal.classList.remove('active');
-        if (checkInterval) {
-            clearInterval(checkInterval);
-            checkInterval = null;
-        }
-        if (keyGenerationTimeout) {
-            clearTimeout(keyGenerationTimeout);
-            keyGenerationTimeout = null;
-        }
-        if (pendingKeyForActivation && currentUser) {
-            switchTab('tabSpam');
-            userKeyInput.value = pendingKeyForActivation;
-            keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
-            keyStatusInfo.style.color = '#00ff88';
-            activateKey(pendingKeyForActivation);
-            userKeyInput.focus();
-            userKeyInput.select();
-            pendingKeyForActivation = null;
-        }
-    });
-
-    getKeyModal.addEventListener('click', function(e) {
-        if (e.target === this) {
-            getKeyModal.classList.remove('active');
-            if (checkInterval) {
-                clearInterval(checkInterval);
-                checkInterval = null;
-            }
-            if (keyGenerationTimeout) {
-                clearTimeout(keyGenerationTimeout);
-                keyGenerationTimeout = null;
-            }
-            if (pendingKeyForActivation && currentUser) {
-                switchTab('tabSpam');
-                userKeyInput.value = pendingKeyForActivation;
-                keyStatusInfo.innerHTML = `✅ Đã nhận key free: ${pendingKeyForActivation}. Đang kích hoạt...`;
-                keyStatusInfo.style.color = '#00ff88';
-                activateKey(pendingKeyForActivation);
-                userKeyInput.focus();
-                userKeyInput.select();
-                pendingKeyForActivation = null;
-            }
-        }
-    });
-
     // ========== ADMIN KEY MANAGEMENT ==========
     genMultiKeyBtn.addEventListener('click', function() {
         if (!currentUser || currentUser.role !== 'admin') {
@@ -1975,7 +1761,6 @@
     // ========== MISC: Bypass Link ==========
     function updateBypassLinkDisplay() {
         currentBypassLinkDisplay.textContent = appData.bypassLink;
-        modalBypassLink.innerHTML = `🔗 ${appData.bypassLink}`;
     }
 
     saveBypassLinkBtn.addEventListener('click', function() {
@@ -2171,6 +1956,7 @@
                     lineData = parsed;
                     renderLineInputs();
                     lineCount.value = lineData.count;
+                    appendLog('⬆️ Đã tải dữ liệu đã lưu!');
                     return true;
                 }
             }
@@ -2185,8 +1971,31 @@
     function saveLinesData() {
         try {
             localStorage.setItem(LINE_STORAGE_KEY, JSON.stringify(lineData));
-            // Không log gì cả, chỉ lưu thầm
-        } catch (e) {}
+            appendLog('💾 Đã lưu ' + lineData.count + ' dòng thành công!');
+        } catch (e) {
+            appendLog('❌ Lưu thất bại!', true);
+        }
+    }
+
+    function upLinesData() {
+        try {
+            const saved = localStorage.getItem(LINE_STORAGE_KEY);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.lines && parsed.lines.length > 0) {
+                    lineData = parsed;
+                    renderLineInputs();
+                    lineCount.value = lineData.count;
+                    appendLog('⬆️ Đã up lại ' + lineData.count + ' dòng đã lưu!');
+                    return true;
+                }
+            }
+            appendLog('❌ Không có dữ liệu đã lưu!', true);
+            return false;
+        } catch (e) {
+            appendLog('❌ Up thất bại!', true);
+            return false;
+        }
     }
 
     function resetLinesData() {
@@ -2224,12 +2033,12 @@
         }
         lineContainer.innerHTML = html;
         
-        // Tự động lưu khi người dùng nhập - LƯU VĨNH VIỄN
+        // Tự động lưu khi người dùng nhập
         document.querySelectorAll('.line-input').forEach(inp => {
             inp.addEventListener('input', function() {
                 const index = parseInt(this.dataset.index);
                 lineData.lines[index] = this.value;
-                saveLinesData(); // Lưu ngay lập tức
+                // Không tự động lưu nữa, chỉ cập nhật biến
             });
         });
     }
@@ -2255,7 +2064,6 @@
         }
         lineData.count = count;
         renderLineInputs();
-        saveLinesData(); // Lưu khi cập nhật số dòng
         appendLog(`🔄 Đã cập nhật thành ${count} dòng`);
     });
 
@@ -2266,7 +2074,10 @@
             lineData.lines[index] = inp.value;
         });
         saveLinesData();
-        appendLog('💾 Đã lưu thành công! Dữ liệu sẽ được giữ vĩnh viễn.');
+    });
+
+    upLinesBtn.addEventListener('click', function() {
+        upLinesData();
     });
 
     resetLinesBtn.addEventListener('click', function() {
@@ -2583,7 +2394,7 @@
                 appendLog('Chưa nhập nội dung cho các dòng!', true);
                 return;
             }
-            currentLineIndex = 0; // Reset khi bắt đầu spam
+            currentLineIndex = 0;
         }
 
         if (!isUnlimited) {
