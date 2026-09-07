@@ -8,7 +8,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', monospace; }
         body { background: #0d0d0d; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
-        /* ===== POPUP THÔNG BÁO ===== */
         .notice-overlay {
             display: none;
             position: fixed;
@@ -47,78 +46,19 @@
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
         
-        .notice-box .notice-icon {
-            font-size: 50px;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .notice-box .notice-title {
-            color: #ff8800;
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            text-shadow: 0 0 30px #ff880066;
-        }
-        .notice-box .notice-subtitle {
-            color: #ff8800;
-            font-size: 14px;
-            opacity: 0.7;
-            margin-bottom: 20px;
-        }
-        .notice-box .notice-divider {
-            border: none;
-            height: 2px;
-            background: linear-gradient(to right, transparent, #ff8800, transparent);
-            margin: 15px 0;
-        }
-        .notice-box .notice-content {
-            color: #00dd77;
-            font-size: 15px;
-            line-height: 1.8;
-            padding: 5px 0;
-        }
-        .notice-box .notice-content .highlight {
-            color: #ff8800;
-            font-weight: bold;
-        }
-        .notice-box .notice-content .tele {
-            color: #00ff88;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        .notice-box .notice-content .zalo {
-            color: #ff8800;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        .notice-box .notice-contact {
-            background: #0d0d0d;
-            border: 1px solid #ff880044;
-            border-radius: 12px;
-            padding: 15px;
-            margin: 15px 0;
-        }
-        .notice-box .notice-contact .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 6px 0;
-            color: #00dd77;
-            font-size: 15px;
-        }
-        .notice-box .notice-contact .contact-item .label {
-            color: #888;
-            font-size: 13px;
-        }
-        .notice-box .notice-contact .contact-item .value {
-            color: #00ff88;
-            font-weight: bold;
-        }
-        .notice-box .notice-contact .contact-item .value.zalo-text {
-            color: #ff8800;
-        }
+        .notice-box .notice-icon { font-size: 50px; margin-bottom: 10px; display: block; }
+        .notice-box .notice-title { color: #ff8800; font-size: 24px; font-weight: bold; letter-spacing: 2px; margin-bottom: 5px; text-shadow: 0 0 30px #ff880066; }
+        .notice-box .notice-subtitle { color: #ff8800; font-size: 14px; opacity: 0.7; margin-bottom: 20px; }
+        .notice-box .notice-divider { border: none; height: 2px; background: linear-gradient(to right, transparent, #ff8800, transparent); margin: 15px 0; }
+        .notice-box .notice-content { color: #00dd77; font-size: 15px; line-height: 1.8; padding: 5px 0; }
+        .notice-box .notice-content .highlight { color: #ff8800; font-weight: bold; }
+        .notice-box .notice-content .tele { color: #00ff88; font-weight: bold; font-size: 16px; }
+        .notice-box .notice-content .zalo { color: #ff8800; font-weight: bold; font-size: 16px; }
+        .notice-box .notice-contact { background: #0d0d0d; border: 1px solid #ff880044; border-radius: 12px; padding: 15px; margin: 15px 0; }
+        .notice-box .notice-contact .contact-item { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 6px 0; color: #00dd77; font-size: 15px; }
+        .notice-box .notice-contact .contact-item .label { color: #888; font-size: 13px; }
+        .notice-box .notice-contact .contact-item .value { color: #00ff88; font-weight: bold; }
+        .notice-box .notice-contact .contact-item .value.zalo-text { color: #ff8800; }
         
         .notice-box .btn-close-notice {
             background: #ff8800;
@@ -135,44 +75,11 @@
             margin-top: 10px;
             width: 100%;
         }
-        .notice-box .btn-close-notice:hover {
-            background: #dd7700;
-            box-shadow: 0 0 40px #ff880066;
-            transform: scale(1.02);
-        }
-        
-        .notice-box .btn-close-notice.secondary {
-            background: transparent;
-            color: #888;
-            border: 1px solid #888;
-            margin-top: 8px;
-            padding: 10px 20px;
-            font-size: 13px;
-        }
-        .notice-box .btn-close-notice.secondary:hover {
-            background: #888;
-            color: #0a0a0a;
-            box-shadow: none;
-            transform: none;
-        }
-        
-        .notice-box .notice-close-x {
-            position: absolute;
-            top: 12px;
-            right: 18px;
-            background: transparent;
-            border: none;
-            color: #888;
-            font-size: 24px;
-            cursor: pointer;
-            transition: 0.3s;
-            padding: 5px;
-        }
-        .notice-box .notice-close-x:hover {
-            color: #ff3344;
-            transform: rotate(90deg);
-        }
-        /* ===== END POPUP ===== */
+        .notice-box .btn-close-notice:hover { background: #dd7700; box-shadow: 0 0 40px #ff880066; transform: scale(1.02); }
+        .notice-box .btn-close-notice.secondary { background: transparent; color: #888; border: 1px solid #888; margin-top: 8px; padding: 10px 20px; font-size: 13px; }
+        .notice-box .btn-close-notice.secondary:hover { background: #888; color: #0a0a0a; box-shadow: none; transform: none; }
+        .notice-box .notice-close-x { position: absolute; top: 12px; right: 18px; background: transparent; border: none; color: #888; font-size: 24px; cursor: pointer; transition: 0.3s; padding: 5px; }
+        .notice-box .notice-close-x:hover { color: #ff3344; transform: rotate(90deg); }
 
         .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 750px; box-shadow: 0 0 50px #00ff8833; }
         h1 { text-align: center; color: #00ff88; font-size: 26px; letter-spacing: 3px; border-bottom: 2px solid #00ff88; padding-bottom: 15px; margin-bottom: 5px; text-shadow: 0 0 20px #00ff8866; }
@@ -334,7 +241,6 @@
         .user-info .role.user { color: #ff8800; border-color: #ff8800; background: #ff880022; }
 
         .hidden { display: none !important; }
-        
         .auth-form input.default-placeholder::placeholder { color: #00ff8844; }
         .auth-form input.default-placeholder { color: #00ff88; }
 
@@ -393,45 +299,132 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .web-key-notification.show {
-            display: flex;
+        .web-key-notification.show { display: flex; }
+        .web-key-notification .key-info { color: #ff8800; font-size: 14px; }
+        .web-key-notification .key-info .key-value { color: #00ff88; font-weight: bold; font-family: monospace; font-size: 16px; }
+        .web-key-notification .btn-use-key { background: #00ff88; color: #0a0a0a; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .web-key-notification .btn-use-key:hover { background: #00dd77; }
+        .web-key-notification .btn-dismiss { background: transparent; color: #888; border: 1px solid #888; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .web-key-notification .btn-dismiss:hover { background: #888; color: #0a0a0a; }
+
+        /* Multi-line spam styles */
+        .multi-line-section {
+            background: #0d0d0d;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #ff880066;
+            margin-top: 15px;
         }
-        .web-key-notification .key-info {
+        .multi-line-section h4 {
             color: #ff8800;
-            font-size: 14px;
+            margin-bottom: 10px;
         }
-        .web-key-notification .key-info .key-value {
-            color: #00ff88;
-            font-weight: bold;
-            font-family: monospace;
-            font-size: 16px;
+        .line-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
         }
-        .web-key-notification .btn-use-key {
-            background: #00ff88;
-            color: #0a0a0a;
+        .line-controls label {
+            margin: 0;
+            font-size: 13px;
+            color: #00dd77;
+        }
+        .line-controls input[type="number"] {
+            width: 70px;
+            padding: 6px;
+            background: #111;
+            border: 1.5px solid #ff8800;
+            color: #ff8800;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .line-controls button {
+            padding: 6px 20px;
             border: none;
-            padding: 8px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             font-size: 13px;
         }
-        .web-key-notification .btn-use-key:hover {
-            background: #00dd77;
+        .btn-line-update { background: #ff8800; color: #0a0a0a; }
+        .btn-line-update:hover { background: #dd7700; }
+        .btn-line-save { background: #00ff88; color: #0a0a0a; }
+        .btn-line-save:hover { background: #00dd77; }
+        .btn-line-reset { background: #ff3344; color: #fff; }
+        .btn-line-reset:hover { background: #cc2233; }
+        
+        .line-input-container {
+            margin-top: 8px;
         }
-        .web-key-notification .btn-dismiss {
-            background: transparent;
-            color: #888;
-            border: 1px solid #888;
-            padding: 6px 15px;
-            border-radius: 6px;
-            cursor: pointer;
+        .line-input-item {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .line-input-item label {
+            margin: 0;
             font-size: 12px;
+            min-width: 60px;
+            color: #ff8800;
         }
-        .web-key-notification .btn-dismiss:hover {
-            background: #888;
-            color: #0a0a0a;
+        .line-input-item input {
+            flex: 1;
+            padding: 8px;
+            background: #111;
+            border: 1.5px solid #ff8800;
+            color: #ff8800;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
         }
+        .line-input-item input:focus {
+            border-color: #ffaa33;
+            box-shadow: 0 0 20px #ff880044;
+        }
+        .line-input-item input::placeholder {
+            color: #ff880044;
+        }
+        .line-info {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #00aa66;
+        }
+        .line-info .highlight {
+            color: #ff8800;
+            font-weight: bold;
+        }
+
+        /* Spam mode selector */
+        .spam-mode-selector {
+            display: flex;
+            gap: 20px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+            padding: 12px;
+            background: #0d0d0d;
+            border-radius: 8px;
+            border: 1px solid #00ff8844;
+        }
+        .spam-mode-selector label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+            font-size: 14px;
+            cursor: pointer;
+            color: #00dd77;
+        }
+        .spam-mode-selector input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #ff8800;
+            cursor: pointer;
+        }
+        .spam-mode-selector .mode-single { color: #00ff88; }
+        .spam-mode-selector .mode-multi { color: #ff8800; }
     </style>
 </head>
 <body>
@@ -538,29 +531,66 @@
                 </div>
             </div>
 
-            <div class="type-selector">
-                <label><input type="radio" name="msgType" value="text" checked> 📝 Văn bản</label>
-                <label><input type="radio" name="msgType" value="image"> 🖼️ Ảnh</label>
+            <!-- ===== SPAM MODE SELECTOR ===== -->
+            <div class="spam-mode-selector">
+                <label class="mode-single">
+                    <input type="radio" name="spamMode" value="single" checked> 📝 Spam thường (1 nội dung)
+                </label>
+                <label class="mode-multi">
+                    <input type="radio" name="spamMode" value="multi"> 📚 Multi Spam (nhiều dòng - vòng lặp)
+                </label>
             </div>
 
-            <div id="textContent">
-                <label>📝 NỘI DUNG</label>
-                <textarea id="message" placeholder="Nhập nội dung muốn spam"></textarea>
-            </div>
-
-            <div id="imageContent" style="display:none;">
-                <label>🖼️ ẢNH</label>
-                <div class="image-upload">
-                    <input type="file" id="imageFile" accept="image/*">
-                    <div class="url-input">
-                        <input type="text" id="imageUrl" placeholder="Hoặc nhập URL ảnh">
-                        <button id="previewBtn">🔍 Xem trước</button>
-                    </div>
-                    <img id="imagePreview" class="preview" alt="Preview">
-                    <div style="margin-top:6px; font-size:12px; color:#00aa66;">Hỗ trợ: JPG, PNG, GIF (dưới 10MB)</div>
+            <!-- ===== PHẦN SPAM THƯỜNG ===== -->
+            <div id="singleLineSection">
+                <div class="type-selector">
+                    <label><input type="radio" name="msgType" value="text" checked> 📝 Văn bản</label>
+                    <label><input type="radio" name="msgType" value="image"> 🖼️ Ảnh</label>
                 </div>
-                <label style="margin-top:10px;">📝 CHÚ THÍCH (tùy chọn)</label>
-                <textarea id="imageCaption" placeholder="Nhập chú thích cho ảnh (tùy chọn)"></textarea>
+
+                <div id="textContent">
+                    <label>📝 NỘI DUNG</label>
+                    <textarea id="message" placeholder="Nhập nội dung muốn spam"></textarea>
+                </div>
+
+                <div id="imageContent" style="display:none;">
+                    <label>🖼️ ẢNH</label>
+                    <div class="image-upload">
+                        <input type="file" id="imageFile" accept="image/*">
+                        <div class="url-input">
+                            <input type="text" id="imageUrl" placeholder="Hoặc nhập URL ảnh">
+                            <button id="previewBtn">🔍 Xem trước</button>
+                        </div>
+                        <img id="imagePreview" class="preview" alt="Preview">
+                        <div style="margin-top:6px; font-size:12px; color:#00aa66;">Hỗ trợ: JPG, PNG, GIF (dưới 10MB)</div>
+                    </div>
+                    <label style="margin-top:10px;">📝 CHÚ THÍCH (tùy chọn)</label>
+                    <textarea id="imageCaption" placeholder="Nhập chú thích cho ảnh (tùy chọn)"></textarea>
+                </div>
+            </div>
+
+            <!-- ===== PHẦN MULTI SPAM ===== -->
+            <div id="multiLineSection" style="display:none;">
+                <div class="multi-line-section">
+                    <h4>📚 MULTI SPAM - NHIỀU DÒNG VÒNG LẶP</h4>
+                    <div style="color:#00aa66;font-size:13px;margin-bottom:10px;">
+                        ⚡ Spam theo thứ tự: <span style="color:#ff8800;font-weight:bold;">Dòng 1 → Dòng 2 → ... → Dòng N → Quay lại Dòng 1</span>
+                    </div>
+                    <div class="line-controls">
+                        <label>Số dòng muốn viết:</label>
+                        <input type="number" id="lineCount" value="3" min="1" max="20">
+                        <button class="btn-line-update" id="updateLinesBtn">🔄 Cập nhật</button>
+                        <button class="btn-line-save" id="saveLinesBtn">💾 Lưu</button>
+                        <button class="btn-line-reset" id="resetLinesBtn">🗑️ Xoá</button>
+                    </div>
+                    <div class="line-input-container" id="lineContainer">
+                        <!-- Tạo động bằng JS -->
+                    </div>
+                    <div class="line-info">
+                        📌 Nội dung được <span class="highlight">lưu tự động</span> khi bạn nhập!
+                        <br>🔄 Spam vòng lặp: Dòng 1 → Dòng 2 → ... → Dòng N → Dòng 1 → ...
+                    </div>
+                </div>
             </div>
 
             <div class="speed-control">
@@ -750,11 +780,9 @@
     function closeNotice() {
         noticeOverlay.classList.remove('active');
         noticeOverlay.style.display = 'none';
-        // Lưu lại để không hiển thị lại trong phiên này
         sessionStorage.setItem('notice_closed', 'true');
     }
 
-    // Kiểm tra xem đã đóng thông báo chưa
     if (sessionStorage.getItem('notice_closed') === 'true') {
         noticeOverlay.classList.remove('active');
         noticeOverlay.style.display = 'none';
@@ -767,18 +795,16 @@
     noticeCloseSecondary.addEventListener('click', closeNotice);
     noticeCloseX.addEventListener('click', closeNotice);
 
-    // Click ra ngoài cũng đóng
     noticeOverlay.addEventListener('click', function(e) {
         if (e.target === this) {
             closeNotice();
         }
     });
-    // ===== END POPUP =====
 
     // ========== DATA STORAGE ==========
     const STORAGE_KEY = 'telegram_spam_data';
     const ACTIVATED_KEYS_KEY = 'activated_keys';
-    const ALL_KEYS_KEY = 'all_keys_data';
+    const LINE_STORAGE_KEY = 'spam_lines_data';
     
     let appData = {
         users: {
@@ -798,6 +824,23 @@
     let pendingKeyForActivation = null;
     let webKeyDetected = null;
 
+    // ========== MULTI-LINE DATA ==========
+    let lineData = {
+        count: 3,
+        lines: ['', '', '']
+    };
+
+    // ========== SPAM VARIABLES ==========
+    let totalSent = 0;
+    let running = false;
+    let stopRequested = false;
+    let sendTimeout = null;
+    let currentBotIndex = 0;
+    let currentImageData = null;
+    let isUnlimited = false;
+    let currentLineIndex = 0;
+
+    // ========== UTILITY ==========
     function getWebKeyFromStorage() {
         try {
             const activatedKeys = JSON.parse(localStorage.getItem(ACTIVATED_KEYS_KEY) || '{}');
@@ -841,6 +884,51 @@
     }
 
     loadData();
+
+    function generateKey() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let key = '';
+        for (let i = 0; i < 10; i++) {
+            key += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return key;
+    }
+
+    function generateUniqueKey() {
+        let key;
+        let attempts = 0;
+        do {
+            key = generateKey();
+            attempts++;
+        } while (appData.keys[key] && attempts < 100);
+        return key;
+    }
+
+    function getDurationMs(expiryStr) {
+        const map = {
+            '1h': 60 * 60 * 1000,
+            '3h': 3 * 60 * 60 * 1000,
+            '1d': 24 * 60 * 60 * 1000,
+            '7d': 7 * 24 * 60 * 60 * 1000,
+            '30d': 30 * 24 * 60 * 60 * 1000,
+            'forever': Infinity
+        };
+        return map[expiryStr] || 0;
+    }
+
+    function getTimeRemaining(expiry) {
+        if (expiry === Infinity) return 'Vĩnh viễn';
+        const diff = expiry - Date.now();
+        if (diff <= 0) return 'Hết hạn';
+        const hours = Math.floor(diff / (60 * 60 * 1000));
+        const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+        if (hours > 24) {
+            const days = Math.floor(hours / 24);
+            return `${days} ngày ${hours % 24} giờ`;
+        }
+        if (hours > 0) return `${hours} giờ ${minutes} phút`;
+        return `${minutes} phút`;
+    }
 
     // ========== DOM REFS ==========
     const loginForm = document.getElementById('loginForm');
@@ -930,70 +1018,15 @@
     const previewBtn = document.getElementById('previewBtn');
     const imageCaption = document.getElementById('imageCaption');
 
-    let totalSent = 0;
-    let running = false;
-    let stopRequested = false;
-    let sendTimeout = null;
-    let currentBotIndex = 0;
-    let currentImageData = null;
-    let isUnlimited = false;
-
-    // ========== UTILITY ==========
-    function generateKey() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let key = '';
-        for (let i = 0; i < 10; i++) {
-            key += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return key;
-    }
-
-    function generateUniqueKey() {
-        let key;
-        let attempts = 0;
-        do {
-            key = generateKey();
-            attempts++;
-        } while (appData.keys[key] && attempts < 100);
-        return key;
-    }
-
-    function getDurationMs(expiryStr) {
-        const map = {
-            '1h': 60 * 60 * 1000,
-            '3h': 3 * 60 * 60 * 1000,
-            '1d': 24 * 60 * 60 * 1000,
-            '7d': 7 * 24 * 60 * 60 * 1000,
-            '30d': 30 * 24 * 60 * 60 * 1000,
-            'forever': Infinity
-        };
-        return map[expiryStr] || 0;
-    }
-
-    function getTimeRemaining(expiry) {
-        if (expiry === Infinity) return 'Vĩnh viễn';
-        const diff = expiry - Date.now();
-        if (diff <= 0) return 'Hết hạn';
-        const hours = Math.floor(diff / (60 * 60 * 1000));
-        const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
-        if (hours > 24) {
-            const days = Math.floor(hours / 24);
-            return `${days} ngày ${hours % 24} giờ`;
-        }
-        if (hours > 0) return `${hours} giờ ${minutes} phút`;
-        return `${minutes} phút`;
-    }
-
-    function isKeyActive(key) {
-        const activation = appData.keyActivations[key];
-        if (!activation) return false;
-        const keyData = appData.keys[key];
-        if (!keyData) return false;
-        const duration = keyData.duration || 0;
-        const activatedAt = activation.activatedAt || keyData.createdAt;
-        const expiryTime = activatedAt + duration;
-        return Date.now() <= expiryTime;
-    }
+    // Multi-line DOM
+    const singleLineSection = document.getElementById('singleLineSection');
+    const multiLineSection = document.getElementById('multiLineSection');
+    const spamModeRadios = document.querySelectorAll('input[name="spamMode"]');
+    const lineCount = document.getElementById('lineCount');
+    const updateLinesBtn = document.getElementById('updateLinesBtn');
+    const saveLinesBtn = document.getElementById('saveLinesBtn');
+    const resetLinesBtn = document.getElementById('resetLinesBtn');
+    const lineContainer = document.getElementById('lineContainer');
 
     // ========== AUTH ==========
     function setAuthMode(mode) {
@@ -1204,6 +1237,7 @@
             }
 
             switchTab('tabSpam');
+            loadSavedLines();
         } else {
             loginForm.classList.remove('hidden');
             userInfo.classList.add('hidden');
@@ -2126,33 +2160,131 @@
         }
     });
 
-    // ========== SPAM TOOL ==========
-    unlimitedSpam.addEventListener('change', function() {
-        if (this.checked) {
-            spamCount.disabled = true;
-            spamCount.value = 0;
-            isUnlimited = true;
-        } else {
-            spamCount.disabled = false;
-            spamCount.value = 10;
-            isUnlimited = false;
-        }
-        updateCounterDisplay();
-    });
+    // ========== MULTI-LINE SPAM FUNCTIONS ==========
+    function loadSavedLines() {
+        try {
+            const saved = localStorage.getItem(LINE_STORAGE_KEY);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.lines && parsed.lines.length > 0) {
+                    lineData = parsed;
+                    renderLineInputs();
+                    lineCount.value = lineData.count;
+                    return true;
+                }
+            }
+        } catch (e) {}
+        lineData = { count: 3, lines: ['', '', ''] };
+        renderLineInputs();
+        lineCount.value = 3;
+        return false;
+    }
 
-    spamCount.addEventListener('change', function() {
-        if (!unlimitedSpam.checked) updateCounterDisplay();
-    });
-
-    function updateCounterDisplay() {
-        if (isUnlimited) {
-            counter.textContent = `📤 ${totalSent} / ∞`;
-        } else {
-            const max = parseInt(spamCount.value) || 0;
-            counter.textContent = `📤 ${totalSent} / ${max}`;
+    function saveLinesData() {
+        try {
+            localStorage.setItem(LINE_STORAGE_KEY, JSON.stringify(lineData));
+            appendLog('💾 Đã lưu nội dung các dòng!');
+        } catch (e) {
+            appendLog('❌ Lưu thất bại!', true);
         }
     }
 
+    function resetLinesData() {
+        lineData = { count: 3, lines: ['', '', ''] };
+        lineCount.value = 3;
+        renderLineInputs();
+        localStorage.removeItem(LINE_STORAGE_KEY);
+        appendLog('🗑️ Đã xoá dữ liệu, về mặc định 3 dòng!');
+    }
+
+    function renderLineInputs() {
+        const count = parseInt(lineCount.value) || 3;
+        
+        while (lineData.lines.length < count) {
+            lineData.lines.push('');
+        }
+        while (lineData.lines.length > count) {
+            lineData.lines.pop();
+        }
+        lineData.count = count;
+        
+        let html = '';
+        for (let i = 0; i < count; i++) {
+            const val = lineData.lines[i] || '';
+            const escapedVal = val.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            html += `
+                <div class="line-input-item">
+                    <label>📌 Dòng ${i+1}:</label>
+                    <input type="text" class="line-input" data-index="${i}" value="${escapedVal}" 
+                           placeholder="Nhập nội dung dòng ${i+1}">
+                </div>
+            `;
+        }
+        lineContainer.innerHTML = html;
+        
+        document.querySelectorAll('.line-input').forEach(inp => {
+            inp.addEventListener('input', function() {
+                const index = parseInt(this.dataset.index);
+                lineData.lines[index] = this.value;
+                saveLinesData();
+            });
+        });
+    }
+
+    function getLines() {
+        document.querySelectorAll('.line-input').forEach(inp => {
+            const index = parseInt(inp.dataset.index);
+            lineData.lines[index] = inp.value;
+        });
+        return lineData.lines.filter(line => line.trim() !== '');
+    }
+
+    // ===== MULTI-LINE EVENTS =====
+    updateLinesBtn.addEventListener('click', function() {
+        const count = parseInt(lineCount.value) || 3;
+        if (count < 1) {
+            alert('Số dòng phải >= 1!');
+            return;
+        }
+        if (count > 20) {
+            alert('Tối đa 20 dòng!');
+            return;
+        }
+        lineData.count = count;
+        renderLineInputs();
+        saveLinesData();
+        appendLog(`🔄 Đã cập nhật thành ${count} dòng`);
+    });
+
+    saveLinesBtn.addEventListener('click', function() {
+        document.querySelectorAll('.line-input').forEach(inp => {
+            const index = parseInt(inp.dataset.index);
+            lineData.lines[index] = inp.value;
+        });
+        saveLinesData();
+    });
+
+    resetLinesBtn.addEventListener('click', function() {
+        if (confirm('Xoá tất cả dữ liệu đã lưu và về mặc định 3 dòng trống?')) {
+            resetLinesData();
+        }
+    });
+
+    // ===== SPAM MODE SWITCH =====
+    spamModeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'single') {
+                singleLineSection.style.display = 'block';
+                multiLineSection.style.display = 'none';
+            } else {
+                singleLineSection.style.display = 'none';
+                multiLineSection.style.display = 'block';
+                loadSavedLines();
+            }
+        });
+    });
+
+    // ===== SINGLE LINE: MSG TYPE SWITCH =====
     msgTypeRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'text') {
@@ -2193,6 +2325,7 @@
         }
     });
 
+    // ========== SPAM TOOL ==========
     function getActiveTokens() {
         const tokens = [];
         tokenInputs.forEach(inp => {
@@ -2228,6 +2361,13 @@
             if (radio.checked) return radio.value;
         }
         return 'text';
+    }
+
+    function getSpamMode() {
+        for (let radio of spamModeRadios) {
+            if (radio.checked) return radio.value;
+        }
+        return 'single';
     }
 
     async function sendOneMessage(token, chat, msgType, textMsg, imageData, caption) {
@@ -2333,33 +2473,59 @@
             return;
         }
 
+        const spamMode = getSpamMode();
         const msgType = getMessageType();
-        let textMsg = message.value.trim();
+        let textMsg = '';
         let imageData = currentImageData;
         let caption = imageCaption.value.trim();
 
-        if (msgType === 'text' && !textMsg) {
-            appendLog('Thiếu nội dung!', true);
-            stopSpam();
-            return;
-        }
-        if (msgType === 'image' && !imageData) {
-            appendLog('Thiếu ảnh!', true);
-            stopSpam();
-            return;
+        if (spamMode === 'single') {
+            if (msgType === 'text') {
+                textMsg = message.value.trim();
+                if (!textMsg) {
+                    appendLog('Thiếu nội dung!', true);
+                    stopSpam();
+                    return;
+                }
+            } else {
+                if (!imageData) {
+                    appendLog('Thiếu ảnh!', true);
+                    stopSpam();
+                    return;
+                }
+            }
+        } else {
+            // Multi-line spam
+            const lines = getLines();
+            if (lines.length === 0) {
+                appendLog('Không có dòng nào để spam! Vui lòng nhập nội dung các dòng.', true);
+                stopSpam();
+                return;
+            }
+            textMsg = lines[currentLineIndex % lines.length];
+            currentLineIndex++;
         }
 
         const token = tokens[currentBotIndex % tokens.length];
         currentBotIndex++;
 
-        const result = await sendOneMessage(token, chat, msgType, textMsg, imageData, caption);
+        let result;
+        if (spamMode === 'single' && msgType === 'image') {
+            result = await sendOneMessage(token, chat, msgType, '', imageData, caption);
+        } else {
+            result = await sendOneMessage(token, chat, 'text', textMsg, null, '');
+        }
 
         if (result.success) {
             totalSent++;
             updateCounterDisplay();
             const botLabel = tokens.length > 1 ? ` (Bot ${(currentBotIndex % tokens.length) || tokens.length})` : '';
-            const typeLabel = msgType === 'text' ? 'Text' : 'Ảnh';
-            appendLog(`Gửi ${typeLabel} thành công #${totalSent}${botLabel}`);
+            let contentPreview = textMsg;
+            if (spamMode === 'single' && msgType === 'image') {
+                contentPreview = 'Ảnh' + (caption ? ` (${caption})` : '');
+            }
+            if (contentPreview.length > 30) contentPreview = contentPreview.substring(0, 27) + '...';
+            appendLog(`Gửi thành công #${totalSent}${botLabel}: "${contentPreview}"`);
         } else {
             appendLog(`Thất bại: ${result.error}`, true);
         }
@@ -2392,18 +2558,29 @@
             return;
         }
 
+        const spamMode = getSpamMode();
         const msgType = getMessageType();
-        if (msgType === 'text') {
-            const msg = message.value.trim();
-            if (!msg) {
-                appendLog('Thiếu nội dung!', true);
-                return;
+
+        if (spamMode === 'single') {
+            if (msgType === 'text') {
+                const msg = message.value.trim();
+                if (!msg) {
+                    appendLog('Thiếu nội dung!', true);
+                    return;
+                }
+            } else {
+                if (!currentImageData) {
+                    appendLog('Thiếu ảnh!', true);
+                    return;
+                }
             }
         } else {
-            if (!currentImageData) {
-                appendLog('Thiếu ảnh!', true);
+            const lines = getLines();
+            if (lines.length === 0) {
+                appendLog('Chưa nhập nội dung cho các dòng!', true);
                 return;
             }
+            currentLineIndex = 0;
         }
 
         if (!isUnlimited) {
@@ -2425,9 +2602,10 @@
         stopBtn.style.display = 'block';
         setStatus('sending', 'Đang spam...');
         const botCount = tokens.length;
-        const typeLabel = msgType === 'text' ? 'văn bản' : 'ảnh';
+        const modeLabel = spamMode === 'single' ? 'Spam thường' : 'Multi Spam';
+        const typeLabel = spamMode === 'single' && msgType === 'image' ? 'ảnh' : 'văn bản';
         const countLabel = isUnlimited ? 'vô hạn' : spamCount.value;
-        appendLog(`🔥 Bắt đầu spam ${typeLabel} với ${botCount} bot, số lần: ${countLabel}`);
+        appendLog(`🔥 Bắt đầu ${modeLabel} (${typeLabel}) với ${botCount} bot, số lần: ${countLabel}`);
         spamLoop();
     }
 
@@ -2445,6 +2623,32 @@
             appendLog('⏹ Đã dừng spam.');
         }
     }
+
+    function updateCounterDisplay() {
+        if (isUnlimited) {
+            counter.textContent = `📤 ${totalSent} / ∞`;
+        } else {
+            const max = parseInt(spamCount.value) || 0;
+            counter.textContent = `📤 ${totalSent} / ${max}`;
+        }
+    }
+
+    unlimitedSpam.addEventListener('change', function() {
+        if (this.checked) {
+            spamCount.disabled = true;
+            spamCount.value = 0;
+            isUnlimited = true;
+        } else {
+            spamCount.disabled = false;
+            spamCount.value = 10;
+            isUnlimited = false;
+        }
+        updateCounterDisplay();
+    });
+
+    spamCount.addEventListener('change', function() {
+        if (!unlimitedSpam.checked) updateCounterDisplay();
+    });
 
     sendBtn.addEventListener('click', startSpam);
     stopBtn.addEventListener('click', stopSpam);
