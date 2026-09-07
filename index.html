@@ -83,7 +83,7 @@
 
         .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 750px; box-shadow: 0 0 50px #00ff8833; position: relative; }
         
-        /* ===== HEADER WITH AVATAR ===== */
+        /* ===== HEADER ===== */
         .header {
             display: flex;
             align-items: center;
@@ -93,29 +93,6 @@
             padding-bottom: 15px;
             margin-bottom: 5px;
             position: relative;
-        }
-        .header .header-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 2px solid #00ff88;
-            object-fit: cover;
-            background: #0d0d0d;
-            flex-shrink: 0;
-            display: none;
-        }
-        .header .header-avatar-placeholder {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 2px solid #00ff88;
-            background: #0d0d0d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: #00ff88;
-            flex-shrink: 0;
         }
         .header .header-title {
             text-align: center;
@@ -186,6 +163,7 @@
             object-fit: cover;
             background: #0d0d0d;
             flex-shrink: 0;
+            display: none;
         }
         .side-menu .menu-avatar-placeholder {
             width: 60px;
@@ -197,6 +175,7 @@
             align-items: center;
             justify-content: center;
             font-size: 28px;
+            font-weight: bold;
             color: #00ff88;
             flex-shrink: 0;
         }
@@ -442,12 +421,93 @@
         .key-input-section .key-input-row button:hover { background: #dd7700; }
         .key-info { font-size: 12px; color: #00aa66; margin-top: 6px; }
 
-        .user-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #0d0d0d; border-radius: 8px; border: 1px solid #00ff8844; margin-bottom: 15px; flex-wrap: wrap; gap: 8px; }
-        .user-info .username { color: #00ff88; font-weight: bold; font-size: 16px; }
-        .user-info .key-timer { color: #ff8800; font-size: 13px; background: #ff880022; padding: 2px 12px; border-radius: 12px; border: 1px solid #ff880066; }
-        .user-info .role { color: #ff8800; font-size: 13px; padding: 3px 12px; border-radius: 12px; background: #00ff8822; border: 1px solid #ff880066; }
-        .user-info .role.admin { color: #00ff88; border-color: #00ff88; background: #00ff8822; }
-        .user-info .role.user { color: #ff8800; border-color: #ff8800; background: #ff880022; }
+        /* ===== USER INFO WITH AVATAR ===== */
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: #0d0d0d;
+            border-radius: 8px;
+            border: 1px solid #00ff8844;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .user-info .user-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .user-info .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #00ff88;
+            object-fit: cover;
+            background: #0d0d0d;
+            flex-shrink: 0;
+            display: none;
+        }
+        .user-info .user-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #00ff88;
+            background: #0d0d0d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ff88;
+            flex-shrink: 0;
+        }
+        .user-info .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .user-info .username {
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .user-info .key-timer {
+            color: #ff8800;
+            font-size: 12px;
+            background: #ff880022;
+            padding: 0 10px;
+            border-radius: 10px;
+            border: 1px solid #ff880066;
+            display: inline-block;
+        }
+        .user-info .role {
+            color: #ff8800;
+            font-size: 12px;
+            padding: 2px 12px;
+            border-radius: 12px;
+            background: #00ff8822;
+            border: 1px solid #ff880066;
+        }
+        .user-info .role.admin {
+            color: #00ff88;
+            border-color: #00ff88;
+            background: #00ff8822;
+        }
+        .user-info .role.user {
+            color: #ff8800;
+            border-color: #ff8800;
+            background: #ff880022;
+        }
+        .user-info .user-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-info .user-right .btn-logout {
+            padding: 6px 15px;
+            font-size: 12px;
+        }
 
         .hidden { display: none !important; }
         .auth-form input.default-placeholder::placeholder { color: #00ff8844; }
@@ -675,6 +735,7 @@
             border: 2px solid #00ff88;
             object-fit: cover;
             background: #0d0d0d;
+            display: none;
         }
         .profile-edit .avatar-preview-placeholder {
             width: 80px;
@@ -686,6 +747,7 @@
             align-items: center;
             justify-content: center;
             font-size: 36px;
+            font-weight: bold;
             color: #00ff88;
         }
         .profile-edit .avatar-upload input[type="file"] {
@@ -780,10 +842,8 @@
     <!-- Menu Hamburger -->
     <button class="menu-toggle" id="menuToggle">☰</button>
     
-    <!-- Header with Avatar -->
+    <!-- Header -->
     <div class="header">
-        <img class="header-avatar" id="headerAvatar" src="" alt="Avatar">
-        <div class="header-avatar-placeholder" id="headerAvatarPlaceholder">👤</div>
         <div class="header-title">
             <h1>⚡ SPAM TELEGRAM PRO</h1>
             <div class="sub">Dev Nduc</div>
@@ -795,7 +855,7 @@
     <div class="side-menu" id="sideMenu">
         <button class="menu-close" id="menuClose">✕</button>
         <div class="menu-header">
-            <img class="menu-avatar" id="menuAvatar" src="" alt="Avatar" style="display:none;">
+            <img class="menu-avatar" id="menuAvatar" src="" alt="Avatar">
             <div class="menu-avatar-placeholder" id="menuAvatarPlaceholder">👤</div>
             <div class="menu-user-info">
                 <div class="name" id="menuUsername">Nduc</div>
@@ -811,14 +871,22 @@
     </div>
 
     <div id="userInfo" class="user-info hidden">
-        <span>
-            <span class="username" id="displayUsername">Nduc</span>
-            <span class="key-timer hidden" id="keyTimer">⏳ 0h 0m</span>
-        </span>
-        <span>
-            <span class="role" id="displayRole">Admin</span>
-            <button class="btn-logout" id="logoutBtn" style="padding:6px 15px;font-size:12px;margin-left:8px;">Đăng xuất</button>
-        </span>
+        <div class="user-left">
+            <img class="user-avatar" id="userAvatar" src="" alt="Avatar">
+            <div class="user-avatar-placeholder" id="userAvatarPlaceholder">👤</div>
+            <div class="user-details">
+                <span>
+                    <span class="username" id="displayUsername">Nduc</span>
+                    <span class="key-timer hidden" id="keyTimer">⏳ 0h 0m</span>
+                </span>
+                <span>
+                    <span class="role" id="displayRole">Admin</span>
+                </span>
+            </div>
+        </div>
+        <div class="user-right">
+            <button class="btn-logout" id="logoutBtn">🚪 Đăng xuất</button>
+        </div>
     </div>
 
     <div id="loginForm" class="auth-form">
@@ -846,7 +914,7 @@
         <button class="profile-close" id="profileClose">✕</button>
         <h3 style="color:#00ff88;margin-bottom:15px;">👤 Thay đổi thông tin</h3>
         <div class="avatar-upload">
-            <img class="avatar-preview" id="profileAvatar" src="" alt="Avatar" style="display:none;">
+            <img class="avatar-preview" id="profileAvatar" src="" alt="Avatar">
             <div class="avatar-preview-placeholder" id="profileAvatarPlaceholder">👤</div>
             <div>
                 <input type="file" id="avatarInput" accept="image/*">
@@ -1209,6 +1277,11 @@
     let currentLineIndex = 0;
 
     // ========== UTILITY ==========
+    function getInitials(name) {
+        if (!name || name.length === 0) return '👤';
+        return name.charAt(0).toUpperCase();
+    }
+
     function getWebKeyFromStorage() {
         try {
             const activatedKeys = JSON.parse(localStorage.getItem(ACTIVATED_KEYS_KEY) || '{}');
@@ -1283,7 +1356,6 @@
             const session = localStorage.getItem(SESSION_KEY);
             if (session) {
                 const data = JSON.parse(session);
-                // Kiểm tra session còn hiệu lực (7 ngày)
                 if (Date.now() - data.timestamp < 7 * 24 * 60 * 60 * 1000) {
                     const user = appData.users[data.username];
                     if (user && !appData.bannedUsers.includes(data.username)) {
@@ -1314,15 +1386,13 @@
     }
 
     // ========== DOM REFS ==========
-    // Header avatar
-    const headerAvatar = document.getElementById('headerAvatar');
-    const headerAvatarPlaceholder = document.getElementById('headerAvatarPlaceholder');
-
     const loginForm = document.getElementById('loginForm');
     const userInfo = document.getElementById('userInfo');
     const displayUsername = document.getElementById('displayUsername');
     const displayRole = document.getElementById('displayRole');
     const keyTimer = document.getElementById('keyTimer');
+    const userAvatar = document.getElementById('userAvatar');
+    const userAvatarPlaceholder = document.getElementById('userAvatarPlaceholder');
     const loginUsername = document.getElementById('loginUsername');
     const loginPassword = document.getElementById('loginPassword');
     const loginBtn = document.getElementById('loginBtn');
@@ -1507,6 +1577,7 @@
         } else {
             profileAvatar.style.display = 'none';
             profileAvatarPlaceholder.style.display = 'flex';
+            profileAvatarPlaceholder.textContent = getInitials(currentUser.username);
             currentAvatarData = null;
         }
         
@@ -1618,16 +1689,21 @@
     });
 
     function updateAvatarDisplay() {
-        const profile = userProfiles[currentUser?.username] || {};
-        // Header avatar
+        const username = currentUser?.username || '';
+        const profile = userProfiles[username] || {};
+        const initial = getInitials(username);
+        
+        // User info avatar
         if (profile.avatar) {
-            headerAvatar.src = profile.avatar;
-            headerAvatar.style.display = 'block';
-            headerAvatarPlaceholder.style.display = 'none';
+            userAvatar.src = profile.avatar;
+            userAvatar.style.display = 'block';
+            userAvatarPlaceholder.style.display = 'none';
         } else {
-            headerAvatar.style.display = 'none';
-            headerAvatarPlaceholder.style.display = 'flex';
+            userAvatar.style.display = 'none';
+            userAvatarPlaceholder.style.display = 'flex';
+            userAvatarPlaceholder.textContent = initial;
         }
+        
         // Menu avatar
         if (profile.avatar) {
             menuAvatar.src = profile.avatar;
@@ -1636,6 +1712,7 @@
         } else {
             menuAvatar.style.display = 'none';
             menuAvatarPlaceholder.style.display = 'flex';
+            menuAvatarPlaceholder.textContent = initial;
         }
     }
 
@@ -1868,6 +1945,14 @@
             userInfo.classList.add('hidden');
             tabContainer.classList.add('hidden');
             menuToggle.classList.remove('show');
+            // Reset avatar về mặc định
+            userAvatar.style.display = 'none';
+            userAvatarPlaceholder.style.display = 'flex';
+            userAvatarPlaceholder.textContent = '👤';
+            menuAvatar.style.display = 'none';
+            menuAvatarPlaceholder.style.display = 'flex';
+            menuAvatarPlaceholder.textContent = '👤';
+            
             tabSpam.classList.remove('active');
             tabSpam.style.display = 'none';
             tabKey.classList.remove('active');
@@ -3141,13 +3226,11 @@
     renderBannedTable();
     updateBypassLinkDisplay();
     
-    // Thử tự động đăng nhập
     if (!autoLogin()) {
         updateUI();
     }
     
     setAuthMode('login');
-
     setInterval(checkWebKey, 5000);
 
 })();
