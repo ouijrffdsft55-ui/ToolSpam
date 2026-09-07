@@ -82,10 +82,60 @@
         .notice-box .notice-close-x:hover { color: #ff3344; transform: rotate(90deg); }
 
         .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 750px; box-shadow: 0 0 50px #00ff8833; position: relative; }
-        h1 { text-align: center; color: #00ff88; font-size: 26px; letter-spacing: 3px; border-bottom: 2px solid #00ff88; padding-bottom: 15px; margin-bottom: 5px; text-shadow: 0 0 20px #00ff8866; }
-        .sub { text-align: center; color: #00dd77; font-size: 14px; margin-bottom: 25px; opacity: 0.7; }
         
-        /* ===== MENU HAMBURGER ===== */
+        /* ===== HEADER WITH AVATAR ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            border-bottom: 2px solid #00ff88;
+            padding-bottom: 15px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        .header .header-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #00ff88;
+            object-fit: cover;
+            background: #0d0d0d;
+            flex-shrink: 0;
+            display: none;
+        }
+        .header .header-avatar-placeholder {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #00ff88;
+            background: #0d0d0d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #00ff88;
+            flex-shrink: 0;
+        }
+        .header .header-title {
+            text-align: center;
+        }
+        .header .header-title h1 {
+            color: #00ff88;
+            font-size: 26px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px #00ff8866;
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+        .header .header-title .sub {
+            color: #00dd77;
+            font-size: 14px;
+            opacity: 0.7;
+            margin: 0;
+        }
+
         .menu-toggle {
             position: absolute;
             top: 18px;
@@ -595,8 +645,22 @@
             border-radius: 12px;
             border: 1px solid #00ff8844;
             margin-top: 15px;
+            position: relative;
         }
         .profile-edit.active { display: block; }
+        .profile-edit .profile-close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 28px;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 5px;
+        }
+        .profile-edit .profile-close:hover { color: #ff3344; transform: rotate(90deg); }
         .profile-edit .avatar-upload {
             display: flex;
             align-items: center;
@@ -716,8 +780,15 @@
     <!-- Menu Hamburger -->
     <button class="menu-toggle" id="menuToggle">☰</button>
     
-    <h1>⚡ SPAM TELEGRAM PRO</h1>
-    <div class="sub">Dev Nduc</div>
+    <!-- Header with Avatar -->
+    <div class="header">
+        <img class="header-avatar" id="headerAvatar" src="" alt="Avatar">
+        <div class="header-avatar-placeholder" id="headerAvatarPlaceholder">👤</div>
+        <div class="header-title">
+            <h1>⚡ SPAM TELEGRAM PRO</h1>
+            <div class="sub">Dev Nduc</div>
+        </div>
+    </div>
 
     <!-- Side Menu -->
     <div class="menu-overlay" id="menuOverlay"></div>
@@ -772,6 +843,7 @@
 
     <!-- Profile Edit -->
     <div class="profile-edit" id="profileEdit">
+        <button class="profile-close" id="profileClose">✕</button>
         <h3 style="color:#00ff88;margin-bottom:15px;">👤 Thay đổi thông tin</h3>
         <div class="avatar-upload">
             <img class="avatar-preview" id="profileAvatar" src="" alt="Avatar" style="display:none;">
@@ -1098,6 +1170,7 @@
     const ACTIVATED_KEYS_KEY = 'activated_keys';
     const LINE_STORAGE_KEY = 'spam_lines_data';
     const PROFILE_STORAGE_KEY = 'user_profiles';
+    const SESSION_KEY = 'telegram_session';
     
     let appData = {
         users: {
@@ -1191,54 +1264,60 @@
         } catch (e) {}
     }
 
+    // ========== SESSION MANAGEMENT ==========
+    function saveSession() {
+        if (currentUser) {
+            const sessionData = {
+                username: currentUser.username,
+                role: currentUser.role,
+                timestamp: Date.now()
+            };
+            try {
+                localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+            } catch (e) {}
+        }
+    }
+
+    function loadSession() {
+        try {
+            const session = localStorage.getItem(SESSION_KEY);
+            if (session) {
+                const data = JSON.parse(session);
+                // Kiểm tra session còn hiệu lực (7 ngày)
+                if (Date.now() - data.timestamp < 7 * 24 * 60 * 60 * 1000) {
+                    const user = appData.users[data.username];
+                    if (user && !appData.bannedUsers.includes(data.username)) {
+                        currentUser = { username: data.username, role: user.role };
+                        return true;
+                    }
+                }
+            }
+        } catch (e) {}
+        return false;
+    }
+
+    function clearSession() {
+        try {
+            localStorage.removeItem(SESSION_KEY);
+        } catch (e) {}
+    }
+
     loadData();
 
-    function generateKey() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let key = '';
-        for (let i = 0; i < 10; i++) {
-            key += chars.charAt(Math.floor(Math.random() * chars.length));
+    // ========== AUTO LOGIN ==========
+    function autoLogin() {
+        if (loadSession()) {
+            updateUI();
+            return true;
         }
-        return key;
-    }
-
-    function generateUniqueKey() {
-        let key;
-        let attempts = 0;
-        do {
-            key = generateKey();
-            attempts++;
-        } while (appData.keys[key] && attempts < 100);
-        return key;
-    }
-
-    function getDurationMs(expiryStr) {
-        const map = {
-            '1h': 60 * 60 * 1000,
-            '3h': 3 * 60 * 60 * 1000,
-            '1d': 24 * 60 * 60 * 1000,
-            '7d': 7 * 24 * 60 * 60 * 1000,
-            '30d': 30 * 24 * 60 * 60 * 1000,
-            'forever': Infinity
-        };
-        return map[expiryStr] || 0;
-    }
-
-    function getTimeRemaining(expiry) {
-        if (expiry === Infinity) return 'Vĩnh viễn';
-        const diff = expiry - Date.now();
-        if (diff <= 0) return 'Hết hạn';
-        const hours = Math.floor(diff / (60 * 60 * 1000));
-        const minutes = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
-        if (hours > 24) {
-            const days = Math.floor(hours / 24);
-            return `${days} ngày ${hours % 24} giờ`;
-        }
-        if (hours > 0) return `${hours} giờ ${minutes} phút`;
-        return `${minutes} phút`;
+        return false;
     }
 
     // ========== DOM REFS ==========
+    // Header avatar
+    const headerAvatar = document.getElementById('headerAvatar');
+    const headerAvatarPlaceholder = document.getElementById('headerAvatarPlaceholder');
+
     const loginForm = document.getElementById('loginForm');
     const userInfo = document.getElementById('userInfo');
     const displayUsername = document.getElementById('displayUsername');
@@ -1307,6 +1386,7 @@
 
     // Profile
     const profileEdit = document.getElementById('profileEdit');
+    const profileClose = document.getElementById('profileClose');
     const profileName = document.getElementById('profileName');
     const profilePassword = document.getElementById('profilePassword');
     const profileAvatar = document.getElementById('profileAvatar');
@@ -1435,6 +1515,12 @@
         profileEdit.scrollIntoView({ behavior: 'smooth' });
     }
 
+    function hideProfileEdit() {
+        profileEdit.classList.remove('active');
+    }
+
+    profileClose.addEventListener('click', hideProfileEdit);
+
     avatarInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -1466,14 +1552,12 @@
             return;
         }
 
-        // Kiểm tra tên đã tồn tại
         if (newName !== currentUser.username && appData.users[newName]) {
             profileStatus.innerHTML = '❌ Tên này đã được sử dụng!';
             profileStatus.style.color = '#ff5566';
             return;
         }
 
-        // Lưu avatar
         if (!userProfiles[currentUser.username]) {
             userProfiles[currentUser.username] = {};
         }
@@ -1484,7 +1568,6 @@
             delete userProfiles[currentUser.username].avatar;
         }
 
-        // Cập nhật tên
         if (newName !== currentUser.username) {
             const userData = appData.users[currentUser.username];
             delete appData.users[currentUser.username];
@@ -1498,13 +1581,11 @@
             const oldUsername = currentUser.username;
             currentUser.username = newName;
             
-            // Cập nhật ban list
             const banIndex = appData.bannedUsers.indexOf(oldUsername);
             if (banIndex !== -1) {
                 appData.bannedUsers[banIndex] = newName;
             }
             
-            // Cập nhật key activations
             for (const [key, data] of Object.entries(appData.keyActivations)) {
                 if (data.username === oldUsername) {
                     data.username = newName;
@@ -1512,7 +1593,6 @@
             }
         }
 
-        // Cập nhật mật khẩu
         if (newPassword && newPassword.length >= 3) {
             appData.users[currentUser.username].password = newPassword;
         } else if (newPassword && newPassword.length < 3) {
@@ -1523,8 +1603,8 @@
 
         saveData();
         saveProfiles();
+        saveSession();
         
-        // Cập nhật UI
         displayUsername.textContent = currentUser.username;
         menuUsername.textContent = currentUser.username;
         updateAvatarDisplay();
@@ -1532,7 +1612,6 @@
         profileStatus.innerHTML = '✅ Đã cập nhật thông tin thành công!';
         profileStatus.style.color = '#00ff88';
         
-        // Cập nhật lại menu
         updateMenuInfo();
         
         appendLog(`👤 Đã cập nhật thông tin tài khoản: ${currentUser.username}`);
@@ -1540,6 +1619,16 @@
 
     function updateAvatarDisplay() {
         const profile = userProfiles[currentUser?.username] || {};
+        // Header avatar
+        if (profile.avatar) {
+            headerAvatar.src = profile.avatar;
+            headerAvatar.style.display = 'block';
+            headerAvatarPlaceholder.style.display = 'none';
+        } else {
+            headerAvatar.style.display = 'none';
+            headerAvatarPlaceholder.style.display = 'flex';
+        }
+        // Menu avatar
         if (profile.avatar) {
             menuAvatar.src = profile.avatar;
             menuAvatar.style.display = 'block';
@@ -1608,6 +1697,7 @@
         }
         currentUser = { username, role: user.role };
         authStatus.innerHTML = `✅ Đăng nhập thành công! Chào ${username}`;
+        saveSession();
         updateUI();
         return true;
     }
@@ -1624,6 +1714,7 @@
         }
         currentUser = { username: 'Nduc', role: 'admin' };
         authStatus.innerHTML = `✅ Đăng nhập Admin thành công!`;
+        saveSession();
         updateUI();
         return true;
     }
@@ -1655,6 +1746,7 @@
         pendingKeyForActivation = null;
         webKeyDetected = null;
         profileEdit.classList.remove('active');
+        clearSession();
         updateUI();
         authStatus.innerHTML = 'Đã đăng xuất.';
         setAuthMode('login');
@@ -3048,7 +3140,12 @@
     renderKeyHistory();
     renderBannedTable();
     updateBypassLinkDisplay();
-    updateUI();
+    
+    // Thử tự động đăng nhập
+    if (!autoLogin()) {
+        updateUI();
+    }
+    
     setAuthMode('login');
 
     setInterval(checkWebKey, 5000);
