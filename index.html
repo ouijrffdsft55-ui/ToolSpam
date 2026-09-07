@@ -81,10 +81,170 @@
         .notice-box .notice-close-x { position: absolute; top: 12px; right: 18px; background: transparent; border: none; color: #888; font-size: 24px; cursor: pointer; transition: 0.3s; padding: 5px; }
         .notice-box .notice-close-x:hover { color: #ff3344; transform: rotate(90deg); }
 
-        .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 750px; box-shadow: 0 0 50px #00ff8833; }
+        .container { background: #1a1a1a; border: 2px solid #00ff88; border-radius: 16px; padding: 35px; width: 750px; box-shadow: 0 0 50px #00ff8833; position: relative; }
         h1 { text-align: center; color: #00ff88; font-size: 26px; letter-spacing: 3px; border-bottom: 2px solid #00ff88; padding-bottom: 15px; margin-bottom: 5px; text-shadow: 0 0 20px #00ff8866; }
         .sub { text-align: center; color: #00dd77; font-size: 14px; margin-bottom: 25px; opacity: 0.7; }
         
+        /* ===== MENU HAMBURGER ===== */
+        .menu-toggle {
+            position: absolute;
+            top: 18px;
+            left: 20px;
+            background: transparent;
+            border: none;
+            color: #00ff88;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 100;
+            display: none;
+            transition: 0.3s;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+        .menu-toggle:hover { background: #00ff8822; }
+        .menu-toggle.show { display: block; }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100%;
+            background: #1a1a1a;
+            border-right: 2px solid #00ff88;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            padding: 25px 20px;
+            overflow-y: auto;
+            box-shadow: 0 0 50px #00ff8833;
+        }
+        .side-menu.open { left: 0; }
+        
+        .side-menu .menu-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #00ff8844;
+            margin-bottom: 20px;
+        }
+        .side-menu .menu-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #00ff88;
+            object-fit: cover;
+            background: #0d0d0d;
+            flex-shrink: 0;
+        }
+        .side-menu .menu-avatar-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #00ff88;
+            background: #0d0d0d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #00ff88;
+            flex-shrink: 0;
+        }
+        .side-menu .menu-user-info {
+            flex: 1;
+        }
+        .side-menu .menu-user-info .name {
+            color: #00ff88;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .side-menu .menu-user-info .role {
+            color: #ff8800;
+            font-size: 13px;
+        }
+        
+        .side-menu .menu-item {
+            display: block;
+            padding: 14px 16px;
+            color: #00dd77;
+            font-size: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+        .side-menu .menu-item:hover {
+            background: #00ff8822;
+            color: #00ff88;
+        }
+        .side-menu .menu-item.active {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+        .side-menu .menu-item .icon { margin-right: 12px; }
+        
+        .side-menu .menu-close {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 28px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .side-menu .menu-close:hover { color: #ff3344; transform: rotate(90deg); }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            display: none;
+        }
+        .menu-overlay.active { display: block; }
+
+        /* ===== PASSWORD TOGGLE ===== */
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper input {
+            width: 100%;
+            padding: 10px 40px 10px 10px;
+            background: #111;
+            border: 1.5px solid #00ff88;
+            color: #00ff88;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+        .password-wrapper input:focus {
+            border-color: #00ffbb;
+            box-shadow: 0 0 20px #00ff8844;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #00aa66;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+        }
+        .password-toggle:hover { color: #00ff88; }
+
+        /* ===== TABS ===== */
         .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #00ff8844; padding-bottom: 5px; flex-wrap: wrap; }
         .tab-btn { padding: 10px 25px; background: transparent; border: none; color: #00aa66; font-weight: bold; cursor: pointer; border-radius: 8px 8px 0 0; transition: 0.3s; font-size: 15px; }
         .tab-btn:hover { background: #00ff8822; color: #00ff88; }
@@ -109,6 +269,7 @@
         .btn-logout:hover { background: #cc2233; box-shadow: 0 0 30px #ff334466; }
         .auth-status { color: #00dd77; font-size: 13px; margin-top: 8px; padding: 8px; background: #0d0d0d; border-radius: 6px; border: 1px solid #00ff8844; }
 
+        /* ===== KEY SECTION ===== */
         .key-section { background: #0d0d0d; padding: 20px; border-radius: 12px; border: 1px solid #00ff8844; }
         .key-section label { display: block; margin: 8px 0 4px; font-size: 13px; color: #00dd77; font-weight: bold; }
         .key-section input, .key-section select { width: 100%; padding: 10px; background: #111; border: 1.5px solid #00ff88; color: #00ff88; border-radius: 6px; font-size: 14px; outline: none; }
@@ -425,6 +586,100 @@
         }
         .spam-mode-selector .mode-single { color: #00ff88; }
         .spam-mode-selector .mode-multi { color: #ff8800; }
+
+        /* Profile edit */
+        .profile-edit {
+            display: none;
+            padding: 20px;
+            background: #0d0d0d;
+            border-radius: 12px;
+            border: 1px solid #00ff8844;
+            margin-top: 15px;
+        }
+        .profile-edit.active { display: block; }
+        .profile-edit .avatar-upload {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .profile-edit .avatar-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #00ff88;
+            object-fit: cover;
+            background: #0d0d0d;
+        }
+        .profile-edit .avatar-preview-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #00ff88;
+            background: #0d0d0d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: #00ff88;
+        }
+        .profile-edit .avatar-upload input[type="file"] {
+            padding: 8px;
+            background: transparent;
+            border: none;
+            color: #00dd77;
+            font-size: 13px;
+            width: auto;
+        }
+        .profile-edit .form-group {
+            margin-bottom: 12px;
+        }
+        .profile-edit .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            color: #00dd77;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .profile-edit .form-group input {
+            width: 100%;
+            padding: 10px;
+            background: #111;
+            border: 1.5px solid #00ff88;
+            color: #00ff88;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+        .profile-edit .form-group input:focus {
+            border-color: #00ffbb;
+            box-shadow: 0 0 20px #00ff8844;
+        }
+        .profile-edit .btn-save-profile {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            width: 100%;
+        }
+        .profile-edit .btn-save-profile:hover {
+            background: #00dd77;
+            box-shadow: 0 0 30px #00ff8866;
+        }
+        .profile-status {
+            color: #00dd77;
+            font-size: 13px;
+            margin-top: 8px;
+            padding: 8px;
+            background: #0d0d0d;
+            border-radius: 6px;
+            border: 1px solid #00ff8844;
+        }
     </style>
 </head>
 <body>
@@ -435,7 +690,7 @@
         <button class="notice-close-x" id="noticeCloseX">✕</button>
         <span class="notice-icon">💎</span>
         <div class="notice-title">🔑 MUA KEY</div>
-        <div class="notice-subtitle">Liên hệ để mua key sử dụng tool</div>
+        <div class="notice-subtitle">Liên hệ để mua key và sử dụng tool</div>
         <hr class="notice-divider">
         <div class="notice-content">
             <p>📌 Để sử dụng tool, bạn cần có <span class="highlight">Key</span></p>
@@ -458,8 +713,31 @@
 <!-- ===== END POPUP ===== -->
 
 <div class="container" id="app">
+    <!-- Menu Hamburger -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    
     <h1>⚡ SPAM TELEGRAM PRO</h1>
     <div class="sub">Dev Nduc</div>
+
+    <!-- Side Menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="side-menu" id="sideMenu">
+        <button class="menu-close" id="menuClose">✕</button>
+        <div class="menu-header">
+            <img class="menu-avatar" id="menuAvatar" src="" alt="Avatar" style="display:none;">
+            <div class="menu-avatar-placeholder" id="menuAvatarPlaceholder">👤</div>
+            <div class="menu-user-info">
+                <div class="name" id="menuUsername">Nduc</div>
+                <div class="role" id="menuRole">Admin</div>
+            </div>
+        </div>
+        <button class="menu-item active" data-menu="profile">
+            <span class="icon">👤</span> Thay đổi thông tin
+        </button>
+        <button class="menu-item" data-menu="logout">
+            <span class="icon">🚪</span> Đăng xuất
+        </button>
+    </div>
 
     <div id="userInfo" class="user-info hidden">
         <span>
@@ -480,13 +758,42 @@
         <label>Tài khoản</label>
         <input type="text" id="loginUsername" class="default-placeholder" placeholder="Nhập tài khoản của bạn" value="">
         <label>Mật khẩu</label>
-        <input type="password" id="loginPassword" class="default-placeholder" placeholder="Nhập mật khẩu của bạn" value="">
+        <div class="password-wrapper">
+            <input type="password" id="loginPassword" class="default-placeholder" placeholder="Nhập mật khẩu của bạn" value="">
+            <button class="password-toggle" id="passwordToggle">👁️</button>
+        </div>
         <div class="auth-row">
             <button class="btn-login" id="loginBtn">🔑 Đăng nhập</button>
             <button class="btn-register" id="registerBtn">📝 Đăng ký</button>
             <button class="btn-admin-login" id="adminLoginBtn">👑 Admin</button>
         </div>
         <div id="authStatus" class="auth-status">Nhập thông tin để đăng nhập hoặc đăng ký</div>
+    </div>
+
+    <!-- Profile Edit -->
+    <div class="profile-edit" id="profileEdit">
+        <h3 style="color:#00ff88;margin-bottom:15px;">👤 Thay đổi thông tin</h3>
+        <div class="avatar-upload">
+            <img class="avatar-preview" id="profileAvatar" src="" alt="Avatar" style="display:none;">
+            <div class="avatar-preview-placeholder" id="profileAvatarPlaceholder">👤</div>
+            <div>
+                <input type="file" id="avatarInput" accept="image/*">
+                <div style="font-size:12px;color:#00aa66;margin-top:4px;">Chọn ảnh đại diện (hình tròn)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Tên hiển thị</label>
+            <input type="text" id="profileName" placeholder="Nhập tên hiển thị">
+        </div>
+        <div class="form-group">
+            <label>Mật khẩu mới</label>
+            <div class="password-wrapper">
+                <input type="password" id="profilePassword" placeholder="Để trống nếu không đổi">
+                <button class="password-toggle" id="profilePasswordToggle">👁️</button>
+            </div>
+        </div>
+        <button class="btn-save-profile" id="saveProfileBtn">💾 Lưu thay đổi</button>
+        <div id="profileStatus" class="profile-status">Nhập thông tin và bấm Lưu để cập nhật</div>
     </div>
 
     <div id="tabContainer" class="tabs hidden">
@@ -530,17 +837,17 @@
                 </div>
             </div>
 
-            <!-- ===== SPAM MODE SELECTOR ===== -->
+            <!-- SPAM MODE SELECTOR -->
             <div class="spam-mode-selector">
                 <label class="mode-single">
-                    <input type="radio" name="spamMode" value="single" checked> 📝 Spam thường (1 nội dung)
+                    <input type="radio" name="spamMode" value="single" checked> 📝 Spam thường 
                 </label>
                 <label class="mode-multi">
-                    <input type="radio" name="spamMode" value="multi"> 📚 Multi Spam (nhiều dòng - vòng lặp)
+                    <input type="radio" name="spamMode" value="multi"> 📚 Multi Spam 
                 </label>
             </div>
 
-            <!-- ===== PHẦN SPAM THƯỜNG ===== -->
+            <!-- SINGLE LINE SECTION -->
             <div id="singleLineSection">
                 <div class="type-selector">
                     <label><input type="radio" name="msgType" value="text" checked> 📝 Văn bản</label>
@@ -568,7 +875,7 @@
                 </div>
             </div>
 
-            <!-- ===== PHẦN MULTI SPAM ===== -->
+            <!-- MULTI SPAM SECTION -->
             <div id="multiLineSection" style="display:none;">
                 <div class="multi-line-section">
                     <h4>📚 MULTI SPAM - NHIỀU DÒNG VÒNG LẶP</h4>
@@ -647,10 +954,10 @@
             <h3 style="color:#00ff88;margin-bottom:12px;">🔑 QUẢN LÝ KEY</h3>
             
             <div class="gen-key-box">
-                <h4 style="color:#00dd77;font-size:14px;margin-bottom:10px;">📱 TẠO KEY CHO NHIỀU THIẾT BỊ</h4>
+                <h4 style="color:#00dd77;font-size:14px;margin-bottom:10px;">📱 TẠO KEY CHO NHIỀU TÀI KHOẢN</h4>
                 <div class="gen-row">
-                    <label>Số thiết bị:</label>
-                    <input type="number" id="deviceCount" value="1" min="1" max="50" style="width:80px;">
+                    <label>Số tài khoản:</label>
+                    <input type="number" id="deviceCount" value="1" min="1" max="300">
                     <label>Thời hạn:</label>
                     <select id="genKeyExpiry">
                         <option value="1h">1 giờ</option>
@@ -667,7 +974,7 @@
 
             <hr style="border-color:#00ff8844;margin:15px 0;">
 
-            <label>Số lượng key cần tạo (1 key 1 thiết bị)</label>
+            <label>Số lượng key cần tạo (1 key 1 tài khoản)</label>
             <input type="number" id="keyCount" value="1" min="1" max="100">
             <label>Thời hạn key</label>
             <select id="keyExpiry">
@@ -790,6 +1097,7 @@
     const STORAGE_KEY = 'telegram_spam_data';
     const ACTIVATED_KEYS_KEY = 'activated_keys';
     const LINE_STORAGE_KEY = 'spam_lines_data';
+    const PROFILE_STORAGE_KEY = 'user_profiles';
     
     let appData = {
         users: {
@@ -802,12 +1110,14 @@
         keyActivations: {}
     };
 
+    let userProfiles = {};
     let currentUser = null;
     let isKeyValid = false;
     let userKey = null;
     let timerInterval = null;
     let pendingKeyForActivation = null;
     let webKeyDetected = null;
+    let currentAvatarData = null;
 
     // ========== MULTI-LINE DATA ==========
     let lineData = {
@@ -853,6 +1163,13 @@
                 appData.keyActivations = parsed.keyActivations || {};
             }
         } catch (e) {}
+        
+        try {
+            const profiles = localStorage.getItem(PROFILE_STORAGE_KEY);
+            if (profiles) {
+                userProfiles = JSON.parse(profiles);
+            }
+        } catch (e) {}
     }
 
     function saveData() {
@@ -865,6 +1182,12 @@
                 bypassLink: appData.bypassLink,
                 keyActivations: appData.keyActivations
             }));
+        } catch (e) {}
+    }
+
+    function saveProfiles() {
+        try {
+            localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(userProfiles));
         } catch (e) {}
     }
 
@@ -972,6 +1295,27 @@
     const resetKeyBtn = document.getElementById('resetKeyBtn');
     const resetStatus = document.getElementById('resetStatus');
 
+    // Menu
+    const menuToggle = document.getElementById('menuToggle');
+    const sideMenu = document.getElementById('sideMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuClose = document.getElementById('menuClose');
+    const menuUsername = document.getElementById('menuUsername');
+    const menuRole = document.getElementById('menuRole');
+    const menuAvatar = document.getElementById('menuAvatar');
+    const menuAvatarPlaceholder = document.getElementById('menuAvatarPlaceholder');
+
+    // Profile
+    const profileEdit = document.getElementById('profileEdit');
+    const profileName = document.getElementById('profileName');
+    const profilePassword = document.getElementById('profilePassword');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profileAvatarPlaceholder = document.getElementById('profileAvatarPlaceholder');
+    const avatarInput = document.getElementById('avatarInput');
+    const saveProfileBtn = document.getElementById('saveProfileBtn');
+    const profileStatus = document.getElementById('profileStatus');
+    const profilePasswordToggle = document.getElementById('profilePasswordToggle');
+
     const idType = document.getElementById('idType');
     const targetId = document.getElementById('targetId');
     const message = document.getElementById('message');
@@ -996,7 +1340,6 @@
     const previewBtn = document.getElementById('previewBtn');
     const imageCaption = document.getElementById('imageCaption');
 
-    // Multi-line DOM
     const singleLineSection = document.getElementById('singleLineSection');
     const multiLineSection = document.getElementById('multiLineSection');
     const spamModeRadios = document.querySelectorAll('input[name="spamMode"]');
@@ -1006,6 +1349,213 @@
     const upLinesBtn = document.getElementById('upLinesBtn');
     const resetLinesBtn = document.getElementById('resetLinesBtn');
     const lineContainer = document.getElementById('lineContainer');
+
+    const passwordToggle = document.getElementById('passwordToggle');
+
+    // ========== PASSWORD TOGGLE ==========
+    passwordToggle.addEventListener('click', function() {
+        const input = loginPassword;
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            this.textContent = '👁️';
+        }
+    });
+
+    profilePasswordToggle.addEventListener('click', function() {
+        const input = profilePassword;
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            this.textContent = '👁️';
+        }
+    });
+
+    // ========== MENU FUNCTIONS ==========
+    function toggleMenu(open) {
+        if (open) {
+            sideMenu.classList.add('open');
+            menuOverlay.classList.add('active');
+        } else {
+            sideMenu.classList.remove('open');
+            menuOverlay.classList.remove('active');
+        }
+    }
+
+    menuToggle.addEventListener('click', function() {
+        toggleMenu(true);
+    });
+
+    menuClose.addEventListener('click', function() {
+        toggleMenu(false);
+    });
+
+    menuOverlay.addEventListener('click', function() {
+        toggleMenu(false);
+    });
+
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const action = this.dataset.menu;
+            if (action === 'profile') {
+                toggleMenu(false);
+                showProfileEdit();
+            } else if (action === 'logout') {
+                toggleMenu(false);
+                logout();
+            }
+        });
+    });
+
+    // ========== PROFILE FUNCTIONS ==========
+    function showProfileEdit() {
+        if (!currentUser) return;
+        profileEdit.classList.add('active');
+        profileName.value = currentUser.username;
+        profilePassword.value = '';
+        
+        const profile = userProfiles[currentUser.username] || {};
+        if (profile.avatar) {
+            profileAvatar.src = profile.avatar;
+            profileAvatar.style.display = 'block';
+            profileAvatarPlaceholder.style.display = 'none';
+            currentAvatarData = profile.avatar;
+        } else {
+            profileAvatar.style.display = 'none';
+            profileAvatarPlaceholder.style.display = 'flex';
+            currentAvatarData = null;
+        }
+        
+        profileStatus.innerHTML = 'Nhập thông tin và bấm Lưu để cập nhật';
+        profileStatus.style.color = '#00dd77';
+        profileEdit.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    avatarInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const dataUrl = event.target.result;
+                profileAvatar.src = dataUrl;
+                profileAvatar.style.display = 'block';
+                profileAvatarPlaceholder.style.display = 'none';
+                currentAvatarData = dataUrl;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    saveProfileBtn.addEventListener('click', function() {
+        if (!currentUser) {
+            profileStatus.innerHTML = '❌ Vui lòng đăng nhập!';
+            profileStatus.style.color = '#ff5566';
+            return;
+        }
+
+        const newName = profileName.value.trim();
+        const newPassword = profilePassword.value.trim();
+
+        if (!newName) {
+            profileStatus.innerHTML = '❌ Tên hiển thị không được để trống!';
+            profileStatus.style.color = '#ff5566';
+            return;
+        }
+
+        // Kiểm tra tên đã tồn tại
+        if (newName !== currentUser.username && appData.users[newName]) {
+            profileStatus.innerHTML = '❌ Tên này đã được sử dụng!';
+            profileStatus.style.color = '#ff5566';
+            return;
+        }
+
+        // Lưu avatar
+        if (!userProfiles[currentUser.username]) {
+            userProfiles[currentUser.username] = {};
+        }
+        
+        if (currentAvatarData) {
+            userProfiles[currentUser.username].avatar = currentAvatarData;
+        } else {
+            delete userProfiles[currentUser.username].avatar;
+        }
+
+        // Cập nhật tên
+        if (newName !== currentUser.username) {
+            const userData = appData.users[currentUser.username];
+            delete appData.users[currentUser.username];
+            appData.users[newName] = userData;
+            
+            if (userProfiles[currentUser.username]) {
+                userProfiles[newName] = userProfiles[currentUser.username];
+                delete userProfiles[currentUser.username];
+            }
+            
+            const oldUsername = currentUser.username;
+            currentUser.username = newName;
+            
+            // Cập nhật ban list
+            const banIndex = appData.bannedUsers.indexOf(oldUsername);
+            if (banIndex !== -1) {
+                appData.bannedUsers[banIndex] = newName;
+            }
+            
+            // Cập nhật key activations
+            for (const [key, data] of Object.entries(appData.keyActivations)) {
+                if (data.username === oldUsername) {
+                    data.username = newName;
+                }
+            }
+        }
+
+        // Cập nhật mật khẩu
+        if (newPassword && newPassword.length >= 3) {
+            appData.users[currentUser.username].password = newPassword;
+        } else if (newPassword && newPassword.length < 3) {
+            profileStatus.innerHTML = '❌ Mật khẩu mới phải có ít nhất 3 ký tự!';
+            profileStatus.style.color = '#ff5566';
+            return;
+        }
+
+        saveData();
+        saveProfiles();
+        
+        // Cập nhật UI
+        displayUsername.textContent = currentUser.username;
+        menuUsername.textContent = currentUser.username;
+        updateAvatarDisplay();
+        
+        profileStatus.innerHTML = '✅ Đã cập nhật thông tin thành công!';
+        profileStatus.style.color = '#00ff88';
+        
+        // Cập nhật lại menu
+        updateMenuInfo();
+        
+        appendLog(`👤 Đã cập nhật thông tin tài khoản: ${currentUser.username}`);
+    });
+
+    function updateAvatarDisplay() {
+        const profile = userProfiles[currentUser?.username] || {};
+        if (profile.avatar) {
+            menuAvatar.src = profile.avatar;
+            menuAvatar.style.display = 'block';
+            menuAvatarPlaceholder.style.display = 'none';
+        } else {
+            menuAvatar.style.display = 'none';
+            menuAvatarPlaceholder.style.display = 'flex';
+        }
+    }
+
+    function updateMenuInfo() {
+        if (!currentUser) return;
+        menuUsername.textContent = currentUser.username;
+        menuRole.textContent = currentUser.role === 'admin' ? '👑 Admin' : '👤 User';
+        updateAvatarDisplay();
+    }
 
     // ========== AUTH ==========
     function setAuthMode(mode) {
@@ -1104,9 +1654,11 @@
         userKey = null;
         pendingKeyForActivation = null;
         webKeyDetected = null;
+        profileEdit.classList.remove('active');
         updateUI();
         authStatus.innerHTML = 'Đã đăng xuất.';
         setAuthMode('login');
+        toggleMenu(false);
     }
 
     function checkWebKey() {
@@ -1191,6 +1743,8 @@
             displayRole.textContent = currentUser.role === 'admin' ? '👑 Admin' : '👤 User';
             displayRole.className = 'role ' + (currentUser.role === 'admin' ? 'admin' : 'user');
             tabContainer.classList.remove('hidden');
+            menuToggle.classList.add('show');
+            updateMenuInfo();
 
             if (currentUser.role === 'admin') {
                 adminTabBtn.classList.remove('hidden');
@@ -1221,6 +1775,7 @@
             loginForm.classList.remove('hidden');
             userInfo.classList.add('hidden');
             tabContainer.classList.add('hidden');
+            menuToggle.classList.remove('show');
             tabSpam.classList.remove('active');
             tabSpam.style.display = 'none';
             tabKey.classList.remove('active');
@@ -1228,6 +1783,7 @@
             tabMisc.classList.remove('active');
             tabMisc.style.display = 'none';
             webKeyNotification.classList.remove('show');
+            profileEdit.classList.remove('active');
             if (running) stopSpam();
             if (timerInterval) {
                 clearInterval(timerInterval);
@@ -1465,7 +2021,7 @@
         const duration = getDurationMs(expiryStr);
         const newKey = generateUniqueKey();
         appData.keys[newKey] = {
-            username: 'Nduc (Admin) - Multi Device',
+            username: 'Nduc (Admin) - Multi Account',
             expiry: duration === Infinity ? Infinity : Date.now() + duration,
             duration: duration,
             createdAt: Date.now(),
@@ -1475,7 +2031,7 @@
         };
         appData.keyHistory.unshift({
             key: newKey,
-            username: 'Nduc (Admin) - Multi Device',
+            username: 'Nduc (Admin) - Multi Account',
             expiry: duration === Infinity ? Infinity : Date.now() + duration,
             duration: duration,
             createdAt: Date.now(),
@@ -1528,12 +2084,12 @@
                 timeRemaining = duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(expiryTime);
             }
             
-            let typeLabel = item.type === 'multi' ? '📱 Multi Device' : 
+            let typeLabel = item.type === 'multi' ? '📱 Multi Account' : 
                            item.type === 'web' ? '🌐 Web Key' : '👑 Admin';
             let deviceInfo = '';
             if (item.type === 'multi' && item.maxDevices) {
                 const used = item.usedDevices || 0;
-                deviceInfo = `<span class="device-info">📱 ${used}/${item.maxDevices} thiết bị</span>`;
+                deviceInfo = `<span class="device-info">👤 ${used}/${item.maxDevices} tài khoản</span>`;
             }
             const activatedInfo = `🔑 Kích hoạt bởi: ${activatedBy}`;
             html += `
@@ -1684,8 +2240,8 @@
             return;
         }
         const count = parseInt(deviceCount.value) || 1;
-        if (count < 1 || count > 50) {
-            alert('Số thiết bị phải từ 1 đến 50!');
+        if (count < 1 || count > 300) {
+            alert('Số tài khoản phải từ 1 đến 300!');
             return;
         }
         const expiryStr = genKeyExpiry.value;
@@ -1695,13 +2251,13 @@
         
         genKeyResult.style.display = 'block';
         genKeyResult.innerHTML = `
-            ✅ Đã tạo key cho <strong>${count}</strong> thiết bị thành công!<br>
+            ✅ Đã tạo key cho <strong>${count}</strong> tài khoản thành công!<br>
             🔑 Key: <strong style="color:#ff8800;">${newKey}</strong><br>
             ⏳ Thời hạn: ${timeDisplay}<br>
-            📱 Số thiết bị: ${count}<br>
+            👤 Số tài khoản: ${count}<br>
             <button class="copy-btn" onclick="copyKey('${newKey}')" style="margin-top:8px;">📋 Sao chép key</button>
         `;
-        appendLog(`🔑 Admin đã tạo key multi-device (${count} thiết bị) - ${newKey}`);
+        appendLog(`🔑 Admin đã tạo key multi-account (${count} tài khoản) - ${newKey}`);
     });
 
     genKeyBtn.addEventListener('click', function() {
@@ -1961,7 +2517,6 @@
                 }
             }
         } catch (e) {}
-        // Mặc định nếu chưa có dữ liệu
         lineData = { count: 3, lines: ['', '', ''] };
         renderLineInputs();
         lineCount.value = 3;
@@ -2033,12 +2588,10 @@
         }
         lineContainer.innerHTML = html;
         
-        // Tự động lưu khi người dùng nhập
         document.querySelectorAll('.line-input').forEach(inp => {
             inp.addEventListener('input', function() {
                 const index = parseInt(this.dataset.index);
                 lineData.lines[index] = this.value;
-                // Không tự động lưu nữa, chỉ cập nhật biến
             });
         });
     }
@@ -2068,7 +2621,6 @@
     });
 
     saveLinesBtn.addEventListener('click', function() {
-        // Cập nhật từ input hiện tại
         document.querySelectorAll('.line-input').forEach(inp => {
             const index = parseInt(inp.dataset.index);
             lineData.lines[index] = inp.value;
@@ -2309,7 +2861,6 @@
                 }
             }
         } else {
-            // Multi-line spam - lấy dòng theo vòng lặp
             const lines = getLines();
             if (lines.length === 0) {
                 appendLog('Không có dòng nào để spam! Vui lòng nhập nội dung các dòng.', true);
@@ -2487,7 +3038,7 @@
     unlimitedSpam.checked = false;
     isUnlimited = false;
     updateCounterDisplay();
-    log.innerHTML = '[+] Tool đã sẵn sàng. Vui lòng đăng nhập để sử dụng.';
+    log.innerHTML = '[+] Tool đã sẵn sàng. ';
     
     if (!appData.users['Nduc']) {
         appData.users['Nduc'] = { password: 'Ducanh05092008', role: 'admin' };
