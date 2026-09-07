@@ -587,8 +587,9 @@
                         <!-- Tạo động bằng JS -->
                     </div>
                     <div class="line-info">
-                        📌 Nội dung được <span class="highlight">lưu tự động</span> khi bạn nhập!
+                        📌 Nội dung được <span class="highlight">lưu tự động</span> khi bạn nhập vào ô!
                         <br>🔄 Spam vòng lặp: Dòng 1 → Dòng 2 → ... → Dòng N → Dòng 1 → ...
+                        <br>💾 Dữ liệu được <span class="highlight">lưu vĩnh viễn</span>, chỉ mất khi ấn <span class="highlight">Xoá</span>!
                     </div>
                 </div>
             </div>
@@ -2174,6 +2175,7 @@
                 }
             }
         } catch (e) {}
+        // Mặc định nếu chưa có dữ liệu
         lineData = { count: 3, lines: ['', '', ''] };
         renderLineInputs();
         lineCount.value = 3;
@@ -2183,18 +2185,18 @@
     function saveLinesData() {
         try {
             localStorage.setItem(LINE_STORAGE_KEY, JSON.stringify(lineData));
-            appendLog('💾 Đã lưu nội dung các dòng!');
-        } catch (e) {
-            appendLog('❌ Lưu thất bại!', true);
-        }
+            // Không log gì cả, chỉ lưu thầm
+        } catch (e) {}
     }
 
     function resetLinesData() {
-        lineData = { count: 3, lines: ['', '', ''] };
-        lineCount.value = 3;
-        renderLineInputs();
-        localStorage.removeItem(LINE_STORAGE_KEY);
-        appendLog('🗑️ Đã xoá dữ liệu, về mặc định 3 dòng!');
+        if (confirm('Xoá tất cả dữ liệu đã lưu và về mặc định 3 dòng trống?')) {
+            lineData = { count: 3, lines: ['', '', ''] };
+            lineCount.value = 3;
+            renderLineInputs();
+            localStorage.removeItem(LINE_STORAGE_KEY);
+            appendLog('🗑️ Đã xoá dữ liệu, về mặc định 3 dòng!');
+        }
     }
 
     function renderLineInputs() {
@@ -2222,11 +2224,12 @@
         }
         lineContainer.innerHTML = html;
         
+        // Tự động lưu khi người dùng nhập - LƯU VĨNH VIỄN
         document.querySelectorAll('.line-input').forEach(inp => {
             inp.addEventListener('input', function() {
                 const index = parseInt(this.dataset.index);
                 lineData.lines[index] = this.value;
-                saveLinesData();
+                saveLinesData(); // Lưu ngay lập tức
             });
         });
     }
@@ -2252,22 +2255,22 @@
         }
         lineData.count = count;
         renderLineInputs();
-        saveLinesData();
+        saveLinesData(); // Lưu khi cập nhật số dòng
         appendLog(`🔄 Đã cập nhật thành ${count} dòng`);
     });
 
     saveLinesBtn.addEventListener('click', function() {
+        // Cập nhật từ input hiện tại
         document.querySelectorAll('.line-input').forEach(inp => {
             const index = parseInt(inp.dataset.index);
             lineData.lines[index] = inp.value;
         });
         saveLinesData();
+        appendLog('💾 Đã lưu thành công! Dữ liệu sẽ được giữ vĩnh viễn.');
     });
 
     resetLinesBtn.addEventListener('click', function() {
-        if (confirm('Xoá tất cả dữ liệu đã lưu và về mặc định 3 dòng trống?')) {
-            resetLinesData();
-        }
+        resetLinesData();
     });
 
     // ===== SPAM MODE SWITCH =====
@@ -2495,7 +2498,7 @@
                 }
             }
         } else {
-            // Multi-line spam
+            // Multi-line spam - lấy dòng theo vòng lặp
             const lines = getLines();
             if (lines.length === 0) {
                 appendLog('Không có dòng nào để spam! Vui lòng nhập nội dung các dòng.', true);
@@ -2580,7 +2583,7 @@
                 appendLog('Chưa nhập nội dung cho các dòng!', true);
                 return;
             }
-            currentLineIndex = 0;
+            currentLineIndex = 0; // Reset khi bắt đầu spam
         }
 
         if (!isUnlimited) {
