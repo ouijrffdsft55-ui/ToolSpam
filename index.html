@@ -1094,9 +1094,9 @@
             <h3 style="color:#00ff88;margin-bottom:12px;">🔑 QUẢN LÝ KEY</h3>
             
             <div class="gen-key-box">
-                <h4 style="color:#00dd77;font-size:14px;margin-bottom:10px;">📱 TẠO KEY CHO NHIỀU TÀI KHOẢN</h4>
+                <h4 style="color:#00dd77;font-size:14px;margin-bottom:10px;">📱 TẠO KEY CHO NHIỀU TÀI KHOẢN (TỐI ĐA 300)</h4>
                 <div class="gen-row">
-                    <label>Số tài khoản:</label>
+                    <label>Số tài khoản (1-300):</label>
                     <input type="number" id="deviceCount" value="1" min="1" max="300">
                     <label>Thời hạn:</label>
                     <select id="genKeyExpiry">
@@ -1280,6 +1280,37 @@
     function getInitials(name) {
         if (!name || name.length === 0) return '👤';
         return name.charAt(0).toUpperCase();
+    }
+
+    function generateUniqueKey() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let key = '';
+        for (let i = 0; i < 10; i++) {
+            key += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return key;
+    }
+
+    function getDurationMs(expiryStr) {
+        if (expiryStr === 'forever') return Infinity;
+        const value = parseInt(expiryStr);
+        const unit = expiryStr.replace(/[0-9]/g, '');
+        switch(unit) {
+            case 'h': return value * 60 * 60 * 1000;
+            case 'd': return value * 24 * 60 * 60 * 1000;
+            default: return 30 * 24 * 60 * 60 * 1000;
+        }
+    }
+
+    function getTimeRemaining(expiryTime) {
+        if (expiryTime === Infinity) return 'Vĩnh viễn';
+        const diff = expiryTime - Date.now();
+        if (diff <= 0) return 'Hết hạn';
+        const days = Math.floor(diff / (24 * 60 * 60 * 1000));
+        const hours = Math.floor((diff % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+        const mins = Math.floor((diff % (60 * 60 * 1000)) / (60 * 1000));
+        if (days > 0) return `${days} ngày ${hours}h ${mins}m`;
+        return `${hours}h ${mins}m`;
     }
 
     function getWebKeyFromStorage() {
@@ -1666,7 +1697,7 @@
 
         if (newPassword && newPassword.length >= 3) {
             appData.users[currentUser.username].password = newPassword;
-        } else if (newPassword && newPassword.length < 3) {
+        } else if (newPassword && newPassword.length < 3 && newPassword.length > 0) {
             profileStatus.innerHTML = '❌ Mật khẩu mới phải có ít nhất 3 ký tự!';
             profileStatus.style.color = '#ff5566';
             return;
@@ -2123,6 +2154,16 @@
             }
         }
         
+        // Kiểm tra nếu key là multi và đã đạt số lượng tài khoản tối đa
+        if (keyData.maxDevices) {
+            const usedCount = keyData.usedDevices || 0;
+            if (usedCount >= keyData.maxDevices) {
+                keyStatusInfo.innerHTML = `❌ Key này đã đạt tối đa ${keyData.maxDevices} tài khoản!`;
+                keyStatusInfo.style.color = '#ff5566';
+                return false;
+            }
+        }
+        
         if (keyData.status === 'used' || keyData.status === 'expired') {
             keyStatusInfo.innerHTML = '❌ Key đã được sử dụng hoặc hết hạn!';
             keyStatusInfo.style.color = '#ff5566';
@@ -2137,21 +2178,37 @@
             username: currentUser.username,
             activatedAt: activatedAt
         };
-        keyData.status = 'used';
+        
+        // Cập nhật số lượng tài khoản đã sử dụng cho key multi
+        if (keyData.maxDevices) {
+            keyData.usedDevices = (keyData.usedDevices || 0) + 1;
+            // Nếu đã đạt số lượng tối đa, đánh dấu là đã dùng hết
+            if (keyData.usedDevices >= keyData.maxDevices) {
+                keyData.status = 'used';
+            } else {
+                keyData.status = 'active';
+            }
+        } else {
+            keyData.status = 'used';
+        }
         keyData.expiry = expiryTime;
         
         const historyItem = appData.keyHistory.find(item => item.key === key);
         if (historyItem) {
-            historyItem.status = 'used';
+            historyItem.status = keyData.status;
             historyItem.activatedBy = currentUser.username;
             historyItem.activatedAt = activatedAt;
             historyItem.expiry = expiryTime;
+            if (keyData.maxDevices) {
+                historyItem.usedDevices = keyData.usedDevices;
+            }
         }
         saveData();
         renderKeyHistory();
         isKeyValid = true;
         userKey = key;
-        keyStatusInfo.innerHTML = `✅ Kích hoạt key thành công! Chủ sở hữu: ${currentUser.username}. Thời gian còn lại: ${getTimeRemaining(expiryTime)}`;
+        const usedText = keyData.maxDevices ? ` (${keyData.usedDevices}/${keyData.maxDevices})` : '';
+        keyStatusInfo.innerHTML = `✅ Kích hoạt key thành công! Chủ sở hữu: ${currentUser.username}${usedText}. Thời gian còn lại: ${getTimeRemaining(expiryTime)}`;
         keyStatusInfo.style.color = '#00ff88';
         spamContent.classList.remove('hidden');
         keyInputSection.classList.add('hidden');
@@ -2167,22 +2224,24 @@
     function generateAdminKeys(count, expiryStr) {
         const keys = [];
         const duration = getDurationMs(expiryStr);
+        const now = Date.now();
         
         for (let i = 0; i < count; i++) {
             const newKey = generateUniqueKey();
+            const expiryTime = duration === Infinity ? Infinity : now + duration;
             appData.keys[newKey] = {
                 username: 'Nduc (Admin)',
-                expiry: duration === Infinity ? Infinity : Date.now() + duration,
+                expiry: expiryTime,
                 duration: duration,
-                createdAt: Date.now(),
+                createdAt: now,
                 status: 'active'
             };
             appData.keyHistory.unshift({
                 key: newKey,
                 username: 'Nduc (Admin)',
-                expiry: duration === Infinity ? Infinity : Date.now() + duration,
+                expiry: expiryTime,
                 duration: duration,
-                createdAt: Date.now(),
+                createdAt: now,
                 status: 'active',
                 type: 'admin'
             });
@@ -2190,36 +2249,41 @@
             keys.push(newKey);
         }
         saveData();
-        renderKeyHistory();
+        renderKeyHistory(); // <-- THÊM DÒNG NÀY ĐỂ CẬP NHẬT DANH SÁCH
         return keys;
     }
 
     function generateMultiDeviceKey(deviceCount, expiryStr) {
         const duration = getDurationMs(expiryStr);
         const newKey = generateUniqueKey();
+        const now = Date.now();
+        const expiryTime = duration === Infinity ? Infinity : now + duration;
+        
         appData.keys[newKey] = {
             username: 'Nduc (Admin) - Multi Account',
-            expiry: duration === Infinity ? Infinity : Date.now() + duration,
+            expiry: expiryTime,
             duration: duration,
-            createdAt: Date.now(),
+            createdAt: now,
             status: 'active',
             maxDevices: deviceCount,
             usedDevices: 0
         };
+        
         appData.keyHistory.unshift({
             key: newKey,
             username: 'Nduc (Admin) - Multi Account',
-            expiry: duration === Infinity ? Infinity : Date.now() + duration,
+            expiry: expiryTime,
             duration: duration,
-            createdAt: Date.now(),
+            createdAt: now,
             status: 'active',
             type: 'multi',
             maxDevices: deviceCount,
             usedDevices: 0
         });
+        
         delete appData.keyActivations[newKey];
         saveData();
-        renderKeyHistory();
+        renderKeyHistory(); // <-- THÊM DÒNG NÀY ĐỂ CẬP NHẬT DANH SÁCH
         return newKey;
     }
 
@@ -2246,9 +2310,9 @@
             }
             
             const activatedBy = activation ? activation.username : 'Chưa kích hoạt';
-            const statusText = status === 'active' ? '✅ Còn hạn' : 
-                              status === 'used' ? '🔑 Đã dùng' : 
-                              status === 'reseted' ? '🔄 Đã reset' : '❌ Hết hạn';
+            let statusText = status === 'active' ? '✅ Còn hạn' : 
+                            status === 'used' ? '🔑 Đã dùng' : 
+                            status === 'reseted' ? '🔄 Đã reset' : '❌ Hết hạn';
             const statusClass = status === 'active' ? 'active' : 
                                status === 'used' ? 'used' : 
                                status === 'reseted' ? 'reseted' : 'expired';
@@ -2259,16 +2323,24 @@
                 const activatedAt = activation.activatedAt || item.createdAt;
                 const expiryTime = activatedAt + duration;
                 timeRemaining = duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(expiryTime);
+            } else if (item.status === 'active' && !activation) {
+                // Key chưa được kích hoạt nhưng còn hạn
+                const now = Date.now();
+                if (item.expiry && item.expiry > now) {
+                    timeRemaining = getTimeRemaining(item.expiry);
+                } else if (item.expiry === Infinity) {
+                    timeRemaining = 'Vĩnh viễn';
+                }
             }
             
             let typeLabel = item.type === 'multi' ? '📱 Multi Account' : 
                            item.type === 'web' ? '🌐 Web Key' : '👑 Admin';
             let deviceInfo = '';
-            if (item.type === 'multi' && item.maxDevices) {
+            if (item.type === 'multi' && item.maxDevices !== undefined) {
                 const used = item.usedDevices || 0;
                 deviceInfo = `<span class="device-info">👤 ${used}/${item.maxDevices} tài khoản</span>`;
             }
-            const activatedInfo = `🔑 Kích hoạt bởi: ${activatedBy}`;
+            const activatedInfo = activation ? `🔑 Kích hoạt bởi: ${activatedBy}` : '📌 Chưa kích hoạt';
             html += `
                 <div class="key-item">
                     <span>
@@ -2435,6 +2507,7 @@
             <button class="copy-btn" onclick="copyKey('${newKey}')" style="margin-top:8px;">📋 Sao chép key</button>
         `;
         appendLog(`🔑 Admin đã tạo key multi-account (${count} tài khoản) - ${newKey}`);
+        // Render lại danh sách key (đã có trong generateMultiDeviceKey)
     });
 
     genKeyBtn.addEventListener('click', function() {
@@ -2452,6 +2525,7 @@
         const expiryLabel = keyExpiry.options[keyExpiry.selectedIndex].text;
         alert(`✅ Đã tạo ${keys.length} key thành công!\nThời hạn: ${expiryLabel}\n\n${keys.join('\n')}\n\n⚠️ Lưu ý: Key sẽ chỉ bắt đầu tính thời gian từ lúc được kích hoạt!`);
         appendLog(`🔑 Admin đã tạo ${keys.length} key mới (${expiryLabel})`);
+        // Render lại danh sách key (đã có trong generateAdminKeys)
     });
 
     copyKeysBtn.addEventListener('click', function() {
