@@ -567,6 +567,32 @@
         }
         .menu-overlay.active { display: block; }
 
+
+        /* ===== ADMIN SERVER MAINTENANCE ===== */
+        .maintenance-panel-overlay, .maintenance-notice-overlay {
+            position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+            padding: 20px; background: rgba(3, 7, 6, .86); backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .maintenance-panel-overlay { z-index: 12000; }
+        .maintenance-notice-overlay { z-index: 11000; }
+        .maintenance-panel-overlay.show, .maintenance-notice-overlay.show { display: flex; }
+        .maintenance-card {
+            width: min(100%, 440px); padding: 26px; border-radius: 18px;
+            background: linear-gradient(160deg, var(--panel-2), var(--bg-2));
+            border: 1px solid var(--border-2); box-shadow: 0 24px 80px rgba(0,0,0,.5);
+            color: var(--text);
+        }
+        .maintenance-card h2 { margin: 0 0 10px; color: var(--accent); font-size: 21px; }
+        .maintenance-card p { color: var(--text-dim); line-height: 1.6; margin: 0 0 18px; }
+        .maintenance-status { padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; margin: 16px 0; }
+        .maintenance-status strong { color: var(--accent); }
+        .maintenance-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+        .maintenance-action-btn { flex: 1; min-width: 120px; padding: 12px 16px; border-radius: 10px;
+            border: 1px solid var(--border-2); background: var(--bg-3); color: var(--text); cursor: pointer; font-weight: 700; }
+        .maintenance-action-btn.primary { background: var(--accent); color: #07110c; border-color: var(--accent); }
+        .maintenance-action-btn:disabled { opacity: .5; cursor: not-allowed; }
+
         /* ===== PASSWORD TOGGLE ===== */
         .password-wrapper { position: relative; }
         .password-wrapper input { padding-right: 44px !important; }
@@ -2307,9 +2333,37 @@
         <button class="menu-item" data-menu="appearance">
             <span class="icon"></span> Khác
         </button>
+        <button class="menu-item hidden" id="serverSettingsMenuItem" data-menu="server-settings">
+            Mở / Đóng Server
+        </button>
         <button class="menu-item" data-menu="logout">
             <span class="icon"></span> Đăng xuất
         </button>
+    </div>
+
+    <!-- Admin-only server switch -->
+    <div class="maintenance-panel-overlay" id="maintenancePanelOverlay" role="dialog" aria-modal="true" aria-labelledby="maintenancePanelTitle">
+        <section class="maintenance-card">
+            <h2 id="maintenancePanelTitle">Mở / Đóng Server</h2>
+            <p>Điều khiển trạng thái hoạt động hiển thị cho tài khoản người dùng. Tài khoản Admin không bị chặn khi bảo trì.</p>
+            <div class="maintenance-status">Trạng thái hiện tại: <strong id="maintenanceStatusText">Đang hoạt động</strong></div>
+            <div class="maintenance-actions">
+                <button class="maintenance-action-btn primary" id="serverEnableBtn" type="button">Bật Server</button>
+                <button class="maintenance-action-btn" id="serverDisableBtn" type="button">Tắt Server</button>
+            </div>
+            <div class="maintenance-actions">
+                <button class="maintenance-action-btn" id="maintenancePanelClose" type="button">Đóng</button>
+            </div>
+        </section>
+    </div>
+    <div class="maintenance-notice-overlay" id="maintenanceNoticeOverlay" role="alertdialog" aria-modal="true" aria-labelledby="maintenanceNoticeTitle">
+        <section class="maintenance-card">
+            <h2 id="maintenanceNoticeTitle">Server Đang Bảo Trì</h2>
+            <p>Server Đang Bảo Trì , Vui Lòng Đợi</p>
+            <div class="maintenance-actions">
+                <button class="maintenance-action-btn" id="maintenanceNoticeClose" type="button">Đóng</button>
+            </div>
+        </section>
     </div>
 
     <!-- Appearance settings opened from the hamburger menu's "Khác" tab -->
@@ -3017,6 +3071,45 @@
     const menuRole = document.getElementById('menuRole');
     const menuAvatar = document.getElementById('menuAvatar');
     const menuAvatarPlaceholder = document.getElementById('menuAvatarPlaceholder');
+    const serverSettingsMenuItem = document.getElementById('serverSettingsMenuItem');
+    const maintenancePanelOverlay = document.getElementById('maintenancePanelOverlay');
+    const maintenanceNoticeOverlay = document.getElementById('maintenanceNoticeOverlay');
+    const maintenanceStatusText = document.getElementById('maintenanceStatusText');
+    const serverEnableBtn = document.getElementById('serverEnableBtn');
+    const serverDisableBtn = document.getElementById('serverDisableBtn');
+    const maintenancePanelClose = document.getElementById('maintenancePanelClose');
+    const maintenanceNoticeClose = document.getElementById('maintenanceNoticeClose');
+    let serverEnabled = localStorage.getItem('toolSpamServerEnabled') !== 'false';
+    // Cho phép người dùng đóng lớp thông báo để nhập/cấu hình; Start vẫn bị chặn khi bảo trì.
+    let maintenanceNoticeDismissed = false;
+
+    function updateMaintenanceUI() {
+        const isAdmin = !!currentUser && currentUser.role === 'admin';
+        if (serverSettingsMenuItem) serverSettingsMenuItem.classList.toggle('hidden', !isAdmin);
+        if (maintenanceStatusText) maintenanceStatusText.textContent = serverEnabled ? 'Đang hoạt động' : 'Đang bảo trì';
+        if (serverEnableBtn) serverEnableBtn.disabled = serverEnabled;
+        if (serverDisableBtn) serverDisableBtn.disabled = !serverEnabled;
+        // Người dùng thường có thể đóng thông báo để vào giao diện, nhưng Start sẽ bị chặn.
+        const shouldShowNotice = !!currentUser && !isAdmin && !serverEnabled && !maintenanceNoticeDismissed;
+        maintenanceNoticeOverlay?.classList.toggle('show', shouldShowNotice);
+        if (isAdmin || serverEnabled) {
+            maintenanceNoticeDismissed = false;
+            maintenanceNoticeOverlay?.classList.remove('show');
+        }
+    }
+
+    function setServerEnabled(enabled) {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        serverEnabled = !!enabled;
+        localStorage.setItem('toolSpamServerEnabled', String(serverEnabled));
+        updateMaintenanceUI();
+    }
+
+    function openMaintenancePanel() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+        maintenancePanelOverlay.classList.add('show');
+        updateMaintenanceUI();
+    }
 
     // Profile
     const profileEdit = document.getElementById('profileEdit');
@@ -3121,6 +3214,9 @@
             } else if (action === 'appearance') {
                 toggleMenu(false);
                 openAppearance();
+            } else if (action === 'server-settings') {
+                toggleMenu(false);
+                openMaintenancePanel();
             } else if (action === 'logout') {
                 toggleMenu(false);
                 logout();
@@ -3128,6 +3224,18 @@
         });
     });
 
+
+    serverEnableBtn.addEventListener('click', () => setServerEnabled(true));
+    serverDisableBtn.addEventListener('click', () => setServerEnabled(false));
+    maintenancePanelClose.addEventListener('click', () => maintenancePanelOverlay.classList.remove('show'));
+    maintenanceNoticeClose.addEventListener('click', () => {
+        // Ẩn thông báo cho phép cấu hình tool; thao tác Start vẫn bị khóa trong startSpam().
+        maintenanceNoticeDismissed = true;
+        maintenanceNoticeOverlay.classList.remove('show');
+    });
+    maintenancePanelOverlay.addEventListener('click', (event) => {
+        if (event.target === maintenancePanelOverlay) maintenancePanelOverlay.classList.remove('show');
+    });
 
     // ========== APPEARANCE / THEME ==========
     const appearanceOverlay = document.getElementById('appearanceOverlay');
@@ -3662,6 +3770,7 @@
             tabContainer.classList.remove('hidden');
             menuToggle.classList.add('show');
             updateMenuInfo();
+            updateMaintenanceUI();
 
             if (currentUser.role === 'admin') {
                 adminTabBtn.classList.remove('hidden');
@@ -3692,6 +3801,9 @@
             userInfo.classList.add('hidden');
             tabContainer.classList.add('hidden');
             menuToggle.classList.remove('show');
+            maintenanceNoticeOverlay.classList.remove('show');
+            maintenancePanelOverlay.classList.remove('show');
+            serverSettingsMenuItem.classList.add('hidden');
             // Reset avatar về mặc định
             userAvatar.style.display = 'none';
             userAvatarPlaceholder.style.display = 'flex';
@@ -4867,6 +4979,12 @@
             appendLog('Vui lòng đăng nhập!', true);
             return;
         }
+        if (currentUser.role !== 'admin' && !serverEnabled) {
+            maintenanceNoticeDismissed = false;
+            maintenanceNoticeOverlay?.classList.add('show');
+            appendLog('Server Đang Bảo Trì , Vui Lòng Đợi', true);
+            return;
+        }
         if (currentUser.role !== 'admin' && !isKeyValid) {
             appendLog('Vui lòng nhập và kích hoạt key hợp lệ!', true);
             return;
@@ -5018,6 +5136,9 @@
 
 })();
 
+
+    // Đồng bộ trạng thái server khi mở trang; chỉ tài khoản thường đã đăng nhập bị chặn.
+    updateMaintenanceUI();
 </script>
 </body>
 </html>
