@@ -98,7 +98,7 @@
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        .notice-box .notice-icon {
+        .notice-box .notice-icon { display: none; /* decorative icons removed */
             font-size: 44px;
             display: block;
             margin-bottom: 12px;
@@ -213,6 +213,155 @@
         .notice-box .notice-close-x:hover {
             color: var(--red);
             background: var(--red-soft);
+        }
+
+
+        /* ===== APPEARANCE / COLOR PALETTE ===== */
+        .appearance-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            padding: 18px;
+            align-items: center;
+            justify-content: center;
+            background: rgba(3, 6, 8, .82);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+        }
+        .appearance-overlay.active { display: flex; }
+        .appearance-panel {
+            width: min(620px, 100%);
+            max-height: min(82vh, 760px);
+            overflow: auto;
+            padding: 24px;
+            border-radius: 18px;
+            border: 1px solid var(--border-2);
+            background: linear-gradient(160deg, var(--panel-2), var(--panel));
+            box-shadow: var(--shadow), 0 0 45px var(--accent-glow);
+            animation: slideUp .25s ease-out;
+        }
+        .appearance-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .appearance-heading h2 { color: var(--accent); font-size: 20px; }
+        .appearance-heading p { color: var(--text-mute); font-size: 12px; margin-top: 4px; }
+        .appearance-close {
+            flex: 0 0 auto;
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            border: 1px solid var(--border-2);
+            background: var(--bg-3);
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .appearance-preview {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-2);
+        }
+        .appearance-preview-label { color: var(--text-dim); font-size: 12px; }
+        .appearance-preview-name { color: var(--text); font-weight: 700; margin-top: 3px; }
+        .appearance-color-chip {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,.35);
+            box-shadow: 0 0 18px var(--accent-glow);
+            background: var(--accent);
+            flex: 0 0 auto;
+        }
+        .palette-label {
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .6px;
+            margin: 18px 0 10px;
+            text-transform: uppercase;
+        }
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(10, minmax(0, 1fr));
+            gap: 8px;
+        }
+        .color-swatch {
+            aspect-ratio: 1;
+            min-width: 0;
+            border-radius: 9px;
+            border: 2px solid rgba(255,255,255,.12);
+            cursor: pointer;
+            position: relative;
+            transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+        }
+        .color-swatch:hover { transform: scale(1.09); z-index: 1; }
+        .color-swatch[aria-pressed="true"] {
+            border-color: #fff;
+            box-shadow: 0 0 0 2px var(--accent), 0 0 14px var(--accent-glow);
+        }
+        .color-swatch[aria-pressed="true"]::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 900;
+            text-shadow: 0 1px 4px #000, 0 0 4px #000;
+        }
+        .appearance-custom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding: 12px;
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .appearance-custom label {
+            flex: 1;
+            margin: 0;
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 13px;
+        }
+        .appearance-custom input[type="color"] {
+            width: 48px;
+            height: 42px;
+            padding: 3px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .appearance-actions { display: flex; gap: 10px; margin-top: 18px; }
+        .appearance-actions button {
+            flex: 1;
+            padding: 12px 16px;
+            border: 0;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .appearance-actions button:hover { transform: translateY(-1px); }
+        .appearance-save { background: var(--accent); color: #07100d; box-shadow: 0 4px 18px var(--accent-glow); }
+        .appearance-reset { background: var(--bg-3); color: var(--text-dim); border: 1px solid var(--border-2) !important; }
+        .appearance-status { min-height: 18px; margin-top: 10px; color: var(--accent); font-size: 12px; }
+        @media (max-width: 520px) {
+            .appearance-panel { padding: 18px; }
+            .color-palette { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 7px; }
         }
 
         /* ===== CONTAINER ===== */
@@ -381,7 +530,7 @@
             font-weight: 700;
             box-shadow: 0 4px 20px var(--accent-glow);
         }
-        .side-menu .menu-item .icon { font-size: 16px; }
+        .side-menu .menu-item .icon { display: none; }
 
         .side-menu .menu-close {
             position: absolute;
@@ -2103,39 +2252,38 @@
 <!-- ===== POPUP THÔNG BÁO MUA KEY ===== -->
 <div class="notice-overlay active" id="noticeOverlay">
     <div class="notice-box">
-        <button class="notice-close-x" id="noticeCloseX">✕</button>
-        <span class="notice-icon">💎</span>
-        <div class="notice-title">🔑 MUA KEY</div>
-        <div class="notice-subtitle">Liên hệ để mua key và sử dụng tool</div>
+        <button class="notice-close-x" id="noticeCloseX" type="button">Đóng</button>
+        <div class="notice-title" id="purchaseNoticeTitle">MUA KEY</div>
+        <div class="notice-subtitle" id="purchaseNoticeSubtitle">Liên hệ để mua key và sử dụng tool</div>
         <hr class="notice-divider">
         <div class="notice-content">
-            <p>📌 Để sử dụng tool, bạn cần có <span class="highlight">Key</span></p>
-            <p>Liên hệ Admin để mua key:</p>
+            <p id="purchaseNoticeLine1">Để sử dụng tool, bạn cần có <span class="highlight">Key</span></p>
+            <p id="purchaseNoticeLine2">Liên hệ Admin để mua key:</p>
         </div>
         <div class="notice-contact">
             <div class="contact-item">
-                <span class="label">📱 Telegram:</span>
-                <span class="value tele">@DevNduc</span>
+                <span class="label">Telegram:</span>
+                <span class="value tele" id="purchaseNoticeTelegram">@DevNduc</span>
             </div>
             <div class="contact-item">
-                <span class="label">📞 Zalo:</span>
-                <span class="value zalo-text">0325976017</span>
+                <span class="label">Zalo:</span>
+                <span class="value zalo-text" id="purchaseNoticeZalo">0325976017</span>
             </div>
         </div>
-        <button class="btn-close-notice" id="noticeCloseBtn">✅ ĐÃ HIỂU</button>
-        <button class="btn-close-notice secondary" id="noticeCloseSecondary">✖ Đóng</button>
+        <button class="btn-close-notice" id="noticeCloseBtn">ĐÃ HIỂU</button>
+        <button class="btn-close-notice secondary" id="noticeCloseSecondary">Đóng</button>
     </div>
 </div>
 <!-- ===== END POPUP ===== -->
 
 <div class="container" id="app">
     <!-- Menu Hamburger -->
-    <button class="menu-toggle" id="menuToggle">☰</button>
+    <button class="menu-toggle" id="menuToggle" type="button">Menu</button>
     
     <!-- Header -->
     <div class="header">
         <div class="header-title">
-            <h1>⚡ SPAM TELEGRAM PRO</h1>
+            <h1> SPAM TELEGRAM PRO</h1>
             <div class="sub">Dev Nduc</div>
         </div>
     </div>
@@ -2143,27 +2291,61 @@
     <!-- Side Menu -->
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="side-menu" id="sideMenu">
-        <button class="menu-close" id="menuClose">✕</button>
+        <button class="menu-close" id="menuClose">Đóng</button>
         <div class="menu-header">
             <img class="menu-avatar" id="menuAvatar" src="" alt="Avatar">
-            <div class="menu-avatar-placeholder" id="menuAvatarPlaceholder">👤</div>
+            <div class="menu-avatar-placeholder hidden" id="menuAvatarPlaceholder"></div>
             <div class="menu-user-info">
                 <div class="name" id="menuUsername">Nduc</div>
                 <div class="role" id="menuRole">Admin</div>
             </div>
         </div>
         <button class="menu-item active" data-menu="profile">
-            <span class="icon">👤</span> Thay đổi thông tin
+            <span class="icon"></span> Thay đổi thông tin
+        </button>
+        <button class="menu-item" data-menu="appearance">
+            <span class="icon"></span> Khác
         </button>
         <button class="menu-item" data-menu="logout">
-            <span class="icon">🚪</span> Đăng xuất
+            <span class="icon"></span> Đăng xuất
         </button>
+    </div>
+
+    <!-- Appearance settings opened from the hamburger menu's "Khác" tab -->
+    <div class="appearance-overlay" id="appearanceOverlay" role="dialog" aria-modal="true" aria-labelledby="appearanceTitle">
+        <section class="appearance-panel">
+            <div class="appearance-heading">
+                <div>
+                    <h2 id="appearanceTitle"> Đổi màu giao diện</h2>
+                    <p>Chọn màu để xem trước ngay, sau đó bấm Lưu để ghi nhớ.</p>
+                </div>
+                <button class="appearance-close" id="appearanceClose" type="button" aria-label="Đóng">×</button>
+            </div>
+            <div class="appearance-preview">
+                <div>
+                    <div class="appearance-preview-label">MÀU ĐANG CHỌN</div>
+                    <div class="appearance-preview-name" id="appearanceColorName">Xanh ngọc · #00E68A</div>
+                </div>
+                <div class="appearance-color-chip" id="appearanceColorChip"></div>
+            </div>
+            <div class="palette-label">Bảng màu</div>
+            <div class="color-palette" id="colorPalette" aria-label="Bảng chọn màu"></div>
+            <div class="appearance-custom">
+                <label for="customAccentColor">Hoặc chọn màu bất kỳ</label>
+                <input id="customAccentColor" type="color" value="#00e68a" aria-label="Chọn màu tùy chỉnh">
+            </div>
+            <div class="appearance-actions">
+                <button class="appearance-reset" id="appearanceReset" type="button">↺ Mặc định</button>
+                <button class="appearance-save" id="appearanceSave" type="button"> Lưu màu</button>
+            </div>
+            <div class="appearance-status" id="appearanceStatus" role="status" aria-live="polite"></div>
+        </section>
     </div>
 
     <div id="userInfo" class="user-info hidden">
         <div class="user-left">
             <img class="user-avatar" id="userAvatar" src="" alt="Avatar">
-            <div class="user-avatar-placeholder" id="userAvatarPlaceholder">👤</div>
+            <div class="user-avatar-placeholder hidden" id="userAvatarPlaceholder"></div>
             <div class="user-details">
                 <span>
                     <span class="username" id="displayUsername">Nduc</span>
@@ -2175,37 +2357,37 @@
             </div>
         </div>
         <div class="user-right">
-            <button class="btn-logout" id="logoutBtn">🚪 Đăng xuất</button>
+            <button class="btn-logout" id="logoutBtn"> Đăng xuất</button>
         </div>
     </div>
 
     <div id="loginForm" class="auth-form">
         <h3 style="color:var(--accent);">
-            🔐 ĐĂNG NHẬP 
-            <span class="auth-mode login-mode" id="authModeDisplay">🔑 Đăng nhập</span>
+             ĐĂNG NHẬP 
+            <span class="auth-mode login-mode" id="authModeDisplay"> Đăng nhập</span>
         </h3>
         <label>Tài khoản</label>
         <input type="text" id="loginUsername" class="default-placeholder" placeholder="Nhập tài khoản của bạn" value="">
         <label>Mật khẩu</label>
         <div class="password-wrapper">
             <input type="password" id="loginPassword" class="default-placeholder" placeholder="Nhập mật khẩu của bạn" value="">
-            <button class="password-toggle" id="passwordToggle">👁️</button>
+            <button class="password-toggle" id="passwordToggle" type="button">Hiện</button>
         </div>
         <div class="auth-row">
-            <button class="btn-login" id="loginBtn">🔑 Đăng nhập</button>
-            <button class="btn-register" id="registerBtn">📝 Đăng ký</button>
-            <button class="btn-admin-login" id="adminLoginBtn">👑 Admin</button>
+            <button class="btn-login" id="loginBtn"> Đăng nhập</button>
+            <button class="btn-register" id="registerBtn"> Đăng ký</button>
+            <button class="btn-admin-login" id="adminLoginBtn"> Admin</button>
         </div>
         <div id="authStatus" class="auth-status">Nhập thông tin để đăng nhập hoặc đăng ký</div>
     </div>
 
     <!-- Profile Edit -->
     <div class="profile-edit" id="profileEdit">
-        <button class="profile-close" id="profileClose">✕</button>
-        <h3 style="color:var(--accent);margin-bottom:18px;">👤 Thay đổi thông tin</h3>
+        <button class="profile-close" id="profileClose">Đóng</button>
+        <h3 style="color:var(--accent);margin-bottom:18px;"> Thay đổi thông tin</h3>
         <div class="avatar-upload">
             <img class="avatar-preview" id="profileAvatar" src="" alt="Avatar">
-            <div class="avatar-preview-placeholder" id="profileAvatarPlaceholder">👤</div>
+            <div class="avatar-preview-placeholder hidden" id="profileAvatarPlaceholder"></div>
             <div>
                 <input type="file" id="avatarInput" accept="image/*">
                 <div style="font-size:12px;color:var(--text-mute);margin-top:4px;">Chọn ảnh đại diện (hình tròn)</div>
@@ -2219,32 +2401,32 @@
             <label>Mật khẩu mới</label>
             <div class="password-wrapper">
                 <input type="password" id="profilePassword" placeholder="Để trống nếu không đổi">
-                <button class="password-toggle" id="profilePasswordToggle">👁️</button>
+                <button class="password-toggle" id="profilePasswordToggle" type="button">Hiện</button>
             </div>
         </div>
-        <button class="btn-save-profile" id="saveProfileBtn">💾 Lưu thay đổi</button>
+        <button class="btn-save-profile" id="saveProfileBtn"> Lưu thay đổi</button>
         <div id="profileStatus" class="profile-status">Nhập thông tin và bấm Lưu để cập nhật</div>
     </div>
 
     <div id="tabContainer" class="tabs hidden">
-        <button class="tab-btn active" data-tab="tabSpam">📨 Spam Tool</button>
-        <button class="tab-btn" data-tab="tabKey" id="adminTabBtn">🔑 Quản lý Key</button>
-        <button class="tab-btn" data-tab="tabMisc" id="miscTabBtn">⚙️ Misc</button>
+        <button class="tab-btn active" data-tab="tabSpam"> Spam Tool</button>
+        <button class="tab-btn" data-tab="tabKey" id="adminTabBtn"> Quản lý Key</button>
+        <button class="tab-btn" data-tab="tabMisc" id="miscTabBtn"> Misc</button>
     </div>
 
     <div id="tabSpam" class="tab-content active">
         <div id="webKeyNotification" class="web-key-notification">
             <span class="key-info">
-                🔑 Key từ Web Key: <span class="key-value" id="webKeyDisplay">XXXXXXXXXX</span>
+                 Key từ Web Key: <span class="key-value" id="webKeyDisplay">XXXXXXXXXX</span>
             </span>
             <span>
-                <button class="btn-use-key" id="useWebKeyBtn">✅ Sử dụng key này</button>
-                <button class="btn-dismiss" id="dismissWebKeyBtn">✖ Bỏ qua</button>
+                <button class="btn-use-key" id="useWebKeyBtn"> Sử dụng key này</button>
+                <button class="btn-dismiss" id="dismissWebKeyBtn"> Bỏ qua</button>
             </span>
         </div>
 
         <div id="keyInputSection" class="key-input-section hidden">
-            <h4>🔑 Nhập Key để sử dụng</h4>
+            <h4> Nhập Key để sử dụng</h4>
             <div class="key-input-row">
                 <input type="text" id="userKeyInput" placeholder="Nhập key của bạn">
                 <button id="activateKeyBtn">Kích hoạt</button>
@@ -2255,14 +2437,14 @@
         <div id="spamContent" class="hidden">
             <div class="row-2col">
                 <div>
-                    <label>📨 LOẠI ID</label>
+                    <label> LOẠI ID</label>
                     <select id="idType">
                         <option value="chat">Group ID</option>
                         <option value="user">User ID</option>
                     </select>
                 </div>
                 <div>
-                    <label>📌 Group ID / USER ID</label>
+                    <label> Group ID / USER ID</label>
                     <input type="text" id="targetId" placeholder="Nhập ID">
                 </div>
             </div>
@@ -2270,37 +2452,37 @@
             <!-- SPAM MODE SELECTOR -->
             <div class="spam-mode-selector">
                 <label class="mode-single">
-                    <input type="radio" name="spamMode" value="single" checked> 📝 Spam thường 
+                    <input type="radio" name="spamMode" value="single" checked>  Spam thường 
                 </label>
                 <label class="mode-multi">
-                    <input type="radio" name="spamMode" value="multi"> 📚 Multi Spam 
+                    <input type="radio" name="spamMode" value="multi">  Multi Spam 
                 </label>
             </div>
 
             <!-- SINGLE LINE SECTION -->
             <div id="singleLineSection">
                 <div class="type-selector">
-                    <label><input type="radio" name="msgType" value="text" checked> 📝 Văn bản</label>
-                    <label><input type="radio" name="msgType" value="image"> 🖼️ Ảnh</label>
+                    <label><input type="radio" name="msgType" value="text" checked>  Văn bản</label>
+                    <label><input type="radio" name="msgType" value="image">  Ảnh</label>
                 </div>
 
                 <div id="textContent">
-                    <label>📝 NỘI DUNG</label>
+                    <label> NỘI DUNG</label>
                     <textarea id="message" placeholder="Nhập nội dung muốn spam"></textarea>
                 </div>
 
                 <div id="imageContent" style="display:none;">
-                    <label>🖼️ ẢNH</label>
+                    <label> ẢNH</label>
                     <div class="image-upload">
                         <input type="file" id="imageFile" accept="image/*">
                         <div class="url-input">
                             <input type="text" id="imageUrl" placeholder="Hoặc nhập URL ảnh">
-                            <button id="previewBtn">🔍 Xem trước</button>
+                            <button id="previewBtn"> Xem trước</button>
                         </div>
                         <img id="imagePreview" class="preview" alt="Preview">
                         <div style="margin-top:6px; font-size:12px; color:var(--text-mute);">Hỗ trợ: JPG, PNG, GIF (dưới 10MB)</div>
                     </div>
-                    <label style="margin-top:12px;">📝 CHÚ THÍCH (tùy chọn)</label>
+                    <label style="margin-top:12px;"> CHÚ THÍCH (tùy chọn)</label>
                     <textarea id="imageCaption" placeholder="Nhập chú thích cho ảnh (tùy chọn)"></textarea>
                 </div>
             </div>
@@ -2308,38 +2490,38 @@
             <!-- MULTI SPAM SECTION -->
             <div id="multiLineSection" style="display:none;">
                 <div class="multi-line-section">
-                    <h4>📚 MULTI SPAM - NHIỀU DÒNG VÒNG LẶP</h4>
+                    <h4> MULTI SPAM - NHIỀU DÒNG VÒNG LẶP</h4>
                     <div style="color:var(--text-mute);font-size:13px;margin-bottom:10px;">
-                        ⚡ Spam theo thứ tự: <span style="color:var(--orange);font-weight:bold;">Dòng 1 → Dòng 2 → ... → Dòng N → Quay lại Dòng 1</span>
+                         Spam theo thứ tự: <span style="color:var(--orange);font-weight:bold;">Dòng 1 → Dòng 2 → ... → Dòng N → Quay lại Dòng 1</span>
                     </div>
                     <div class="line-controls">
                         <label>Số dòng muốn viết:</label>
                         <input type="number" id="lineCount" value="3" min="1" max="20">
-                        <button class="btn-line-update" id="updateLinesBtn">🔄 Cập nhật</button>
-                        <button class="btn-line-save" id="saveLinesBtn">💾 Lưu</button>
-                        <button class="btn-line-up" id="upLinesBtn">⬆️ Up</button>
-                        <button class="btn-line-reset" id="resetLinesBtn">🗑️ Xoá</button>
+                        <button class="btn-line-update" id="updateLinesBtn"> Cập nhật</button>
+                        <button class="btn-line-save" id="saveLinesBtn"> Lưu</button>
+                        <button class="btn-line-up" id="upLinesBtn">⬆ Up</button>
+                        <button class="btn-line-reset" id="resetLinesBtn"> Xoá</button>
                     </div>
                     <div class="line-input-container" id="lineContainer">
                         <!-- Tạo động bằng JS -->
                     </div>
                     <div class="line-info">
-                        📌 Nội dung được <span class="highlight">lưu tự động</span> khi bạn nhập vào ô!
-                        <br>🔄 Spam vòng lặp: Dòng 1 → Dòng 2 → ... → Dòng N → Dòng 1 → ...
-                        <br>💾 Ấn <span class="highlight">Lưu</span> để lưu số dòng và nội dung!
-                        <br>⬆️ Ấn <span class="highlight">Up</span> để tải lại dữ liệu đã lưu!
+                         Nội dung được <span class="highlight">lưu tự động</span> khi bạn nhập vào ô!
+                        <br> Spam vòng lặp: Dòng 1 → Dòng 2 → ... → Dòng N → Dòng 1 → ...
+                        <br> Ấn <span class="highlight">Lưu</span> để lưu số dòng và nội dung!
+                        <br>⬆ Ấn <span class="highlight">Up</span> để tải lại dữ liệu đã lưu!
                     </div>
                 </div>
             </div>
 
             <div class="speed-control">
                 <div>
-                    <label>⚡ Tốc độ (ms/gửi):</label>
+                    <label> Tốc độ (ms/gửi):</label>
                     <input type="number" id="speed" value="150" min="50" max="5000">
                     <span>(50 = nhanh nhất)</span>
                 </div>
                 <div class="spam-count">
-                    <label>🔢 Số lần spam:</label>
+                    <label> Số lần spam:</label>
                     <input type="number" id="spamCount" value="10" min="1" max="999999">
                     <span>lần</span>
                     <label class="unlimited-label">
@@ -2348,7 +2530,7 @@
                 </div>
             </div>
 
-            <label style="margin-top:14px;">🤖 DANH SÁCH BOT TOKEN (tối thiểu 1 token có giá trị)</label>
+            <label style="margin-top:14px;"> DANH SÁCH BOT TOKEN (tối thiểu 1 token có giá trị)</label>
             <div class="token-list" id="tokenList">
                 <div class="token-item"><label>Bot 1</label><input type="text" class="bot-token" placeholder="Token bot 1"></div>
                 <div class="token-item"><label>Bot 2</label><input type="text" class="bot-token" placeholder="Token bot 2"></div>
@@ -2363,9 +2545,9 @@
             </div>
 
             <div class="btn-row">
-                <button id="sendBtn">🚀 SPAM Start</button>
+                <button id="sendBtn"> SPAM Start</button>
                 <button id="stopBtn">⏹ DỪNG</button>
-                <button id="clearBtn">🗑️ Delete Log</button>
+                <button id="clearBtn"> Delete Log</button>
             </div>
 
             <div class="status-bar">
@@ -2373,7 +2555,7 @@
                     <span class="status-dot idle" id="statusDot"></span>
                     <span id="statusText" style="color:var(--text);font-weight:bold;">Sẵn sàng</span>
                 </span>
-                <span class="counter" id="counter">📤 0 / 10</span>
+                <span class="counter" id="counter"> 0 / 10</span>
             </div>
             <div id="log">[+] Tool đã sẵn sàng. Nhập token, ID và nội dung để bắt đầu.</div>
         </div>
@@ -2381,11 +2563,13 @@
 
     <div id="tabKey" class="tab-content">
         <div class="key-section">
-            <h3 style="color:var(--accent);margin-bottom:16px;font-size:16px;letter-spacing:1px;">🔑 QUẢN LÝ KEY</h3>
+            <h3 style="color:var(--accent);margin-bottom:16px;font-size:16px;letter-spacing:1px;"> QUẢN LÝ KEY</h3>
             
             <div class="gen-key-box">
-                <h4>📱 TẠO KEY CHO NHIỀU TÀI KHOẢN (TỐI ĐA 300)</h4>
+                <h4>TẠO MỘT KEY DÙNG CHO NHIỀU TÀI KHOẢN (TỐI ĐA 300)</h4>
                 <div class="gen-row">
+                    <label>Key muốn tạo:</label>
+                    <input type="text" id="customMultiKey" maxlength="100" placeholder="Để trống để tạo key ngẫu nhiên">
                     <label>Số tài khoản (1-300):</label>
                     <input type="number" id="deviceCount" value="1" min="1" max="300">
                     <label>Thời hạn:</label>
@@ -2397,7 +2581,7 @@
                         <option value="30d" selected>1 tháng</option>
                         <option value="forever">Vĩnh viễn</option>
                     </select>
-                    <button id="genMultiKeyBtn">🔑 Tạo Key</button>
+                    <button id="genMultiKeyBtn"> Tạo Key</button>
                 </div>
                 <div id="genKeyResult" class="key-result" style="display:none;"></div>
             </div>
@@ -2416,9 +2600,9 @@
                 <option value="forever">Vĩnh viễn</option>
             </select>
             <div class="key-row">
-                <button class="btn-gen-key" id="genKeyBtn">🔑 Tạo Key</button>
-                <button class="btn-copy-key" id="copyKeysBtn">📋 Sao chép Key</button>
-                <button class="btn-delete-history" id="deleteHistoryBtn">🗑️ Xóa lịch sử</button>
+                <button class="btn-gen-key" id="genKeyBtn"> Tạo Key</button>
+                <button class="btn-copy-key" id="copyKeysBtn"> Sao chép Key</button>
+                <button class="btn-delete-history" id="deleteHistoryBtn"> Xóa lịch sử</button>
             </div>
             <div style="margin-top:16px;">
                 <h4 style="color:var(--text-dim);font-size:12px;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;">Danh sách Key đã tạo <span style="color:var(--text-mute);font-size:11px;font-weight:400;">(lịch sử tạo key)</span></h4>
@@ -2430,34 +2614,41 @@
     </div>
 
     <div id="tabMisc" class="tab-content">
-        <div class="misc-section">
-            <h4>🔗 CẤU HÌNH LINK VƯỢT</h4>
-            <label>Link vượt (thay thế link mặc định)</label>
-            <input type="text" id="bypassLinkInput" placeholder="Nhập link vượt mới (ví dụ: https://link4m.org/abc)">
+        <div class="misc-section" id="purchaseNoticeAdminSection">
+            <h4>THÔNG TIN THÔNG BÁO MUA KEY</h4>
+            <p style="color:var(--text-mute);font-size:13px;margin-bottom:12px;">Chỉnh nội dung hiển thị trong cửa sổ thông báo mua key.</p>
+            <label for="noticeAdminTitle">Tiêu đề</label>
+            <input type="text" id="noticeAdminTitle" maxlength="100" placeholder="MUA KEY">
+            <label for="noticeAdminSubtitle">Mô tả ngắn</label>
+            <input type="text" id="noticeAdminSubtitle" maxlength="200" placeholder="Liên hệ để mua key và sử dụng tool">
+            <label for="noticeAdminLine1">Nội dung dòng 1</label>
+            <input type="text" id="noticeAdminLine1" maxlength="300" placeholder="Để sử dụng tool, bạn cần có Key">
+            <label for="noticeAdminLine2">Nội dung dòng 2</label>
+            <input type="text" id="noticeAdminLine2" maxlength="300" placeholder="Liên hệ Admin để mua key:">
+            <label for="noticeAdminTelegram">Thông tin Telegram</label>
+            <input type="text" id="noticeAdminTelegram" maxlength="120" placeholder="@username">
+            <label for="noticeAdminZalo">Thông tin Zalo</label>
+            <input type="text" id="noticeAdminZalo" maxlength="120" placeholder="Số điện thoại hoặc tên liên hệ">
             <div class="misc-row">
-                <button class="btn-save-link" id="saveBypassLinkBtn">💾 Lưu link</button>
-                <button class="btn-save-link" id="resetBypassLinkBtn" style="background:linear-gradient(135deg,var(--orange),#e08228);">↩️ Khôi phục mặc định</button>
+                <button class="btn-save-link" id="savePurchaseNoticeBtn" type="button">Lưu thông báo</button>
+                <button class="btn-save-link" id="resetPurchaseNoticeBtn" type="button">Khôi phục mặc định</button>
             </div>
-            <div class="current-link-display">
-                🔗 Link hiện tại: <span class="link-value" id="currentBypassLinkDisplay">https://link4m.org/0CSnon</span>
-            </div>
-            <div id="linkStatus" class="misc-status">Nhập link mới và bấm Lưu để thay đổi</div>
+            <div id="purchaseNoticeStatus" class="misc-status" role="status" aria-live="polite">Chỉnh thông tin rồi bấm Lưu thông báo.</div>
         </div>
-
         <div class="misc-section">
-            <h4>🚫 QUẢN LÝ BAN ACCOUNT</h4>
+            <h4> QUẢN LÝ BAN ACCOUNT</h4>
             <label>Tên tài khoản</label>
             <input type="text" id="banUsernameInput" placeholder="Nhập tên tài khoản cần ban">
             <div class="misc-row">
-                <button class="btn-ban" id="banUserBtn">🔨 Ban</button>
-                <button class="btn-unban" id="unbanUserBtn">✅ Unban</button>
-                <button class="btn-view-banned" id="viewBannedBtn">📋 Danh sách ban</button>
-                <button class="btn-delete-ban-history" id="deleteBanHistoryBtn">🗑️ Xóa lịch sử</button>
+                <button class="btn-ban" id="banUserBtn"> Ban</button>
+                <button class="btn-unban" id="unbanUserBtn"> Unban</button>
+                <button class="btn-view-banned" id="viewBannedBtn"> Danh sách ban</button>
+                <button class="btn-delete-ban-history" id="deleteBanHistoryBtn"> Xóa lịch sử</button>
             </div>
             <div id="banStatus" class="misc-status">Nhập tên tài khoản và chọn hành động</div>
             
             <div class="banned-table-container" id="bannedTableContainer">
-                <h4 style="color:var(--red);font-size:12px;margin:12px 14px 8px 14px;text-transform:uppercase;letter-spacing:0.6px;">📋 DANH SÁCH TÀI KHOẢN BỊ BAN</h4>
+                <h4 style="color:var(--red);font-size:12px;margin:12px 14px 8px 14px;text-transform:uppercase;letter-spacing:0.6px;"> DANH SÁCH TÀI KHOẢN BỊ BAN</h4>
                 <table class="banned-table" id="bannedTable">
                     <thead>
                         <tr>
@@ -2476,19 +2667,19 @@
         </div>
 
         <div class="misc-section">
-            <h4>🔄 RESET KEY</h4>
+            <h4> RESET KEY</h4>
             <p style="color:var(--text-mute);font-size:13px;margin-bottom:10px;">Reset key để có thể kích hoạt lại cho acc khác. Thời gian còn lại vẫn được giữ nguyên.</p>
             <div class="reset-key-box">
                 <div class="reset-row">
                     <input type="text" id="resetKeyInput" placeholder="Nhập key cần reset">
-                    <button id="resetKeyBtn">🔄 Reset Key</button>
+                    <button id="resetKeyBtn"> Reset Key</button>
                 </div>
                 <div id="resetStatus" class="misc-status" style="margin-top:10px;">Nhập key và bấm Reset để reset key</div>
             </div>
         </div>
     </div>
 
-    <div class="footer">⚡ Dev Nduc ⚡</div>
+    <div class="footer"> Dev Nduc </div>
 </div>
 
 <script>
@@ -2523,6 +2714,59 @@
         }
     });
 
+    // ========== ADMIN PURCHASE NOTICE EDITOR ==========
+    const NOTICE_STORAGE_KEY = 'telegram_purchase_notice';
+    const defaultPurchaseNotice = {
+        title: 'MUA KEY',
+        subtitle: 'Liên hệ để mua key và sử dụng tool',
+        line1: 'Để sử dụng tool, bạn cần có Key',
+        line2: 'Liên hệ Admin để mua key:',
+        telegram: '@DevNduc',
+        zalo: '0325976017'
+    };
+    const noticeFields = {
+        title: document.getElementById('noticeAdminTitle'),
+        subtitle: document.getElementById('noticeAdminSubtitle'),
+        line1: document.getElementById('noticeAdminLine1'),
+        line2: document.getElementById('noticeAdminLine2'),
+        telegram: document.getElementById('noticeAdminTelegram'),
+        zalo: document.getElementById('noticeAdminZalo')
+    };
+    function readPurchaseNotice() {
+        try { return { ...defaultPurchaseNotice, ...JSON.parse(localStorage.getItem(NOTICE_STORAGE_KEY) || '{}') }; }
+        catch (e) { return { ...defaultPurchaseNotice }; }
+    }
+    function renderPurchaseNotice(config) {
+        document.getElementById('purchaseNoticeTitle').textContent = config.title;
+        document.getElementById('purchaseNoticeSubtitle').textContent = config.subtitle;
+        document.getElementById('purchaseNoticeLine1').textContent = config.line1;
+        document.getElementById('purchaseNoticeLine2').textContent = config.line2;
+        document.getElementById('purchaseNoticeTelegram').textContent = config.telegram;
+        document.getElementById('purchaseNoticeZalo').textContent = config.zalo;
+        Object.keys(noticeFields).forEach(key => { noticeFields[key].value = config[key]; });
+    }
+    renderPurchaseNotice(readPurchaseNotice());
+    document.getElementById('savePurchaseNoticeBtn').addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            document.getElementById('purchaseNoticeStatus').textContent = 'Chỉ Admin mới có thể sửa thông báo.';
+            return;
+        }
+        const config = {};
+        Object.keys(noticeFields).forEach(key => { config[key] = noticeFields[key].value.trim() || defaultPurchaseNotice[key]; });
+        localStorage.setItem(NOTICE_STORAGE_KEY, JSON.stringify(config));
+        renderPurchaseNotice(config);
+        document.getElementById('purchaseNoticeStatus').textContent = 'Đã lưu nội dung thông báo trên trình duyệt này.';
+    });
+    document.getElementById('resetPurchaseNoticeBtn').addEventListener('click', function() {
+        if (!currentUser || currentUser.role !== 'admin') {
+            document.getElementById('purchaseNoticeStatus').textContent = 'Chỉ Admin mới có thể sửa thông báo.';
+            return;
+        }
+        localStorage.removeItem(NOTICE_STORAGE_KEY);
+        renderPurchaseNotice({ ...defaultPurchaseNotice });
+        document.getElementById('purchaseNoticeStatus').textContent = 'Đã khôi phục nội dung mặc định.';
+    });
+
     // ========== DATA STORAGE ==========
     const STORAGE_KEY = 'telegram_spam_data';
     const ACTIVATED_KEYS_KEY = 'activated_keys';
@@ -2537,7 +2781,6 @@
         keys: {},
         keyHistory: [],
         bannedUsers: [],
-        bypassLink: 'https://link4m.org/0CSnon',
         keyActivations: {}
     };
 
@@ -2568,7 +2811,7 @@
 
     // ========== UTILITY ==========
     function getInitials(name) {
-        if (!name || name.length === 0) return '👤';
+        if (!name || name.length === 0) return '';
         return name.charAt(0).toUpperCase();
     }
 
@@ -2626,7 +2869,6 @@
                 appData.keys = parsed.keys || {};
                 appData.keyHistory = parsed.keyHistory || [];
                 appData.bannedUsers = parsed.bannedUsers || [];
-                appData.bypassLink = parsed.bypassLink || 'https://link4m.org/0CSnon';
                 appData.keyActivations = parsed.keyActivations || {};
             }
         } catch (e) {}
@@ -2646,7 +2888,6 @@
                 keys: appData.keys,
                 keyHistory: appData.keyHistory,
                 bannedUsers: appData.bannedUsers,
-                bypassLink: appData.bypassLink,
                 keyActivations: appData.keyActivations
             }));
         } catch (e) {}
@@ -2735,6 +2976,7 @@
     const keyCount = document.getElementById('keyCount');
     const keyExpiry = document.getElementById('keyExpiry');
     const deviceCount = document.getElementById('deviceCount');
+    const customMultiKey = document.getElementById('customMultiKey');
     const genKeyExpiry = document.getElementById('genKeyExpiry');
     const genMultiKeyBtn = document.getElementById('genMultiKeyBtn');
     const genKeyResult = document.getElementById('genKeyResult');
@@ -2749,11 +2991,6 @@
     const useWebKeyBtn = document.getElementById('useWebKeyBtn');
     const dismissWebKeyBtn = document.getElementById('dismissWebKeyBtn');
 
-    const bypassLinkInput = document.getElementById('bypassLinkInput');
-    const saveBypassLinkBtn = document.getElementById('saveBypassLinkBtn');
-    const resetBypassLinkBtn = document.getElementById('resetBypassLinkBtn');
-    const currentBypassLinkDisplay = document.getElementById('currentBypassLinkDisplay');
-    const linkStatus = document.getElementById('linkStatus');
     const banUsernameInput = document.getElementById('banUsernameInput');
     const banUserBtn = document.getElementById('banUserBtn');
     const unbanUserBtn = document.getElementById('unbanUserBtn');
@@ -2828,10 +3065,10 @@
         const input = loginPassword;
         if (input.type === 'password') {
             input.type = 'text';
-            this.textContent = '🙈';
+            this.textContent = '';
         } else {
             input.type = 'password';
-            this.textContent = '👁️';
+            this.textContent = '';
         }
     });
 
@@ -2839,10 +3076,10 @@
         const input = profilePassword;
         if (input.type === 'password') {
             input.type = 'text';
-            this.textContent = '🙈';
+            this.textContent = '';
         } else {
             input.type = 'password';
-            this.textContent = '👁️';
+            this.textContent = '';
         }
     });
 
@@ -2875,12 +3112,196 @@
             if (action === 'profile') {
                 toggleMenu(false);
                 showProfileEdit();
+            } else if (action === 'appearance') {
+                toggleMenu(false);
+                openAppearance();
             } else if (action === 'logout') {
                 toggleMenu(false);
                 logout();
             }
         });
     });
+
+
+    // ========== APPEARANCE / THEME ==========
+    const appearanceOverlay = document.getElementById('appearanceOverlay');
+    const appearanceClose = document.getElementById('appearanceClose');
+    const colorPalette = document.getElementById('colorPalette');
+    const appearanceColorName = document.getElementById('appearanceColorName');
+    const appearanceColorChip = document.getElementById('appearanceColorChip');
+    const customAccentColor = document.getElementById('customAccentColor');
+    const appearanceSave = document.getElementById('appearanceSave');
+    const appearanceReset = document.getElementById('appearanceReset');
+    const appearanceStatus = document.getElementById('appearanceStatus');
+
+    const DEFAULT_ACCENT = '#00e68a';
+    let selectedAccent = DEFAULT_ACCENT;
+    let savedAccent = DEFAULT_ACCENT;
+
+    const namedColors = [
+        ['Đỏ', '#f44336'], ['Đỏ ruby', '#e11d48'], ['Hồng', '#ec4899'],
+        ['Hồng neon', '#ff2d95'], ['Tím', '#9c27b0'], ['Tím điện', '#8b5cf6'],
+        ['Tím lavender', '#a78bfa'], ['Chàm', '#4f46e5'], ['Xanh dương', '#2196f3'],
+        ['Xanh biển', '#0ea5e9'], ['Cyan', '#06b6d4'], ['Xanh ngọc', '#00e68a'],
+        ['Xanh lá', '#22c55e'], ['Lime', '#84cc16'], ['Vàng', '#facc15'],
+        ['Vàng cam', '#f59e0b'], ['Cam', '#ff8c42'], ['Cam đỏ', '#f97316'],
+        ['Nâu', '#a16207'], ['Trắng', '#f8fafc'], ['Bạc', '#cbd5e1'],
+        ['Xám', '#94a3b8'], ['Đen', '#334155'], ['Coral', '#ff7f7f']
+    ];
+
+    function normalizeHex(value) {
+        const hex = String(value || '').trim();
+        return /^#[0-9a-f]{6}$/i.test(hex) ? hex.toLowerCase() : DEFAULT_ACCENT;
+    }
+
+    function hexToRgb(hex) {
+        const normalized = normalizeHex(hex);
+        return {
+            r: parseInt(normalized.slice(1, 3), 16),
+            g: parseInt(normalized.slice(3, 5), 16),
+            b: parseInt(normalized.slice(5, 7), 16)
+        };
+    }
+
+    function rgbaFromHex(hex, alpha) {
+        const { r, g, b } = hexToRgb(hex);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function getColorName(hex) {
+        const match = namedColors.find(([, value]) => value.toLowerCase() === normalizeHex(hex));
+        return match ? match[0] : 'Màu tùy chỉnh';
+    }
+
+    function applyAccent(hex) {
+        const color = normalizeHex(hex);
+        const root = document.documentElement;
+        root.style.setProperty('--accent', color);
+        root.style.setProperty('--accent-2', adjustColor(color, -16));
+        root.style.setProperty('--accent-soft', rgbaFromHex(color, 0.12));
+        root.style.setProperty('--accent-glow', rgbaFromHex(color, 0.25));
+        root.style.setProperty('--shadow-glow', `0 0 40px ${rgbaFromHex(color, 0.08)}`);
+
+        // Keep the theme's major headings and controls coordinated with the selected color.
+        document.querySelectorAll('.header .header-title h1').forEach(el => {
+            el.style.backgroundImage = `linear-gradient(135deg, ${color}, ${adjustColor(color, 48)})`;
+        });
+        appearanceColorChip.style.background = color;
+        appearanceColorName.textContent = `${getColorName(color)} · ${color.toUpperCase()}`;
+        customAccentColor.value = color;
+        selectedAccent = color;
+
+        colorPalette.querySelectorAll('.color-swatch').forEach(swatch => {
+            const active = swatch.dataset.color === color;
+            swatch.setAttribute('aria-pressed', String(active));
+            if (active) swatch.setAttribute('aria-label', `${swatch.title}, đang chọn`);
+            else swatch.setAttribute('aria-label', swatch.title);
+        });
+    }
+
+    function adjustColor(hex, amount) {
+        const { r, g, b } = hexToRgb(hex);
+        const channel = value => Math.max(0, Math.min(255, value + amount));
+        return '#' + [channel(r), channel(g), channel(b)]
+            .map(value => value.toString(16).padStart(2, '0')).join('');
+    }
+
+    function buildColorPalette() {
+        const colors = [...namedColors];
+        // A broad hue spectrum, with vivid and softer/darker variants.
+        for (let hue = 0; hue < 360; hue += 10) {
+            const color = hslToHex(hue, 88, 56);
+            if (!colors.some(([, existing]) => existing.toLowerCase() === color)) {
+                colors.push([`Phổ màu ${hue}°`, color]);
+            }
+        }
+        for (let hue = 0; hue < 360; hue += 30) {
+            colors.push([`Pastel ${hue}°`, hslToHex(hue, 78, 72)]);
+            colors.push([`Đậm ${hue}°`, hslToHex(hue, 82, 42)]);
+        }
+
+        colorPalette.replaceChildren();
+        const fragment = document.createDocumentFragment();
+        colors.forEach(([name, color]) => {
+            const swatch = document.createElement('button');
+            swatch.type = 'button';
+            swatch.className = 'color-swatch';
+            swatch.style.backgroundColor = color;
+            swatch.dataset.color = color.toLowerCase();
+            swatch.title = `${name} — ${color.toUpperCase()}`;
+            swatch.setAttribute('aria-label', swatch.title);
+            swatch.setAttribute('aria-pressed', 'false');
+            swatch.addEventListener('click', () => {
+                appearanceStatus.textContent = 'Đang xem trước — bấm “Lưu màu” để áp dụng lâu dài.';
+                applyAccent(color);
+            });
+            fragment.appendChild(swatch);
+        });
+        colorPalette.appendChild(fragment);
+    }
+
+    function hslToHex(h, s, l) {
+        s /= 100;
+        l /= 100;
+        const k = n => (n + h / 30) % 12;
+        const a = s * Math.min(l, 1 - l);
+        const f = n => {
+            const channel = l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+            return Math.round(255 * channel).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`;
+    }
+
+    function openAppearance() {
+        try {
+            savedAccent = normalizeHex(localStorage.getItem('spamTeleAccent') || DEFAULT_ACCENT);
+        } catch (_) {
+            savedAccent = DEFAULT_ACCENT;
+        }
+        applyAccent(savedAccent);
+        appearanceStatus.textContent = '';
+        appearanceOverlay.classList.add('active');
+    }
+
+    function closeAppearance() {
+        // Closing without saving restores the last saved choice.
+        applyAccent(savedAccent);
+        appearanceStatus.textContent = '';
+        appearanceOverlay.classList.remove('active');
+    }
+
+    appearanceClose.addEventListener('click', closeAppearance);
+    appearanceOverlay.addEventListener('click', event => {
+        if (event.target === appearanceOverlay) closeAppearance();
+    });
+    customAccentColor.addEventListener('input', event => {
+        applyAccent(event.target.value);
+        appearanceStatus.textContent = 'Đang xem trước màu tùy chỉnh — bấm “Lưu màu” để lưu.';
+    });
+    appearanceSave.addEventListener('click', () => {
+        savedAccent = selectedAccent;
+        try {
+            localStorage.setItem('spamTeleAccent', savedAccent);
+            appearanceStatus.textContent = ' Đã lưu màu giao diện!';
+        } catch (_) {
+            appearanceStatus.textContent = 'Màu đã đổi trong phiên này, nhưng trình duyệt không cho lưu lâu dài.';
+        }
+    });
+    appearanceReset.addEventListener('click', () => {
+        applyAccent(DEFAULT_ACCENT);
+        appearanceStatus.textContent = 'Đã chọn lại màu mặc định. Bấm “Lưu màu” để xác nhận.';
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && appearanceOverlay.classList.contains('active')) closeAppearance();
+    });
+
+    buildColorPalette();
+    try {
+        savedAccent = normalizeHex(localStorage.getItem('spamTeleAccent') || DEFAULT_ACCENT);
+        applyAccent(savedAccent);
+    } catch (_) {
+        applyAccent(DEFAULT_ACCENT);
+    }
 
     // ========== PROFILE FUNCTIONS ==========
     function showProfileEdit() {
@@ -2930,7 +3351,7 @@
 
     saveProfileBtn.addEventListener('click', function() {
         if (!currentUser) {
-            profileStatus.innerHTML = '❌ Vui lòng đăng nhập!';
+            profileStatus.innerHTML = ' Vui lòng đăng nhập!';
             profileStatus.style.color = 'var(--red)';
             return;
         }
@@ -2939,13 +3360,13 @@
         const newPassword = profilePassword.value.trim();
 
         if (!newName) {
-            profileStatus.innerHTML = '❌ Tên hiển thị không được để trống!';
+            profileStatus.innerHTML = ' Tên hiển thị không được để trống!';
             profileStatus.style.color = 'var(--red)';
             return;
         }
 
         if (newName !== currentUser.username && appData.users[newName]) {
-            profileStatus.innerHTML = '❌ Tên này đã được sử dụng!';
+            profileStatus.innerHTML = ' Tên này đã được sử dụng!';
             profileStatus.style.color = 'var(--red)';
             return;
         }
@@ -2988,7 +3409,7 @@
         if (newPassword && newPassword.length >= 3) {
             appData.users[currentUser.username].password = newPassword;
         } else if (newPassword && newPassword.length < 3 && newPassword.length > 0) {
-            profileStatus.innerHTML = '❌ Mật khẩu mới phải có ít nhất 3 ký tự!';
+            profileStatus.innerHTML = ' Mật khẩu mới phải có ít nhất 3 ký tự!';
             profileStatus.style.color = 'var(--red)';
             return;
         }
@@ -3001,12 +3422,12 @@
         menuUsername.textContent = currentUser.username;
         updateAvatarDisplay();
         
-        profileStatus.innerHTML = '✅ Đã cập nhật thông tin thành công!';
+        profileStatus.innerHTML = ' Đã cập nhật thông tin thành công!';
         profileStatus.style.color = 'var(--accent)';
         
         updateMenuInfo();
         
-        appendLog(`👤 Đã cập nhật thông tin tài khoản: ${currentUser.username}`);
+        appendLog(` Đã cập nhật thông tin tài khoản: ${currentUser.username}`);
     });
 
     function updateAvatarDisplay() {
@@ -3040,20 +3461,20 @@
     function updateMenuInfo() {
         if (!currentUser) return;
         menuUsername.textContent = currentUser.username;
-        menuRole.textContent = currentUser.role === 'admin' ? '👑 Admin' : '👤 User';
+        menuRole.textContent = currentUser.role === 'admin' ? ' Admin' : ' User';
         updateAvatarDisplay();
     }
 
     // ========== AUTH ==========
     function setAuthMode(mode) {
         if (mode === 'login') {
-            authModeDisplay.textContent = '🔑 Đăng nhập';
+            authModeDisplay.textContent = ' Đăng nhập';
             authModeDisplay.className = 'auth-mode login-mode';
-            authStatus.innerHTML = '🔑 Nhập thông tin để đăng nhập';
+            authStatus.innerHTML = ' Nhập thông tin để đăng nhập';
         } else {
-            authModeDisplay.textContent = '📝 Đăng ký';
+            authModeDisplay.textContent = ' Đăng ký';
             authModeDisplay.className = 'auth-mode register-mode';
-            authStatus.innerHTML = '📝 Nhập thông tin để đăng ký tài khoản mới';
+            authStatus.innerHTML = ' Nhập thông tin để đăng ký tài khoản mới';
         }
     }
 
@@ -3062,7 +3483,7 @@
         const username = loginUsername.value.trim();
         const password = loginPassword.value.trim();
         if (!username || !password) {
-            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+            authStatus.innerHTML = ' Vui lòng nhập đầy đủ thông tin!';
             return;
         }
         login(username, password);
@@ -3073,7 +3494,7 @@
         const username = loginUsername.value.trim();
         const password = loginPassword.value.trim();
         if (!username || !password) {
-            authStatus.innerHTML = '❌ Vui lòng nhập đầy đủ thông tin!';
+            authStatus.innerHTML = ' Vui lòng nhập đầy đủ thông tin!';
             return;
         }
         register(username, password);
@@ -3081,20 +3502,20 @@
 
     function login(username, password) {
         if (appData.bannedUsers.includes(username)) {
-            authStatus.innerHTML = '🚫 Tài khoản này đã bị BAN! Liên hệ Admin.';
+            authStatus.innerHTML = ' Tài khoản này đã bị BAN! Liên hệ Admin.';
             return false;
         }
         const user = appData.users[username];
         if (!user) {
-            authStatus.innerHTML = '❌ Tài khoản không tồn tại!';
+            authStatus.innerHTML = ' Tài khoản không tồn tại!';
             return false;
         }
         if (user.password !== password) {
-            authStatus.innerHTML = '❌ Sai mật khẩu!';
+            authStatus.innerHTML = ' Sai mật khẩu!';
             return false;
         }
         currentUser = { username, role: user.role };
-        authStatus.innerHTML = `✅ Đăng nhập thành công! Chào ${username}`;
+        authStatus.innerHTML = ` Đăng nhập thành công! Chào ${username}`;
         saveSession();
         updateUI();
         return true;
@@ -3103,15 +3524,15 @@
     function adminLogin(password) {
         const adminUser = appData.users['Nduc'];
         if (!adminUser) {
-            authStatus.innerHTML = '❌ Tài khoản Admin không tồn tại!';
+            authStatus.innerHTML = ' Tài khoản Admin không tồn tại!';
             return false;
         }
         if (adminUser.password !== password) {
-            authStatus.innerHTML = '❌ Sai mật khẩu Admin!';
+            authStatus.innerHTML = ' Sai mật khẩu Admin!';
             return false;
         }
         currentUser = { username: 'Nduc', role: 'admin' };
-        authStatus.innerHTML = `✅ Đăng nhập Admin thành công!`;
+        authStatus.innerHTML = ` Đăng nhập Admin thành công!`;
         saveSession();
         updateUI();
         return true;
@@ -3119,16 +3540,16 @@
 
     function register(username, password) {
         if (appData.users[username]) {
-            authStatus.innerHTML = '❌ Tài khoản đã tồn tại!';
+            authStatus.innerHTML = ' Tài khoản đã tồn tại!';
             return false;
         }
         if (username.length < 3 || password.length < 3) {
-            authStatus.innerHTML = '❌ Tên và mật khẩu phải có ít nhất 3 ký tự!';
+            authStatus.innerHTML = ' Tên và mật khẩu phải có ít nhất 3 ký tự!';
             return false;
         }
         appData.users[username] = { password, role: 'user' };
         saveData();
-        authStatus.innerHTML = `✅ Đăng ký thành công! Bạn có thể đăng nhập ngay.`;
+        authStatus.innerHTML = ` Đăng ký thành công! Bạn có thể đăng nhập ngay.`;
         setAuthMode('login');
         return true;
     }
@@ -3206,7 +3627,7 @@
         keyInputSection.classList.add('hidden');
         keyTimer.classList.remove('hidden');
         const timeRemaining = getTimeRemaining(keyData.expiryTime);
-        keyStatusInfo.innerHTML = `✅ Key từ Web Key đã được kích hoạt! Còn lại: ${timeRemaining}`;
+        keyStatusInfo.innerHTML = ` Key từ Web Key đã được kích hoạt! Còn lại: ${timeRemaining}`;
         keyStatusInfo.style.color = 'var(--accent)';
         
         if (timerInterval) clearInterval(timerInterval);
@@ -3216,7 +3637,7 @@
         webKeyNotification.classList.remove('show');
         webKeyDetected = null;
         
-        appendLog(`✅ Đã kích hoạt key từ Web Key: ${key}`);
+        appendLog(` Đã kích hoạt key từ Web Key: ${key}`);
     });
 
     dismissWebKeyBtn.addEventListener('click', function() {
@@ -3230,7 +3651,7 @@
             loginForm.classList.add('hidden');
             userInfo.classList.remove('hidden');
             displayUsername.textContent = currentUser.username;
-            displayRole.textContent = currentUser.role === 'admin' ? '👑 Admin' : '👤 User';
+            displayRole.textContent = currentUser.role === 'admin' ? ' Admin' : ' User';
             displayRole.className = 'role ' + (currentUser.role === 'admin' ? 'admin' : 'user');
             tabContainer.classList.remove('hidden');
             menuToggle.classList.add('show');
@@ -3249,7 +3670,6 @@
                     timerInterval = null;
                 }
                 renderBannedTable();
-                updateBypassLinkDisplay();
             } else {
                 adminTabBtn.classList.add('hidden');
                 miscTabBtn.classList.add('hidden');
@@ -3269,10 +3689,10 @@
             // Reset avatar về mặc định
             userAvatar.style.display = 'none';
             userAvatarPlaceholder.style.display = 'flex';
-            userAvatarPlaceholder.textContent = '👤';
+            userAvatarPlaceholder.textContent = '';
             menuAvatar.style.display = 'none';
             menuAvatarPlaceholder.style.display = 'flex';
-            menuAvatarPlaceholder.textContent = '👤';
+            menuAvatarPlaceholder.textContent = '';
             
             tabSpam.classList.remove('active');
             tabSpam.style.display = 'none';
@@ -3291,6 +3711,21 @@
         renderKeyHistory();
     }
 
+    function getKeyActivationList(key) {
+        const raw = appData.keyActivations[key];
+        if (!raw) return [];
+        if (Array.isArray(raw.accounts)) return raw.accounts;
+        return raw.username ? [raw] : [];
+    }
+
+    function getKeyActivationForUser(key, username) {
+        return getKeyActivationList(key).find(item => item.username === username) || null;
+    }
+
+    function getPrimaryKeyActivation(key) {
+        return getKeyActivationList(key)[0] || null;
+    }
+
     function checkUserKey() {
         if (!currentUser || currentUser.role === 'admin') {
             isKeyValid = true;
@@ -3300,9 +3735,8 @@
         userKey = null;
         
         for (const [key, data] of Object.entries(appData.keys)) {
-            const activation = appData.keyActivations[key];
-            if (!activation) continue;
-            if (activation.username === currentUser.username) {
+            const activation = getKeyActivationForUser(key, currentUser.username);
+            if (activation) {
                 const keyData = appData.keys[key];
                 if (!keyData) continue;
                 const duration = keyData.duration || 0;
@@ -3324,10 +3758,10 @@
         
         if (isKeyValid) {
             const keyData = appData.keys[userKey];
-            const activation = appData.keyActivations[userKey];
+            const activation = getKeyActivationForUser(userKey, currentUser.username);
             const owner = activation ? activation.username : 'Chưa kích hoạt';
             const timeRemaining = getTimeRemaining(keyData.expiry);
-            keyStatusInfo.innerHTML = `✅ Key hợp lệ! Chủ sở hữu: ${owner}. Thời gian còn lại: ${timeRemaining}`;
+            keyStatusInfo.innerHTML = ` Key hợp lệ! Chủ sở hữu: ${owner}. Thời gian còn lại: ${timeRemaining}`;
             keyStatusInfo.style.color = 'var(--accent)';
             spamContent.classList.remove('hidden');
             keyInputSection.classList.add('hidden');
@@ -3338,16 +3772,16 @@
         } else {
             let hasAvailableKey = false;
             for (const [key, data] of Object.entries(appData.keys)) {
-                if (data.status === 'active' && !appData.keyActivations[key]) {
+                if (data.status === 'active' && ((data.maxDevices && getKeyActivationList(key).length < data.maxDevices) || !appData.keyActivations[key])) {
                     hasAvailableKey = true;
                     break;
                 }
             }
             if (hasAvailableKey) {
-                keyStatusInfo.innerHTML = '🔑 Có key chưa được kích hoạt. Nhập key để kích hoạt và sử dụng!';
+                keyStatusInfo.innerHTML = ' Có key chưa được kích hoạt. Nhập key để kích hoạt và sử dụng!';
                 keyStatusInfo.style.color = 'var(--orange)';
             } else {
-                keyStatusInfo.innerHTML = '❌ Không có key hợp lệ. Vui lòng nhập key!';
+                keyStatusInfo.innerHTML = ' Không có key hợp lệ. Vui lòng nhập key!';
                 keyStatusInfo.style.color = 'var(--red)';
             }
             spamContent.classList.add('hidden');
@@ -3367,8 +3801,8 @@
         }
         if (userKey && appData.keys[userKey]) {
             const keyData = appData.keys[userKey];
-            const activation = appData.keyActivations[userKey];
-            if (activation && activation.username === currentUser.username) {
+            const activation = getKeyActivationForUser(userKey, currentUser.username);
+            if (activation) {
                 const duration = keyData.duration || 0;
                 const activatedAt = activation.activatedAt || keyData.createdAt;
                 const expiryTime = activatedAt + duration;
@@ -3405,19 +3839,20 @@
         if (!currentUser) return false;
         const keyData = appData.keys[key];
         if (!keyData) {
-            keyStatusInfo.innerHTML = '❌ Key không tồn tại!';
+            keyStatusInfo.innerHTML = ' Key không tồn tại!';
             keyStatusInfo.style.color = 'var(--red)';
             return false;
         }
         
-        const activation = appData.keyActivations[key];
+        const activationList = getKeyActivationList(key);
+        const activation = activationList.find(item => item.username === currentUser.username) || null;
         if (activation) {
             if (activation.username === currentUser.username) {
                 const duration = keyData.duration || 0;
                 const activatedAt = activation.activatedAt || keyData.createdAt;
                 const expiryTime = activatedAt + duration;
                 if (Date.now() <= expiryTime) {
-                    keyStatusInfo.innerHTML = `✅ Key đã được kích hoạt cho bạn. Thời gian còn lại: ${getTimeRemaining(expiryTime)}`;
+                    keyStatusInfo.innerHTML = ` Key đã được kích hoạt cho bạn. Thời gian còn lại: ${getTimeRemaining(expiryTime)}`;
                     keyStatusInfo.style.color = 'var(--accent)';
                     isKeyValid = true;
                     userKey = key;
@@ -3430,32 +3865,31 @@
                     updateKeyTimer();
                     return true;
                 } else {
-                    keyStatusInfo.innerHTML = '❌ Key đã hết hạn!';
+                    keyStatusInfo.innerHTML = ' Key đã hết hạn!';
                     keyStatusInfo.style.color = 'var(--red)';
                     keyData.status = 'expired';
                     saveData();
                     renderKeyHistory();
                     return false;
                 }
-            } else {
-                keyStatusInfo.innerHTML = `❌ Key này đã được kích hoạt bởi "${activation.username}". Không thể sử dụng!`;
-                keyStatusInfo.style.color = 'var(--red)';
-                return false;
             }
         }
-        
-        // Kiểm tra nếu key là multi và đã đạt số lượng tài khoản tối đa
-        if (keyData.maxDevices) {
-            const usedCount = keyData.usedDevices || 0;
-            if (usedCount >= keyData.maxDevices) {
-                keyStatusInfo.innerHTML = `❌ Key này đã đạt tối đa ${keyData.maxDevices} tài khoản!`;
-                keyStatusInfo.style.color = 'var(--red)';
-                return false;
-            }
+
+        if (activationList.length > 0 && !keyData.maxDevices) {
+            keyStatusInfo.innerHTML = ` Key này đã được kích hoạt bởi "${activationList[0].username}". Không thể sử dụng!`;
+            keyStatusInfo.style.color = 'var(--red)';
+            return false;
+        }
+
+        // Key nhiều tài khoản cho phép mỗi tài khoản kích hoạt một lượt.
+        if (keyData.maxDevices && activationList.length >= keyData.maxDevices) {
+            keyStatusInfo.innerHTML = ` Key này đã đạt tối đa ${keyData.maxDevices} tài khoản!`;
+            keyStatusInfo.style.color = 'var(--red)';
+            return false;
         }
         
         if (keyData.status === 'used' || keyData.status === 'expired') {
-            keyStatusInfo.innerHTML = '❌ Key đã được sử dụng hoặc hết hạn!';
+            keyStatusInfo.innerHTML = ' Key đã được sử dụng hoặc hết hạn!';
             keyStatusInfo.style.color = 'var(--red)';
             return false;
         }
@@ -3464,14 +3898,21 @@
         const activatedAt = Date.now();
         const expiryTime = activatedAt + duration;
         
-        appData.keyActivations[key] = {
+        const newActivation = {
             username: currentUser.username,
             activatedAt: activatedAt
         };
-        
+        if (keyData.maxDevices) {
+            const updatedActivations = getKeyActivationList(key);
+            updatedActivations.push(newActivation);
+            appData.keyActivations[key] = { accounts: updatedActivations };
+        } else {
+            appData.keyActivations[key] = newActivation;
+        }
+
         // Cập nhật số lượng tài khoản đã sử dụng cho key multi
         if (keyData.maxDevices) {
-            keyData.usedDevices = (keyData.usedDevices || 0) + 1;
+            keyData.usedDevices = getKeyActivationList(key).length;
             // Nếu đã đạt số lượng tối đa, đánh dấu là đã dùng hết
             if (keyData.usedDevices >= keyData.maxDevices) {
                 keyData.status = 'used';
@@ -3498,7 +3939,7 @@
         isKeyValid = true;
         userKey = key;
         const usedText = keyData.maxDevices ? ` (${keyData.usedDevices}/${keyData.maxDevices})` : '';
-        keyStatusInfo.innerHTML = `✅ Kích hoạt key thành công! Chủ sở hữu: ${currentUser.username}${usedText}. Thời gian còn lại: ${getTimeRemaining(expiryTime)}`;
+        keyStatusInfo.innerHTML = ` Kích hoạt key thành công! Chủ sở hữu: ${currentUser.username}${usedText}. Thời gian còn lại: ${getTimeRemaining(expiryTime)}`;
         keyStatusInfo.style.color = 'var(--accent)';
         spamContent.classList.remove('hidden');
         keyInputSection.classList.add('hidden');
@@ -3543,9 +3984,15 @@
         return keys;
     }
 
-    function generateMultiDeviceKey(deviceCount, expiryStr) {
+    function generateMultiDeviceKey(deviceCount, expiryStr, requestedKey) {
         const duration = getDurationMs(expiryStr);
-        const newKey = generateUniqueKey();
+        const newKey = (requestedKey || '').trim() || generateUniqueKey();
+        if (appData.keys[newKey]) {
+            throw new Error('Key này đã tồn tại. Hãy nhập key khác.');
+        }
+        if (/\s/.test(newKey)) {
+            throw new Error('Key không được chứa khoảng trắng.');
+        }
         const now = Date.now();
         const expiryTime = duration === Infinity ? Infinity : now + duration;
         
@@ -3585,7 +4032,7 @@
         let html = '';
         for (const item of appData.keyHistory) {
             let status = item.status;
-            const activation = appData.keyActivations[item.key];
+            const activation = getPrimaryKeyActivation(item.key);
             
             if (activation && status !== 'expired' && status !== 'reseted') {
                 const duration = item.duration || 0;
@@ -3600,9 +4047,9 @@
             }
             
             const activatedBy = activation ? activation.username : 'Chưa kích hoạt';
-            let statusText = status === 'active' ? '✅ Còn hạn' : 
-                            status === 'used' ? '🔑 Đã dùng' : 
-                            status === 'reseted' ? '🔄 Đã reset' : '❌ Hết hạn';
+            let statusText = status === 'active' ? ' Còn hạn' : 
+                            status === 'used' ? ' Đã dùng' : 
+                            status === 'reseted' ? ' Đã reset' : ' Hết hạn';
             const statusClass = status === 'active' ? 'active' : 
                                status === 'used' ? 'used' : 
                                status === 'reseted' ? 'reseted' : 'expired';
@@ -3622,14 +4069,14 @@
                 }
             }
             
-            let typeLabel = item.type === 'multi' ? '📱 Multi Account' : 
-                           item.type === 'web' ? '🌐 Web Key' : '👑 Admin';
+            let typeLabel = item.type === 'multi' ? ' Multi Account' : 
+                           item.type === 'web' ? ' Web Key' : ' Admin';
             let deviceInfo = '';
             if (item.type === 'multi' && item.maxDevices !== undefined) {
                 const used = item.usedDevices || 0;
-                deviceInfo = `<span class="device-info">👤 ${used}/${item.maxDevices} tài khoản</span>`;
+                deviceInfo = `<span class="device-info"> ${used}/${item.maxDevices} tài khoản</span>`;
             }
-            const activatedInfo = activation ? `🔑 Kích hoạt bởi: ${activatedBy}` : '📌 Chưa kích hoạt';
+            const activatedInfo = activation ? ` Kích hoạt bởi: ${activatedBy}` : ' Chưa kích hoạt';
             html += `
                 <div class="key-item">
                     <span>
@@ -3642,7 +4089,7 @@
                         <span class="key-expiry">⏳ ${timeRemaining}</span>
                         <span style="color:var(--text-mute);font-size:11px;">${activatedInfo}</span>
                         <span class="key-status ${statusClass}">${statusText}</span>
-                        <button class="copy-btn" onclick="copyKey('${item.key}')">📋 Copy</button>
+                        <button class="copy-btn" onclick="copyKey('${item.key}')"> Copy</button>
                     </span>
                 </div>
             `;
@@ -3652,7 +4099,7 @@
 
     window.copyKey = function(key) {
         navigator.clipboard.writeText(key).then(() => {
-            appendLog(`📋 Đã sao chép key: ${key}`);
+            appendLog(` Đã sao chép key: ${key}`);
         }).catch(() => {
             const textarea = document.createElement('textarea');
             textarea.value = key;
@@ -3660,21 +4107,21 @@
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            appendLog(`📋 Đã sao chép key: ${key}`);
+            appendLog(` Đã sao chép key: ${key}`);
         });
     };
 
     // ========== RESET KEY ==========
     function resetKey(key) {
         if (!currentUser || currentUser.role !== 'admin') {
-            resetStatus.innerHTML = '❌ Chỉ Admin mới có thể reset key!';
+            resetStatus.innerHTML = ' Chỉ Admin mới có thể reset key!';
             resetStatus.style.color = 'var(--red)';
             return false;
         }
         
         const keyData = appData.keys[key];
         if (!keyData) {
-            resetStatus.innerHTML = '❌ Key không tồn tại!';
+            resetStatus.innerHTML = ' Key không tồn tại!';
             resetStatus.style.color = 'var(--red)';
             return false;
         }
@@ -3697,9 +4144,9 @@
         saveData();
         renderKeyHistory();
         const timeDisplay = keyData.duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(Date.now() + keyData.duration);
-        resetStatus.innerHTML = `✅ Đã reset key: ${key}. Key có thể được kích hoạt lại cho acc khác. Thời hạn: ${timeDisplay}`;
+        resetStatus.innerHTML = ` Đã reset key: ${key}. Key có thể được kích hoạt lại cho acc khác. Thời hạn: ${timeDisplay}`;
         resetStatus.style.color = 'var(--accent)';
-        appendLog(`🔄 Admin đã reset key: ${key}`);
+        appendLog(` Admin đã reset key: ${key}`);
         
         if (userKey === key) {
             isKeyValid = false;
@@ -3710,9 +4157,10 @@
     }
 
     resetKeyBtn.addEventListener('click', function() {
-        const key = resetKeyInput.value.trim().toUpperCase();
+        const enteredKey = resetKeyInput.value.trim();
+        const key = appData.keys[enteredKey] ? enteredKey : enteredKey.toUpperCase();
         if (!key) {
-            resetStatus.innerHTML = '❌ Vui lòng nhập key cần reset!';
+            resetStatus.innerHTML = ' Vui lòng nhập key cần reset!';
             resetStatus.style.color = 'var(--red)';
             return;
         }
@@ -3749,10 +4197,10 @@
 
     // ========== EVENTS ==========
     adminLoginBtn.addEventListener('click', function() {
-        const password = prompt('👑 Nhập mật khẩu Admin:');
+        const password = prompt(' Nhập mật khẩu Admin:');
         if (password === null) return;
         if (!password.trim()) {
-            authStatus.innerHTML = '❌ Vui lòng nhập mật khẩu!';
+            authStatus.innerHTML = ' Vui lòng nhập mật khẩu!';
             return;
         }
         adminLogin(password.trim());
@@ -3761,9 +4209,10 @@
     logoutBtn.addEventListener('click', logout);
 
     activateKeyBtn.addEventListener('click', function() {
-        const key = userKeyInput.value.trim().toUpperCase();
+        const enteredKey = userKeyInput.value.trim();
+        const key = appData.keys[enteredKey] ? enteredKey : enteredKey.toUpperCase();
         if (!key) {
-            keyStatusInfo.innerHTML = '❌ Vui lòng nhập key!';
+            keyStatusInfo.innerHTML = ' Vui lòng nhập key!';
             keyStatusInfo.style.color = 'var(--red)';
             return;
         }
@@ -3783,19 +4232,27 @@
             return;
         }
         const expiryStr = genKeyExpiry.value;
-        const newKey = generateMultiDeviceKey(count, expiryStr);
+        const requestedKey = customMultiKey.value.trim();
+        let newKey;
+        try {
+            newKey = generateMultiDeviceKey(count, expiryStr, requestedKey);
+        } catch (error) {
+            alert(error.message || 'Không thể tạo key này.');
+            return;
+        }
         const keyData = appData.keys[newKey];
         const timeDisplay = keyData.duration === Infinity ? 'Vĩnh viễn' : getTimeRemaining(Date.now() + keyData.duration);
         
         genKeyResult.style.display = 'block';
         genKeyResult.innerHTML = `
-            ✅ Đã tạo key cho <strong>${count}</strong> tài khoản thành công!<br>
-            🔑 Key: <strong style="color:var(--orange);">${newKey}</strong><br>
+             Đã tạo key cho <strong>${count}</strong> tài khoản thành công!<br>
+             Key: <strong style="color:var(--orange);">${newKey}</strong><br>
             ⏳ Thời hạn: ${timeDisplay}<br>
-            👤 Số tài khoản: ${count}<br>
-            <button class="copy-btn" onclick="copyKey('${newKey}')" style="margin-top:8px;">📋 Sao chép key</button>
+             Số tài khoản: ${count}<br>
+            <button class="copy-btn" onclick="copyKey('${newKey}')" style="margin-top:8px;"> Sao chép key</button>
         `;
-        appendLog(`🔑 Admin đã tạo key multi-account (${count} tài khoản) - ${newKey}`);
+        customMultiKey.value = '';
+        appendLog(` Admin đã tạo key multi-account (${count} tài khoản) - ${newKey}`);
     });
 
     genKeyBtn.addEventListener('click', function() {
@@ -3811,8 +4268,8 @@
         const expiryStr = keyExpiry.value;
         const keys = generateAdminKeys(count, expiryStr);
         const expiryLabel = keyExpiry.options[keyExpiry.selectedIndex].text;
-        alert(`✅ Đã tạo ${keys.length} key thành công!\nThời hạn: ${expiryLabel}\n\n${keys.join('\n')}\n\n⚠️ Lưu ý: Key sẽ chỉ bắt đầu tính thời gian từ lúc được kích hoạt!`);
-        appendLog(`🔑 Admin đã tạo ${keys.length} key mới (${expiryLabel})`);
+        alert(` Đã tạo ${keys.length} key thành công!\nThời hạn: ${expiryLabel}\n\n${keys.join('\n')}\n\n Lưu ý: Key sẽ chỉ bắt đầu tính thời gian từ lúc được kích hoạt!`);
+        appendLog(` Admin đã tạo ${keys.length} key mới (${expiryLabel})`);
     });
 
     copyKeysBtn.addEventListener('click', function() {
@@ -3829,7 +4286,7 @@
         }
         const text = activeKeys.join('\n');
         navigator.clipboard.writeText(text).then(() => {
-            alert(`✅ Đã sao chép ${activeKeys.length} key!\n\n${text}`);
+            alert(` Đã sao chép ${activeKeys.length} key!\n\n${text}`);
         }).catch(() => {
             const textarea = document.createElement('textarea');
             textarea.value = text;
@@ -3837,7 +4294,7 @@
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            alert(`✅ Đã sao chép ${activeKeys.length} key!`);
+            alert(` Đã sao chép ${activeKeys.length} key!`);
         });
     });
 
@@ -3847,54 +4304,8 @@
             appData.keyHistory = [];
             saveData();
             renderKeyHistory();
-            alert('✅ Đã xóa lịch sử key!');
-            appendLog('🗑️ Admin đã xóa lịch sử key');
-        }
-    });
-
-    // ========== MISC: Bypass Link ==========
-    function updateBypassLinkDisplay() {
-        currentBypassLinkDisplay.textContent = appData.bypassLink;
-    }
-
-    saveBypassLinkBtn.addEventListener('click', function() {
-        if (!currentUser || currentUser.role !== 'admin') {
-            alert('Chỉ Admin mới có thể thay đổi link!');
-            return;
-        }
-        const newLink = bypassLinkInput.value.trim();
-        if (!newLink) {
-            linkStatus.innerHTML = '❌ Vui lòng nhập link hợp lệ!';
-            linkStatus.style.color = 'var(--red)';
-            return;
-        }
-        if (!newLink.startsWith('http://') && !newLink.startsWith('https://')) {
-            linkStatus.innerHTML = '❌ Link phải bắt đầu bằng http:// hoặc https://!';
-            linkStatus.style.color = 'var(--red)';
-            return;
-        }
-        appData.bypassLink = newLink;
-        saveData();
-        updateBypassLinkDisplay();
-        bypassLinkInput.value = '';
-        linkStatus.innerHTML = `✅ Đã cập nhật link thành công!\n🔗 ${newLink}`;
-        linkStatus.style.color = 'var(--accent)';
-        appendLog(`🔗 Admin đã thay đổi link vượt thành: ${newLink}`);
-    });
-
-    resetBypassLinkBtn.addEventListener('click', function() {
-        if (!currentUser || currentUser.role !== 'admin') {
-            alert('Chỉ Admin mới có thể thực hiện!');
-            return;
-        }
-        if (confirm('Khôi phục link mặc định (https://link4m.org/0CSnon)?')) {
-            appData.bypassLink = 'https://link4m.org/0CSnon';
-            saveData();
-            updateBypassLinkDisplay();
-            bypassLinkInput.value = '';
-            linkStatus.innerHTML = '✅ Đã khôi phục link mặc định!';
-            linkStatus.style.color = 'var(--accent)';
-            appendLog('↩️ Admin đã khôi phục link mặc định');
+            alert(' Đã xóa lịch sử key!');
+            appendLog(' Admin đã xóa lịch sử key');
         }
     });
 
@@ -3912,8 +4323,8 @@
             html += `
                 <tr>
                     <td>${index + 1}</td>
-                    <td>🚫 ${username}</td>
-                    <td><button class="unban-btn" onclick="unbanUser('${username}')">✅ Unban</button></td>
+                    <td> ${username}</td>
+                    <td><button class="unban-btn" onclick="unbanUser('${username}')"> Unban</button></td>
                 </tr>
             `;
         });
@@ -3930,11 +4341,11 @@
             appData.bannedUsers.splice(index, 1);
             saveData();
             renderBannedTable();
-            banStatus.innerHTML = `✅ Đã unban tài khoản: ${username}`;
+            banStatus.innerHTML = ` Đã unban tài khoản: ${username}`;
             banStatus.style.color = 'var(--accent)';
-            appendLog(`✅ Admin đã unban tài khoản: ${username}`);
+            appendLog(` Admin đã unban tài khoản: ${username}`);
         } else {
-            banStatus.innerHTML = `❌ Tài khoản ${username} không có trong danh sách ban!`;
+            banStatus.innerHTML = ` Tài khoản ${username} không có trong danh sách ban!`;
             banStatus.style.color = 'var(--red)';
         }
     };
@@ -3946,22 +4357,22 @@
         }
         const username = banUsernameInput.value.trim();
         if (!username) {
-            banStatus.innerHTML = '❌ Vui lòng nhập tên tài khoản!';
+            banStatus.innerHTML = ' Vui lòng nhập tên tài khoản!';
             banStatus.style.color = 'var(--red)';
             return;
         }
         if (username === 'Nduc') {
-            banStatus.innerHTML = '❌ Không thể ban tài khoản Admin!';
+            banStatus.innerHTML = ' Không thể ban tài khoản Admin!';
             banStatus.style.color = 'var(--red)';
             return;
         }
         if (!appData.users[username]) {
-            banStatus.innerHTML = `❌ Tài khoản "${username}" không tồn tại!`;
+            banStatus.innerHTML = ` Tài khoản "${username}" không tồn tại!`;
             banStatus.style.color = 'var(--red)';
             return;
         }
         if (appData.bannedUsers.includes(username)) {
-            banStatus.innerHTML = `⚠️ Tài khoản "${username}" đã bị ban từ trước!`;
+            banStatus.innerHTML = ` Tài khoản "${username}" đã bị ban từ trước!`;
             banStatus.style.color = 'var(--orange)';
             return;
         }
@@ -3969,9 +4380,9 @@
         saveData();
         renderBannedTable();
         banUsernameInput.value = '';
-        banStatus.innerHTML = `✅ Đã ban tài khoản: ${username}`;
+        banStatus.innerHTML = ` Đã ban tài khoản: ${username}`;
         banStatus.style.color = 'var(--red)';
-        appendLog(`🔨 Admin đã ban tài khoản: ${username}`);
+        appendLog(` Admin đã ban tài khoản: ${username}`);
         if (currentUser.username === username) {
             logout();
         }
@@ -3984,13 +4395,13 @@
         }
         const username = banUsernameInput.value.trim();
         if (!username) {
-            banStatus.innerHTML = '❌ Vui lòng nhập tên tài khoản!';
+            banStatus.innerHTML = ' Vui lòng nhập tên tài khoản!';
             banStatus.style.color = 'var(--red)';
             return;
         }
         const index = appData.bannedUsers.indexOf(username);
         if (index === -1) {
-            banStatus.innerHTML = `❌ Tài khoản "${username}" không có trong danh sách ban!`;
+            banStatus.innerHTML = ` Tài khoản "${username}" không có trong danh sách ban!`;
             banStatus.style.color = 'var(--red)';
             return;
         }
@@ -3998,9 +4409,9 @@
         saveData();
         renderBannedTable();
         banUsernameInput.value = '';
-        banStatus.innerHTML = `✅ Đã unban tài khoản: ${username}`;
+        banStatus.innerHTML = ` Đã unban tài khoản: ${username}`;
         banStatus.style.color = 'var(--accent)';
-        appendLog(`✅ Admin đã unban tài khoản: ${username}`);
+        appendLog(` Admin đã unban tài khoản: ${username}`);
     });
 
     viewBannedBtn.addEventListener('click', function() {
@@ -4010,10 +4421,10 @@
         }
         renderBannedTable();
         if (appData.bannedUsers.length === 0) {
-            banStatus.innerHTML = '📋 Hiện không có tài khoản nào bị ban.';
+            banStatus.innerHTML = ' Hiện không có tài khoản nào bị ban.';
             banStatus.style.color = 'var(--accent)';
         } else {
-            banStatus.innerHTML = `📋 Hiển thị ${appData.bannedUsers.length} tài khoản bị ban.`;
+            banStatus.innerHTML = ` Hiển thị ${appData.bannedUsers.length} tài khoản bị ban.`;
             banStatus.style.color = 'var(--orange)';
         }
         bannedTableContainer.classList.add('active');
@@ -4026,7 +4437,7 @@
             return;
         }
         if (appData.bannedUsers.length === 0) {
-            banStatus.innerHTML = '📋 Danh sách ban đã trống.';
+            banStatus.innerHTML = ' Danh sách ban đã trống.';
             banStatus.style.color = 'var(--accent)';
             return;
         }
@@ -4034,9 +4445,9 @@
             appData.bannedUsers = [];
             saveData();
             renderBannedTable();
-            banStatus.innerHTML = '🗑️ Đã xóa toàn bộ danh sách ban!';
+            banStatus.innerHTML = ' Đã xóa toàn bộ danh sách ban!';
             banStatus.style.color = 'var(--orange)';
-            appendLog('🗑️ Admin đã xóa toàn bộ danh sách ban');
+            appendLog(' Admin đã xóa toàn bộ danh sách ban');
         }
     });
 
@@ -4050,7 +4461,7 @@
                     lineData = parsed;
                     renderLineInputs();
                     lineCount.value = lineData.count;
-                    appendLog('⬆️ Đã tải dữ liệu đã lưu!');
+                    appendLog('⬆ Đã tải dữ liệu đã lưu!');
                     return true;
                 }
             }
@@ -4064,9 +4475,9 @@
     function saveLinesData() {
         try {
             localStorage.setItem(LINE_STORAGE_KEY, JSON.stringify(lineData));
-            appendLog('💾 Đã lưu ' + lineData.count + ' dòng thành công!');
+            appendLog(' Đã lưu ' + lineData.count + ' dòng thành công!');
         } catch (e) {
-            appendLog('❌ Lưu thất bại!', true);
+            appendLog(' Lưu thất bại!', true);
         }
     }
 
@@ -4079,14 +4490,14 @@
                     lineData = parsed;
                     renderLineInputs();
                     lineCount.value = lineData.count;
-                    appendLog('⬆️ Đã up lại ' + lineData.count + ' dòng đã lưu!');
+                    appendLog('⬆ Đã up lại ' + lineData.count + ' dòng đã lưu!');
                     return true;
                 }
             }
-            appendLog('❌ Không có dữ liệu đã lưu!', true);
+            appendLog(' Không có dữ liệu đã lưu!', true);
             return false;
         } catch (e) {
-            appendLog('❌ Up thất bại!', true);
+            appendLog(' Up thất bại!', true);
             return false;
         }
     }
@@ -4097,7 +4508,7 @@
             lineCount.value = 3;
             renderLineInputs();
             localStorage.removeItem(LINE_STORAGE_KEY);
-            appendLog('🗑️ Đã xoá dữ liệu, về mặc định 3 dòng!');
+            appendLog(' Đã xoá dữ liệu, về mặc định 3 dòng!');
         }
     }
 
@@ -4118,7 +4529,7 @@
             const escapedVal = val.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
             html += `
                 <div class="line-input-item">
-                    <label>📌 Dòng ${i+1}:</label>
+                    <label> Dòng ${i+1}:</label>
                     <input type="text" class="line-input" data-index="${i}" value="${escapedVal}" 
                            placeholder="Nhập nội dung dòng ${i+1}">
                 </div>
@@ -4155,7 +4566,7 @@
         }
         lineData.count = count;
         renderLineInputs();
-        appendLog(`🔄 Đã cập nhật thành ${count} dòng`);
+        appendLog(` Đã cập nhật thành ${count} dòng`);
     });
 
     saveLinesBtn.addEventListener('click', function() {
@@ -4216,7 +4627,7 @@
         const file = e.target.files[0];
         if (file) {
             if (file.size > 10 * 1024 * 1024) {
-                alert('⚠️ Ảnh lớn hơn 10MB! Sẽ gửi dưới dạng document.');
+                alert(' Ảnh lớn hơn 10MB! Sẽ gửi dưới dạng document.');
             }
             const reader = new FileReader();
             reader.onload = function(event) {
@@ -4247,7 +4658,7 @@
     }
 
     function appendLog(msg, isError = false) {
-        const prefix = isError ? '❌ ' : '✅ ';
+        const prefix = isError ? ' ' : ' ';
         const cls = isError ? 'error-text' : 'success-text';
         log.innerHTML += `<span class="${cls}">${prefix}${msg}</span>\n`;
         log.scrollTop = log.scrollHeight;
@@ -4357,7 +4768,7 @@
         if (!isUnlimited) {
             const max = parseInt(spamCount.value) || 0;
             if (max > 0 && totalSent >= max) {
-                appendLog(`✅ Đã gửi đủ ${max} lần, dừng spam!`);
+                appendLog(` Đã gửi đủ ${max} lần, dừng spam!`);
                 stopSpam();
                 return;
             }
@@ -4508,7 +4919,7 @@
         const modeLabel = spamMode === 'single' ? 'Spam thường' : 'Multi Spam';
         const typeLabel = spamMode === 'single' && msgType === 'image' ? 'ảnh' : 'văn bản';
         const countLabel = isUnlimited ? 'vô hạn' : spamCount.value;
-        appendLog(`🔥 Bắt đầu ${modeLabel} (${typeLabel}) với ${botCount} bot, số lần: ${countLabel}`);
+        appendLog(` Bắt đầu ${modeLabel} (${typeLabel}) với ${botCount} bot, số lần: ${countLabel}`);
         spamLoop();
     }
 
@@ -4529,10 +4940,10 @@
 
     function updateCounterDisplay() {
         if (isUnlimited) {
-            counter.textContent = `📤 ${totalSent} / ∞`;
+            counter.textContent = ` ${totalSent} / ∞`;
         } else {
             const max = parseInt(spamCount.value) || 0;
-            counter.textContent = `📤 ${totalSent} / ${max}`;
+            counter.textContent = ` ${totalSent} / ${max}`;
         }
     }
 
@@ -4585,7 +4996,6 @@
 
     renderKeyHistory();
     renderBannedTable();
-    updateBypassLinkDisplay();
     
     if (!autoLogin()) {
         updateUI();
