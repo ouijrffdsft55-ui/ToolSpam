@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Spam Pro - By Nduc</title>
     <style>
-        :root {
+:root {
             --bg: #0a0e0d;
             --bg-2: #111716;
             --bg-3: #161d1c;
@@ -2245,6 +2245,7 @@
             .notice-box { padding: 28px 22px; }
             .side-menu { width: 280px; }
         }
+
     </style>
 </head>
 <body>
@@ -2816,11 +2817,16 @@
     }
 
     function generateUniqueKey() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let key = '';
-        for (let i = 0; i < 10; i++) {
-            key += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
+        // Key thông thường: ToolSpam- + 6 chữ cái ngẫu nhiên (A-Z).
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let key;
+        do {
+            let suffix = '';
+            for (let i = 0; i < 6; i++) {
+                suffix += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            key = `ToolSpam-${suffix}`;
+        } while (appData.keys[key]);
         return key;
     }
 
@@ -3840,6 +3846,12 @@
         const keyData = appData.keys[key];
         if (!keyData) {
             keyStatusInfo.innerHTML = ' Key không tồn tại!';
+            keyStatusInfo.style.color = 'var(--red)';
+            return false;
+        }
+        // Key thường phải đúng định dạng ToolSpam-XXXXXX; key nhiều thiết bị giữ nguyên tùy chỉnh.
+        if (!keyData.maxDevices && !/^ToolSpam-[A-Z]{6}$/.test(key)) {
+            keyStatusInfo.innerHTML = ' Key thường phải có dạng ToolSpam-XXXXXX!';
             keyStatusInfo.style.color = 'var(--red)';
             return false;
         }
@@ -5005,6 +5017,7 @@
     setInterval(checkWebKey, 5000);
 
 })();
+
 </script>
 </body>
 </html>
